@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Title, Text } from '@/components/ui/text';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Text } from '@/components/ui/text';
 import { Progressbar } from '@/components/ui/progressbar';
 import { Tooltip } from '@/components/ui/tooltip';
 import { ActionIcon } from '@/components/ui/action-icon';
@@ -12,9 +11,9 @@ import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
-import { ProductType } from '@/data/products-data';
 import { PiStarFill } from 'react-icons/pi';
 import DeletePopover from '@/app/shared/delete-popover';
+import { ControlDiabetesType } from '../data';
 
 // get status badge
 function getStatusBadge(status: string) {
@@ -118,7 +117,7 @@ type Columns = {
   onChecked?: (id: string) => void;
 };
 
-export const getColumns = ({
+export const getColumnsControlDiabetes = ({
   data,
   sortConfig,
   checkedItems,
@@ -133,7 +132,7 @@ export const getColumns = ({
     key: 'product',
     width: 300,
     hidden: 'customer',
-    render: (_: string, row: ProductType) => (
+    render: (_: string, row: ControlDiabetesType) => (
       <AvatarCard
         src={row.image}
         name={row.name}
@@ -207,7 +206,7 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 120,
-    render: (_: string, row: ProductType) => (
+    render: (_: string, row: ControlDiabetesType) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         <Tooltip
           size="sm"

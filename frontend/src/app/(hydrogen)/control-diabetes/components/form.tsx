@@ -12,14 +12,6 @@ import FormNav, {
 } from '@/app/shared/ecommerce/product/create-edit/form-nav';
 import ProductSummary from '@/app/shared/ecommerce/product/create-edit/product-summary';
 import { defaultValues } from '@/app/shared/ecommerce/product/create-edit/form-utils';
-// import ProductMedia from '@/app/shared/ecommerce/product/create-edit/product-media';
-// import PricingInventory from '@/app/shared/ecommerce/product/create-edit/pricing-inventory';
-// import ProductIdentifiers from '@/app/shared/ecommerce/product/create-edit/product-identifiers';
-// import ShippingInfo from '@/app/shared/ecommerce/product/create-edit/shipping-info';
-// import ProductSeo from '@/app/shared/ecommerce/product/create-edit/product-seo';
-// import DeliveryEvent from '@/app/shared/ecommerce/product/create-edit/delivery-event';
-// import ProductVariants from '@/app/shared/ecommerce/product/create-edit/product-variants';
-// import ProductTaxonomies from '@/app/shared/ecommerce/product/create-edit/product-tags';
 import FormFooter from '@/components/form-footer';
 import {
   CreateProductInput,
@@ -30,14 +22,6 @@ import { LAYOUT_OPTIONS } from '@/config/enums';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: ProductSummary,
-  // [formParts.media]: ProductMedia,
-  // [formParts.pricingInventory]: PricingInventory,
-  // [formParts.productIdentifiers]: ProductIdentifiers,
-  // [formParts.shipping]: ShippingInfo,
-  // [formParts.seo]: ProductSeo,
-  // [formParts.deliveryEvent]: DeliveryEvent,
-  // [formParts.variantOptions]: ProductVariants,
-  // [formParts.tagsAndCategory]: ProductTaxonomies,
 };
 
 interface IndexProps {
@@ -46,7 +30,7 @@ interface IndexProps {
   product?: CreateProductInput;
 }
 
-export default function CreateEditProduct({
+export default function FormControlDiabetes({
   slug,
   product,
   className,
