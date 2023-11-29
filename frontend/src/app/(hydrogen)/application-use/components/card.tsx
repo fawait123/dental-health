@@ -3,10 +3,10 @@ import WidgetCard from '@/components/cards/widget-card';
 import { teams as apps } from '@/data/teams-data';
 import { PiArrowLineUpRightBold } from 'react-icons/pi';
 
-export default function RecentAppList() {
+export default function CardApplicationUse() {
   return (
     <WidgetCard
-      title={'Dental Health Education'}
+      title={'Application Use'}
       titleClassName="leading-none"
       headerClassName="mb-3 lg:mb-4"
     >

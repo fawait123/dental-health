@@ -1,5 +1,4 @@
 import { metaObject } from '@/config/site.config';
-import EventCalendarView from '@/app/shared/event-calendar';
 import ExportButton from '@/app/shared/export-button';
 import ModalButton from '@/app/shared/modal-button';
 import PageHeader from '@/app/shared/page-header';
@@ -13,15 +12,15 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Event Calendar',
+  title: 'Dental Health Education',
   breadcrumb: [
     {
       href: routes.file.dashboard,
-      name: 'Home',
+      name: 'Dental Health Education',
     },
     {
       href: routes.eventCalendar,
-      name: 'Event Calendar',
+      name: 'index',
     },
   ],
 };
@@ -49,6 +48,3 @@ export default function ApplicationUsePage() {
     </>
   );
 }
-
-
-

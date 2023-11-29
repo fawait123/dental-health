@@ -10,6 +10,7 @@ import { Text } from '@/components/ui/text';
 import FormNav, {
   formParts,
 } from '@/app/shared/ecommerce/product/create-edit/form-nav';
+import ProductSummary from '@/app/shared/ecommerce/product/create-edit/product-summary';
 import { defaultValues } from '@/app/shared/ecommerce/product/create-edit/form-utils';
 import FormFooter from '@/components/form-footer';
 import {
@@ -18,10 +19,10 @@ import {
 } from '@/utils/validators/create-product.schema';
 import { useLayout } from '@/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import ControlDiabetesSummary from './summary';
+import DentalHealthSummary from './summary';
 
 const MAP_STEP_TO_COMPONENT = {
-  [formParts.summary]: ControlDiabetesSummary,
+  [formParts.summary]: DentalHealthSummary,
 };
 
 interface IndexProps {
@@ -30,7 +31,7 @@ interface IndexProps {
   product?: CreateProductInput;
 }
 
-export default function FormControlDiabetes({
+export default function FormDentalHealth({
   slug,
   product,
   className,
@@ -78,7 +79,7 @@ export default function FormControlDiabetes({
           <FormFooter
             isLoading={isLoading}
             submitBtnText={
-              slug ? 'Update Control Diabetes' : 'Create Control Diabetes'
+              slug ? 'Update Kesehatan Gigi' : 'Create Kesehatan Gigi'
             }
           />
         </form>

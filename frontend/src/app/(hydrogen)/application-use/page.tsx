@@ -1,27 +1,26 @@
 import { metaObject } from '@/config/site.config';
-import EventCalendarView from '@/app/shared/event-calendar';
 import ExportButton from '@/app/shared/export-button';
 import ModalButton from '@/app/shared/modal-button';
 import PageHeader from '@/app/shared/page-header';
 import { routes } from '@/config/routes';
 import { eventData } from '@/data/event-data';
 import EventForm from '@/app/shared/event-calendar/event-form';
-import RecentAppList from '../widgets/cards/recent-app-list';
+import CardApplicationUse from './components/card';
 
 export const metadata = {
   ...metaObject('Event Calendar'),
 };
 
 const pageHeader = {
-  title: 'Event Calendar',
+  title: 'Application Use',
   breadcrumb: [
     {
       href: routes.file.dashboard,
-      name: 'Home',
+      name: 'Application Use',
     },
     {
       href: routes.eventCalendar,
-      name: 'Event Calendar',
+      name: 'index',
     },
   ],
 };
@@ -45,10 +44,7 @@ export default function DentalHealthEducationPage() {
         </div>
       </PageHeader>
 
-      <RecentAppList />
+      <CardApplicationUse />
     </>
   );
 }
-
-
-

@@ -3,10 +3,9 @@ import { PiPlusBold } from 'react-icons/pi';
 import { routes } from '@/config/routes';
 import { Button } from '@/components/ui/button';
 import PageHeader from '@/app/shared/page-header';
-import ProductsTable from '@/app/shared/ecommerce/product/product-list/table';
-import { productsData } from '@/data/products-data';
 import { metaObject } from '@/config/site.config';
-import ExportButton from '@/app/shared/export-button';
+import { dentalHealthData } from './data';
+import ControlDiabetesTable from './components/table';
 
 export const metadata = {
   ...metaObject('Products'),
@@ -30,13 +29,8 @@ export default function DentalHealthPage() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ExportButton
-            data={productsData}
-            fileName="product_data"
-            header="ID,Name,Category,Product Thumbnail,SKU,Stock,Price,Status,Rating"
-          />
           <Link
-            href={routes.controldiabetes.createProduct}
+            href={routes.dentalHealt.createProduct}
             className="w-full @lg:w-auto"
           >
             <Button
@@ -50,7 +44,7 @@ export default function DentalHealthPage() {
         </div>
       </PageHeader>
 
-      <ProductsTable data={productsData} />
+      <ControlDiabetesTable data={dentalHealthData} />
     </>
   );
 }
