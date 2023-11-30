@@ -9,25 +9,19 @@ import sequelize from "../../config/database";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-class User extends Model {
+class ControlDiabetes extends Model {
   declare id: string;
-  declare name: string;
-  declare username: string;
-  declare email: string;
-  declare password: string;
-  declare placebirth: string;
-  declare birthdate: string;
-  declare address: string;
-  declare gender: string;
-  declare phone: string;
-  declare history_sicknes: string;
-  declare photo: string;
+  declare userID: string;
+  declare bloodSugarPressure: number;
+  declare bloodPressure: number;
+  declare controlDrugConsumption: string;
+  declare physicalActivity: boolean;
   declare createdAt: string;
   declare updatedAt: string;
   declare deletedAt: string;
 }
 
-User.init(
+ControlDiabetes.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -36,49 +30,25 @@ User.init(
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    username: {
-      type: DataTypes.STRING(128),
+    userID: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(128),
+    bloodSugarPressure: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    password: {
+    bloodPressure: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    controlDrugConsumption: {
       type: DataTypes.STRING(288),
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING(128),
+    physicalActivity: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-    },
-    placebirth: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    birthdate: {
-      type: DataTypes.DATEONLY(),
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.ENUM("L", "P"),
-      allowNull: false,
-    },
-    address: {
-      type: DataTypes.TEXT(),
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING(14),
-      allowNull: false,
-    },
-    history_sicknes: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    photo: {
-      type: DataTypes.TEXT("long"),
-      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -94,10 +64,10 @@ User.init(
     },
   },
   {
-    tableName: "users",
+    tableName: "diabetescontrols",
     sequelize, // passing the `sequelize` instance is required
     paranoid: true,
     timestamps: true,
   }
 );
-export default User;
+export default ControlDiabetes;

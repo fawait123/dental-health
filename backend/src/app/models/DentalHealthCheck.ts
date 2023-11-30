@@ -9,25 +9,20 @@ import sequelize from "../../config/database";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-class User extends Model {
+class DentalHealthCheck extends Model {
   declare id: string;
-  declare name: string;
-  declare username: string;
-  declare email: string;
-  declare password: string;
-  declare placebirth: string;
-  declare birthdate: string;
-  declare address: string;
-  declare gender: string;
-  declare phone: string;
-  declare history_sicknes: string;
-  declare photo: string;
+  declare userID: string;
+  declare debrisIndex: number;
+  declare CPITN: number;
+  declare countTeeth: number;
+  declare countTeethLoose: number;
+  declare gingivitisConditions: boolean;
   declare createdAt: string;
   declare updatedAt: string;
   declare deletedAt: string;
 }
 
-User.init(
+DentalHealthCheck.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -36,49 +31,29 @@ User.init(
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    username: {
-      type: DataTypes.STRING(128),
+    userID: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(128),
+    debrisIndex: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING(288),
+    CPITN: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING(128),
+    countTeeth: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    placebirth: {
-      type: DataTypes.STRING(50),
+    countTeethLoose: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    birthdate: {
-      type: DataTypes.DATEONLY(),
+    gingivitisConditions: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-    },
-    gender: {
-      type: DataTypes.ENUM("L", "P"),
-      allowNull: false,
-    },
-    address: {
-      type: DataTypes.TEXT(),
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING(14),
-      allowNull: false,
-    },
-    history_sicknes: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    photo: {
-      type: DataTypes.TEXT("long"),
-      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -94,10 +69,10 @@ User.init(
     },
   },
   {
-    tableName: "users",
+    tableName: "dentalhealthchecks",
     sequelize, // passing the `sequelize` instance is required
     paranoid: true,
     timestamps: true,
   }
 );
-export default User;
+export default DentalHealthCheck;

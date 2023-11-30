@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import publicRoute from "./app/router/public";
 import { TypeResponse } from "./types";
+import adminRoute from "./app/router/admin";
 // read .env
 dotenv.config({ path: ".env" });
 const PORT = process.env.PORT || 4000;
@@ -31,6 +32,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 // use router
 app.use(publicRoute);
+app.use(adminRoute);
 
 // listen server
 app.listen(PORT, () => {

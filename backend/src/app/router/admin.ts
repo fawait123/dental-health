@@ -1,8 +1,15 @@
 import express from "express";
 import AuthController from "../controllers/public/AuthController";
+import ControlDiabetesController from "../controllers/admin/ControlDiabetesController";
 
-const publicRoute = express.Router();
+const adminRoute = express.Router();
 
-publicRoute.post("/me", AuthController.me);
+adminRoute.post("/me", AuthController.me);
 
-export default publicRoute;
+// control diabates endpoint
+adminRoute.get("/control-diabetes", ControlDiabetesController.get);
+adminRoute.post("/control-diabetes", ControlDiabetesController.post);
+adminRoute.put("/control-diabetes", ControlDiabetesController.put);
+adminRoute.delete("/control-diabetes", ControlDiabetesController.delete);
+
+export default adminRoute;
