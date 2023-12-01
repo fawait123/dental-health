@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Element } from 'react-scroll';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,15 +10,17 @@ import { Text } from '@/components/ui/text';
 import FormNav, {
   formParts,
 } from '@/app/shared/ecommerce/product/create-edit/form-nav';
-import { defaultValues } from '@/app/shared/ecommerce/product/create-edit/form-utils';
 import FormFooter from '@/components/form-footer';
-import {
-  CreateProductInput,
-  productFormSchema,
-} from '@/utils/validators/create-product.schema';
 import { useLayout } from '@/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/config/enums';
 import ControlDiabetesSummary from './summary';
+import {
+  ControlDiabetesSchema,
+  controlDiabetesSchema,
+} from '../shema/controldiabetesschema';
+import httpRequest from '@/config/httpRequest';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: ControlDiabetesSummary,
@@ -27,33 +29,159 @@ const MAP_STEP_TO_COMPONENT = {
 interface IndexProps {
   slug?: string;
   className?: string;
-  product?: CreateProductInput;
+  data?: ControlDiabetesSchema;
+}
+
+function toJson(data): ControlDiabetesSchema {
+  return data.length > 0
+    ? {
+        bloodPressure: data[0]['bloodPressure'],
+        bloodSugarPressure: data[0]['bloodSugarPressure'],
+        controlDrugConsumption: JSON.parse(
+          data[0]['controlDrugConsumption']
+        ) as [],
+        physicalActivity: data[0]['physicalActivity'] == true ? 'YES' : 'NO',
+      }
+    : {
+        bloodPressure: '',
+        bloodSugarPressure: '',
+        controlDrugConsumption: [],
+        physicalActivity: '',
+      };
+}
+
+function defaultValue(data): ControlDiabetesSchema {
+  return {
+    bloodPressure: data?.bloodSugarPressure,
+    bloodSugarPressure: data?.bloodSugarPressure,
+    controlDrugConsumption: data?.controlDrugConsumption as [],
+    physicalActivity: data?.physicalActivity == true ? 'YES' : 'NO',
+  };
 }
 
 export default function FormControlDiabetes({
   slug,
-  product,
+  data,
   className,
 }: IndexProps) {
   const { layout } = useLayout();
   const [isLoading, setLoading] = useState(false);
-  const methods = useForm<CreateProductInput>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: defaultValues(product),
+  const methods = useForm<ControlDiabetesSchema>({
+    resolver: zodResolver(controlDiabetesSchema),
   });
+  const { data: session } = useSession();
+  const navigation = useRouter();
 
-  const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
-    setLoading(true);
-    setTimeout(() => {
+  const onSubmit: SubmitHandler<ControlDiabetesSchema> = (data) => {
+    try {
+      setLoading(true);
+      if (!slug) {
+        const payload = {
+          ...data,
+          userID: session.user['idUser'],
+          controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
+          bloodPressure: parseInt(data.bloodPressure),
+          bloodSugarPressure: parseInt(data.bloodSugarPressure),
+          physicalActivity: data.physicalActivity == 'YES' ? true : false,
+        };
+        httpRequest({
+          method: 'post',
+          url: '/control-diabetes',
+          data: payload,
+        })
+          .then((response) => {
+            setLoading(false);
+            console.log('product_data', data);
+            toast.success(
+              <Text as="b">
+                Product successfully {slug ? 'updated' : 'created'}
+              </Text>
+            );
+            methods.reset();
+            console.log('response', response);
+            navigation.push('/control-diabetes');
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      } else {
+        const payload = {
+          ...data,
+          userID: session.user['idUser'],
+          controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
+          bloodPressure: parseInt(data.bloodPressure),
+          bloodSugarPressure: parseInt(data.bloodSugarPressure),
+          physicalActivity: data.physicalActivity == 'YES' ? true : false,
+        };
+        httpRequest({
+          method: 'put',
+          url: '/control-diabetes',
+          params: {
+            id: slug,
+          },
+          data: payload,
+        })
+          .then((response) => {
+            setLoading(false);
+            console.log('product_data', data);
+            toast.success(
+              <Text as="b">
+                Product successfully {slug ? 'updated' : 'created'}
+              </Text>
+            );
+            methods.reset();
+            console.log('response', response);
+            navigation.push('/control-diabetes');
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      }
+    } catch (error) {
       setLoading(false);
-      console.log('product_data', data);
-      toast.success(
-        <Text as="b">Product successfully {slug ? 'updated' : 'created'}</Text>
-      );
-      methods.reset();
-    }, 600);
+      console.log(error);
+    }
   };
 
+  const getData = () => {
+    try {
+      httpRequest({
+        method: 'get',
+        url: '/control-diabetes',
+        params: {
+          id: slug,
+        },
+      })
+        .then((response) => {
+          const result = toJson(response?.data?.data?.results?.data?.rows);
+          console.log(result);
+          methods.setValue('bloodPressure', result.bloodPressure.toString());
+          methods.setValue(
+            'bloodSugarPressure',
+            result.bloodSugarPressure.toString()
+          );
+          methods.setValue(
+            'controlDrugConsumption',
+            result.controlDrugConsumption
+          );
+          methods.setValue('physicalActivity', result.physicalActivity);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (slug) {
+      getData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="@container">
       <FormNav

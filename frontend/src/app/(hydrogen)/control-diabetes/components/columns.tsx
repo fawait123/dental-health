@@ -8,12 +8,12 @@ import { Progressbar } from '@/components/ui/progressbar';
 import { Tooltip } from '@/components/ui/tooltip';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { routes } from '@/config/routes';
-import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-import AvatarCard from '@/components/ui/avatar-card';
 import { PiStarFill } from 'react-icons/pi';
 import DeletePopover from '@/app/shared/delete-popover';
 import { ControlDiabetesType } from '../data';
+import { Tag } from 'rizzui';
+import moment from 'moment';
 
 // get status badge
 function getStatusBadge(status: string) {
@@ -106,6 +106,20 @@ function getRating(rating: number[]) {
     </div>
   );
 }
+enum colors {
+  'PRIMARY',
+  'secondary',
+  'danger',
+}
+function tagColor(index: number): string {
+  const data = ['primary', 'secondary', 'danger'];
+
+  return data[index];
+}
+
+function toArray(data: string) {
+  return JSON.parse(data) as [];
+}
 
 type Columns = {
   data: any[];
@@ -127,78 +141,95 @@ export const getColumnsControlDiabetes = ({
   onChecked,
 }: Columns) => [
   {
-    title: <HeaderCell title="Kadar Gula Darah" />,
-    dataIndex: 'product',
-    key: 'product',
-    width: 300,
-    hidden: 'customer',
-    render: (_: string, row: ControlDiabetesType) => (
-      <AvatarCard
-        src={row.image}
-        name={row.name}
-        description={row.category}
-        avatarProps={{
-          name: row.name,
-          size: 'lg',
-          className: 'rounded-lg',
-        }}
+    title: (
+      <HeaderCell
+        title="#"
+        // sortable
+        // ascending={
+        //   sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
+        // }
       />
     ),
+    // onHeaderCell: () => onHeaderCellClick('stock'),
+    dataIndex: 'id',
+    key: 'id',
+    width: 350,
+    render: (_: string, row: ControlDiabetesType) => {
+      return <span>{`${row.id}`}</span>;
+    },
   },
   {
-    title: <HeaderCell title="MG/DL" />,
-    dataIndex: 'sku',
-    key: 'sku',
-    width: 150,
-    render: (sku: string) => <Text className="text-sm">SKU-{sku}</Text>,
+    title: (
+      <HeaderCell
+        title="Kadar Gula Darah"
+        // sortable
+        // ascending={
+        //   sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
+        // }
+      />
+    ),
+    // onHeaderCell: () => onHeaderCellClick('stock'),
+    dataIndex: 'bloodSugarPressure',
+    key: 'bloodSugarPressure',
+    width: 200,
+    render: (_: string, row: ControlDiabetesType) => {
+      return <span>{`${row.bloodSugarPressure} MG/DL`}</span>;
+    },
   },
   {
     title: (
       <HeaderCell
         title="Tekanan Darah"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
-        }
+        // sortable
+        // ascending={
+        //   sortConfig?.direction === 'asc' && sortConfig?.key === 'bloodPressure'
+        // }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('stock'),
-    dataIndex: 'stock',
-    key: 'stock',
+    // onHeaderCell: () => onHeaderCellClick('bloodPressure'),
+    dataIndex: 'bloodPressure',
+    key: 'bloodPressure',
     width: 200,
-    render: (stock: number) => getStockStatus(stock),
-  },
-  {
-    title: (
-      <HeaderCell
-        title="MM/HG"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'price'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('price'),
-    dataIndex: 'price',
-    key: 'price',
-    width: 150,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">${value}</Text>
-    ),
+    render: (_: string, row: ControlDiabetesType) => {
+      return <span>{`${row.bloodPressure} MM/HG`}</span>;
+    },
   },
   {
     title: <HeaderCell title="Kontrol Konsumsi Obat" />,
-    dataIndex: 'rating',
-    key: 'rating',
-    width: 200,
-    render: (rating: number[]) => getRating(rating),
+    dataIndex: 'controlDrugConsumption',
+    key: 'controlDrugConsumption',
+    width: 120,
+    render: (_: string, row: ControlDiabetesType) => {
+      return toArray(row.controlDrugConsumption).map((item, index) => {
+        return (
+          <Tag color="primary" key={index} className="mb-1">
+            {item}
+          </Tag>
+        );
+      });
+    },
   },
   {
     title: <HeaderCell title="Aktifitas Fisik Dalam Sehari" />,
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'physicalActivity',
+    key: 'physicalActivity',
     width: 120,
-    render: (value: string) => getStatusBadge(value),
+    render: (_: string, row: ControlDiabetesType) => {
+      return (
+        <Tag color={row.physicalActivity == true ? 'primary' : 'danger'}>
+          {row.physicalActivity == true ? 'YES' : 'NO'}
+        </Tag>
+      );
+    },
+  },
+  {
+    title: <HeaderCell title="Dibuat" />,
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    width: 160,
+    render: (_: string, row: ControlDiabetesType) => {
+      return <span>{moment(row.createdAt).format('DD MMMM YYYY')}</span>;
+    },
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
@@ -214,21 +245,9 @@ export const getColumnsControlDiabetes = ({
           placement="top"
           color="invert"
         >
-          <Link href={routes.eCommerce.ediProduct(row.id)}>
+          <Link href={routes.controldiabetes.editData(row.id)}>
             <ActionIcon size="sm" variant="outline" aria-label={'Edit Product'}>
               <PencilIcon className="h-4 w-4" />
-            </ActionIcon>
-          </Link>
-        </Tooltip>
-        <Tooltip
-          size="sm"
-          content={() => 'View Product'}
-          placement="top"
-          color="invert"
-        >
-          <Link href={routes.eCommerce.productDetails(row.id)}>
-            <ActionIcon size="sm" variant="outline" aria-label={'View Product'}>
-              <EyeIcon className="h-4 w-4" />
             </ActionIcon>
           </Link>
         </Tooltip>

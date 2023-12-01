@@ -1,6 +1,6 @@
 import axios from 'axios';
 // fungsi untuk handle notification
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 // Create Base URL nya
 const httpRequest = axios.create({
@@ -17,30 +17,30 @@ httpRequest.interceptors.request.use((config) => {
 // Tampilkan notification berdasarkan response setiap kali hit API
 httpRequest.interceptors.response.use(
   (response) => {
-    if (response?.config?.method === 'post') {
-      if (response?.config?.url !== 'login') {
-        toast.success(response?.data?.message, {
-          icon: '🚀',
-        });
-      }
-    } else if (response?.config?.method === 'put') {
-      toast.success(response?.data?.message, {
-        icon: '🚀',
-      });
-    } else if (response?.config?.method === 'delete') {
-      toast.success(response?.data?.message, {
-        icon: '🚀',
-      });
-    }
+    // if (response?.config?.method === 'post') {
+    //   if (response?.config?.url !== 'login') {
+    //     toast.success(response?.data?.message, {
+    //       icon: '🚀',
+    //     });
+    //   }
+    // } else if (response?.config?.method === 'put') {
+    //   toast.success(response?.data?.message, {
+    //     icon: '🚀',
+    //   });
+    // } else if (response?.config?.method === 'delete') {
+    //   toast.success(response?.data?.message, {
+    //     icon: '🚀',
+    //   });
+    // }
     return response;
   },
   (error) => {
-    if (error?.response?.data?.message) {
-      console.log('ada error');
-      toast.error(error?.response.data?.message, {
-        icon: '🚀',
-      });
-    }
+    // if (error?.response?.data?.message) {
+    //   console.log('ada error');
+    //   toast.error(error?.response.data?.message, {
+    //     icon: '🚀',
+    //   });
+    // }
     // if (error.response.config.url === "admin/combat-area/v2") {
     //   if (error.response.config.method) {
     //     if (

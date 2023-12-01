@@ -1,16 +1,16 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumnsControlDiabetes } from './columns';
-const FilterElement = dynamic(
-  () => import('@/app/shared/ecommerce/product/product-list/filter-element'),
-  { ssr: false }
-);
+import httpRequest from '@/config/httpRequest';
+import toast from 'react-hot-toast';
+import { Text } from 'rizzui';
+import _ from 'lodash';
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
   ssr: false,
 });
@@ -21,17 +21,78 @@ const filterState = {
   status: '',
 };
 
+type ParamsType = {
+  page?: number;
+  limit?: number;
+  search?: string | null;
+};
+
 export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(1);
+  const [rows, setRows] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState(null);
+
+  const getData = (params: ParamsType) => {
+    try {
+      setLoading(true);
+      httpRequest({
+        url: '/control-diabetes',
+        method: 'get',
+        params,
+      })
+        .then((response) => {
+          setRows(response?.data?.data?.results?.data?.rows);
+          setTotal(response?.data?.data?.results?.data?.count);
+          setPage(response?.data?.data?.results?.data?.page);
+          setPageSize(response?.data?.data?.results?.data?.limit);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const onDeleteData = (id) => {
+    httpRequest({
+      method: 'delete',
+      url: '/control-diabetes',
+      params: {
+        id,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        toast.success(<Text as="b">Data successfully deleted</Text>);
+        getData({ limit: pageSize });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getData({ limit: pageSize });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
+      console.log(value);
     },
   });
 
   const onDeleteItem = useCallback((id: string) => {
-    handleDelete(id);
+    onDeleteData(id);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,12 +115,12 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, filterState);
+  } = useTable(rows, pageSize, filterState);
 
   const columns = useMemo(
     () =>
       getColumnsControlDiabetes({
-        data,
+        data: rows,
         sortConfig,
         checkedItems: selectedRowKeys,
         onHeaderCellClick,
@@ -86,25 +147,33 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
     <>
       <ControlledTable
         variant="modern"
-        isLoading={isLoading}
+        isLoading={loading}
         showLoadingText={true}
-        data={tableData}
+        data={rows}
         // @ts-ignore
         columns={visibleColumns}
         paginatorOptions={{
           pageSize,
-          setPageSize,
-          total: totalItems,
-          current: currentPage,
-          onChange: (page: number) => handlePaginate(page),
+          setPageSize: (value: number) => {
+            getData({ page: 1, limit: value });
+          },
+          total: total,
+          current: page,
+          onChange: (page: number) => {
+            getData({ page: page, limit: pageSize });
+          },
         }}
         filterOptions={{
-          searchTerm,
+          searchTerm: search,
           onSearchClear: () => {
-            handleSearch('');
+            setSearch(null);
+            getData({ page: 1, limit: 10, search: null });
           },
           onSearchChange: (event) => {
-            handleSearch(event.target.value);
+            setSearch(event.target.value);
+            setTimeout(() => {
+              getData({ page: 1, limit: 10, search: event.target.value });
+            }, 1500);
           },
           hasSearched: isFiltered,
           hideIndex: 1,
@@ -113,14 +182,6 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
           setCheckedColumns,
           enableDrawerFilter: true,
         }}
-        filterElement={
-          <FilterElement
-            filters={filters}
-            isFiltered={isFiltered}
-            updateFilter={updateFilter}
-            handleReset={handleReset}
-          />
-        }
         tableFooter={
           <TableFooter
             checkedItems={selectedRowKeys}

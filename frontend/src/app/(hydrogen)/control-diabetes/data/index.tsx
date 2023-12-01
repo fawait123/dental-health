@@ -1,13 +1,13 @@
 export type ControlDiabetesType = {
   id: string;
-  name: string;
-  category: string;
-  image: string;
-  sku: string;
-  stock: number;
-  price: string;
-  status: string;
-  rating: number[];
+  bloodPressure: string;
+  bloodSugarPressure: string;
+  controlDrugConsumption: string;
+  createdAt: string;
+  deletedAt: number;
+  physicalActivity: boolean;
+  updatedAt: string;
+  userID: number[];
 };
 
 export const controldiabetesData = [

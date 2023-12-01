@@ -5,7 +5,7 @@ export const routes = {
     products: '/control-diabetes',
     createProduct: '/control-diabetes/create',
     productDetails: (slug: string) => `/control-diabetes/products/${slug}`,
-    ediProduct: (slug: string) => `/control-diabetes/products/${slug}/edit`,
+    editData: (id: string) => `/control-diabetes/${id}/edit`,
     categories: '/control-diabetes/categories',
     createCategory: '/control-diabetes/categories/create',
     editCategory: (id: string) => `/control-diabetes/categories/${id}/edit`,
