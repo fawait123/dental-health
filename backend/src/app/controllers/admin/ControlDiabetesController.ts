@@ -6,16 +6,25 @@ import Pagination from "../../helpers/Pagination";
 export default {
   get: async (req: Request, res: Response) => {
     try {
+      const query = req.query;
+      let where = {};
+
+      if (query.id) {
+        where = {
+          id: query.id,
+        };
+      }
       const statementScope = new Pagination(
         req,
         ControlDiabetes.getAttributes()
       );
       statementScope.getPagination();
 
-      const controlDiabetes = ControlDiabetes.findAndCountAll({
+      const controlDiabetes = await ControlDiabetes.findAndCountAll({
         ...statementScope.getPagination(),
         where: {
           ...statementScope.getSearch(),
+          ...where,
         },
       });
 
@@ -26,7 +35,7 @@ export default {
           results: {
             data: {
               ...controlDiabetes,
-              page: statementScope.getPagination().offset + 1,
+              page: statementScope.getPagination().page,
               limit: statementScope.getPagination().limit,
             },
           },
@@ -52,7 +61,7 @@ export default {
     try {
       const { body } = req;
 
-      const controlDiabetes = ControlDiabetes.create({ ...body });
+      const controlDiabetes = await ControlDiabetes.create({ ...body });
       const response: TypeResponse = {
         status: 200,
         message: "Data created",

@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 type getPaginationType = {
   offset: number;
   limit: number;
+  page: number;
 };
 
 class Pagination {
@@ -15,7 +16,7 @@ class Pagination {
     this.page = req.query.page ? parseInt(req.query.page) : 1;
     this.limit = req.query.limit ? parseInt(req.query.limit) : 10;
     this.sort = req?.query?.sort;
-    this.query = req?.query?.query;
+    this.query = req?.query?.search;
     this.schema = schema;
   }
   getPagination(): getPaginationType {
@@ -23,6 +24,7 @@ class Pagination {
     return {
       offset,
       limit: this.limit,
+      page: this.page,
     };
   }
   getSearch() {
