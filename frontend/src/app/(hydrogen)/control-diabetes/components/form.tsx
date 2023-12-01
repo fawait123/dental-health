@@ -21,6 +21,8 @@ import {
 import httpRequest from '@/config/httpRequest';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Button, Modal } from 'rizzui';
+import { controlDiabetesRecomendation } from '@/data/control-diabetes-recomendation';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: ControlDiabetesSummary,
@@ -70,6 +72,8 @@ export default function FormControlDiabetes({
     resolver: zodResolver(controlDiabetesSchema),
   });
   const { data: session } = useSession();
+  const [count, setCount] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const navigation = useRouter();
 
   const onSubmit: SubmitHandler<ControlDiabetesSchema> = (data) => {
@@ -99,7 +103,8 @@ export default function FormControlDiabetes({
             );
             methods.reset();
             console.log('response', response);
-            navigation.push('/control-diabetes');
+            setCount(payload.bloodSugarPressure);
+            setShowModal(true);
           })
           .catch((err) => {
             console.log(err);
@@ -132,7 +137,8 @@ export default function FormControlDiabetes({
             );
             methods.reset();
             console.log('response', response);
-            navigation.push('/control-diabetes');
+            setCount(payload.bloodSugarPressure);
+            setShowModal(true);
           })
           .catch((err) => {
             console.log(err);
@@ -211,6 +217,34 @@ export default function FormControlDiabetes({
           />
         </form>
       </FormProvider>
+      <Modal isOpen={showModal} onClose={() => null}>
+        <div className="m-auto px-7 pb-8 pt-6">
+          <div className="mb-7 flex items-center justify-between">
+            <Text as="strong" className="text-lg">
+              Rekomendasi
+            </Text>
+          </div>
+          <div className="mb-7">
+            <ul>
+              {controlDiabetesRecomendation(count).map((item, index) => (
+                <li key={index} className="my-1 text-justify font-medium">
+                  {item.list}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="grid grid-cols-2 gap-x-5 gap-y-6 [&_label>span]:font-medium">
+            <Button
+              type="submit"
+              size="DEFAULT"
+              className="col-span-2 mt-2"
+              onClick={() => navigation.push('/control-diabetes')}
+            >
+              MENGERTI
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
