@@ -1,27 +1,51 @@
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { CalendarEvent } from '@/types';
-import { PiMapPin, PiXBold } from 'react-icons/pi';
+import { PiXBold } from 'react-icons/pi';
 import { ActionIcon, Button, Text, Title } from 'rizzui';
-import { MdOutlineCalendarMonth } from 'react-icons/md';
+import { MdNightlight } from 'react-icons/md';
 import cn from '@/utils/class-names';
 import useEventCalendar from '@/hooks/use-event-calendar';
 import { formatDate } from '@/utils/format-date';
 import EventForm from '@/app/shared/event-calendar/event-form';
+import { FiSun } from 'react-icons/fi';
+import { CalendarEventBrushingChecklist } from '../schema';
+import FormModal from './FormModal';
+import httpRequest from '@/config/httpRequest';
+import toast from 'react-hot-toast';
 
-function DetailsEvents({ event }: { event: CalendarEvent }) {
+function DetailsEventsBrushingChecklist({
+  event,
+}: {
+  event: CalendarEventBrushingChecklist;
+}) {
   const { deleteEvent } = useEventCalendar();
   const { openModal, closeModal } = useModal();
 
   function handleEditModal() {
     closeModal(),
       openModal({
-        view: <EventForm event={event} />,
+        view: <FormModal event={event} />,
         customSize: '650px',
       });
   }
 
   function handleDelete(eventID: string) {
-    deleteEvent(eventID);
+    try {
+      httpRequest({
+        url: '/brushing-checklist',
+        method: 'delete',
+        params: {
+          id: eventID,
+        },
+      })
+        .then((response) => {
+          console.log(response);
+          closeModal();
+          toast.success(<Text as="b">Berhasil menghapus data</Text>);
+        })
+        .catch((err) => {
+          closeModal();
+        });
+    } catch (error) {}
     closeModal();
   }
 
@@ -42,39 +66,29 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
       </div>
 
       <div>
-        <Title as="h4" className="text-lg font-medium xl:text-xl xl:leading-7">
-          {event.title}
-        </Title>
-        {event.description && (
-          <Text className="mt-3 xl:leading-6">{event.description}</Text>
-        )}
+        <span className="font-medium text-gray-1000">
+          {formatDate(event.start, 'MMMM D, YYYY')}
+        </span>
 
         <ul className="mt-7 flex flex-col gap-[18px] text-gray-600">
           <li className="flex gap-2">
-            <MdOutlineCalendarMonth className="h-5 w-5" />
-            <span>Event Start:</span>
-            <span className="font-medium text-gray-1000">
-              {formatDate(event.start, 'MMMM D, YYYY')} at{' '}
-              {formatDate(event.start, 'h:mm A')}
+            <FiSun className="h-5 w-5" />
+            <span>Pagi:</span>
+            <span className="font-extrabold text-gray-1000">
+              {event.checkList.filter((el) => el == 'pagi').length > 0
+                ? 'YA'
+                : 'TIDAK'}
             </span>
           </li>
           <li className="flex gap-2">
-            <MdOutlineCalendarMonth className="h-5 w-5" />
-            <span>Event End:</span>
-            <span className="font-medium text-gray-1000">
-              {formatDate(event.end, 'MMMM D, YYYY')} at{' '}
-              {formatDate(event.end, 'h:mm A')}
+            <MdNightlight className="h-5 w-5" />
+            <span>Malam:</span>
+            <span className="font-extrabold text-gray-1000">
+              {event.checkList.filter((el) => el == 'malam').length > 0
+                ? 'YA'
+                : 'TIDAK'}
             </span>
           </li>
-          {event.location && (
-            <li className="flex gap-2">
-              <PiMapPin className="h-5 w-5" />
-              <span>Address:</span>
-              <span className="font-medium text-gray-1000">
-                {event.location}
-              </span>
-            </li>
-          )}
         </ul>
         <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
           <Button
@@ -96,4 +110,4 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
   );
 }
 
-export default DetailsEvents;
+export default DetailsEventsBrushingChecklist;

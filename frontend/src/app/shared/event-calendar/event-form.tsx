@@ -2,20 +2,11 @@
 
 import uniqueId from 'lodash/uniqueId';
 import { PiXBold } from 'react-icons/pi';
-import { Controller, SubmitHandler } from 'react-hook-form';
-import {
-  ActionIcon,
-  Button,
-  Input,
-  Switch,
-  Text,
-  Textarea,
-  Title,
-} from 'rizzui';
+import { SubmitHandler } from 'react-hook-form';
+import { ActionIcon, Button, Switch, Text, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import toast from 'react-hot-toast';
-import { DatePicker } from '@/components/ui/datepicker';
 import cn from '@/utils/class-names';
 import { CalendarEvent } from '@/types';
 import useEventCalendar from '@/hooks/use-event-calendar';
@@ -23,6 +14,7 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
+import moment from 'moment';
 
 interface CreateEventProps {
   startDate?: Date;
@@ -41,6 +33,7 @@ export default function EventForm({
   const isUpdateEvent = event !== undefined;
 
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
+    console.log('data', data);
     const isNewEvent = data.id === '' || data.id === undefined;
 
     console.log('event_data', data);
@@ -75,7 +68,7 @@ export default function EventForm({
     <div className="m-auto p-4 md:px-7 md:py-10">
       <div className="mb-6 flex items-center justify-between">
         <Title as="h3" className="text-lg">
-          {isUpdateEvent ? 'Update Event' : 'Create a new event'}
+          Ceklis Menggosok Gigi
         </Title>
         <ActionIcon
           size="sm"
@@ -104,10 +97,14 @@ export default function EventForm({
         {({ register, control, watch, formState: { errors } }) => {
           const startDate = watch('startDate');
           const endDate = watch('endDate');
+          console.log(startDate, 'date');
+          console.log('format', moment(startDate).format('YYYY-MM-DD'));
           return (
             <>
               <input type="hidden" {...register('id')} value={event?.id} />
-              <label className="font-medium">27 Agustus 2024</label>
+              <label className="font-medium">
+                {moment(startDate).format('DD MMMM YYYY')}
+              </label>
               <br />
               <Switch label="Siang" />
               <Switch label="Malam" />
