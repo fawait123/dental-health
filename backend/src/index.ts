@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 4000;
 // configuration express
 const app = express();
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json({}));
+app.use(bodyParser.urlencoded({ extended: false, limit: "100mb" }));
+app.use(express.json({ limit: "100mb" }));
 
 // router default
 app.get("/", (req: Request, res: Response) => {

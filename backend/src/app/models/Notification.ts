@@ -9,7 +9,7 @@ import sequelize from "../../config/database";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-class User extends Model {
+class Notification extends Model {
   declare id: string;
   declare name: string;
   declare username: string;
@@ -27,7 +27,7 @@ class User extends Model {
   declare deletedAt: string;
 }
 
-User.init(
+Notification.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -36,49 +36,26 @@ User.init(
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    username: {
+    title: {
       type: DataTypes.STRING(128),
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(128),
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING(288),
-      allowNull: false,
-    },
-    name: {
-      type: DataTypes.STRING(128),
-      allowNull: false,
-    },
-    placebirth: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    birthdate: {
-      type: DataTypes.DATEONLY(),
-      allowNull: false,
-    },
-    gender: {
-      type: DataTypes.ENUM("L", "P"),
-      allowNull: false,
-    },
-    address: {
-      type: DataTypes.TEXT(),
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING(14),
-      allowNull: false,
-    },
-    history_sicknes: {
+    content: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
     },
-    photo: {
-      type: DataTypes.TEXT("long"),
-      allowNull: true,
+    from: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    to: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    isRead: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -94,10 +71,10 @@ User.init(
     },
   },
   {
-    tableName: "users",
+    tableName: "notifications",
     sequelize, // passing the `sequelize` instance is required
     paranoid: true,
     timestamps: true,
   }
 );
-export default User;
+export default Notification;

@@ -1,15 +1,51 @@
 import { Request, Response } from "express";
 import { TypeResponse } from "../../../types";
+import DentalHealthCheck from "../../models/DentalHealthCheck";
+import Pagination from "../../helpers/Pagination";
 
 export default {
   get: async (req: Request, res: Response) => {
     try {
+      const query = req.query;
+      let where = {};
+
+      if (query.id) {
+        where = {
+          id: query.id,
+        };
+      }
+
+      if (query.userID) {
+        where = {
+          userID: query.userID,
+        };
+      }
+
+      const statementScope = new Pagination(
+        req,
+        DentalHealthCheck.getAttributes()
+      );
+
+      statementScope.getPagination();
+
+      const dentalHealth = await DentalHealthCheck.findAndCountAll({
+        ...statementScope.getPagination(),
+        where: {
+          ...statementScope.getSearch(),
+          ...where,
+        },
+      });
+
       const response: TypeResponse = {
         status: 200,
-        message: "Login successfully",
+        message: "success",
         data: {
           results: {
-            data: {},
+            data: {
+              ...dentalHealth,
+              page: statementScope.getPagination().page,
+              limit: statementScope.getPagination().limit,
+            },
           },
         },
       };
@@ -31,12 +67,15 @@ export default {
   },
   post: async (req: Request, res: Response) => {
     try {
+      const { body } = req;
+
+      const dentalHealth = await DentalHealthCheck.create({ ...body });
       const response: TypeResponse = {
         status: 200,
-        message: "Login successfully",
+        message: "success",
         data: {
           results: {
-            data: {},
+            data: dentalHealth,
           },
         },
       };
@@ -58,12 +97,30 @@ export default {
   },
   put: async (req: Request, res: Response) => {
     try {
-      const response: TypeResponse = {
-        status: 200,
-        message: "Login successfully",
+      const { query, body } = req;
+      const id = query.id as string;
+
+      const dentalHealth = await DentalHealthCheck.findByPk(id);
+
+      const responseNotFound: TypeResponse = {
+        status: 400,
+        message: "Data tidak ditemukan",
         data: {
           results: {
             data: {},
+          },
+        },
+      };
+
+      if (!dentalHealth) res.status(400).json(responseNotFound);
+
+      await dentalHealth?.update({ ...body });
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: {
+            data: dentalHealth,
           },
         },
       };
@@ -85,12 +142,30 @@ export default {
   },
   delete: async (req: Request, res: Response) => {
     try {
-      const response: TypeResponse = {
-        status: 200,
-        message: "Login successfully",
+      const query = req.query;
+      const id = query.id as string;
+
+      const dentalHealth = await DentalHealthCheck.findByPk(id);
+
+      const responseNotFound: TypeResponse = {
+        status: 400,
+        message: "Data tidak ditemukan",
         data: {
           results: {
             data: {},
+          },
+        },
+      };
+
+      if (!dentalHealth) res.status(400).json(responseNotFound);
+
+      await dentalHealth?.destroy();
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: {
+            data: dentalHealth,
           },
         },
       };

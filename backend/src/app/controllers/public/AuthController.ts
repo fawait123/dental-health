@@ -63,8 +63,13 @@ export default {
       if (!Security.decrypt(user.password, body.password))
         return res.status(400).json(badReponse);
 
-      const generateToken = await Jwt.sign(user.dataValues);
+      const payload = {
+        id: user.dataValues.id,
+        username: user.dataValues.username,
+        email: user.dataValues.email,
+      };
 
+      const generateToken = await Jwt.sign(payload);
       const response: TypeResponse = {
         status: 200,
         message: "Login successfully",

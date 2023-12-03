@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { TypeResponse } from "../../../types";
+import User from "../../models/User";
 
 export default {
   get: async (req: Request, res: Response) => {
@@ -58,12 +59,29 @@ export default {
   },
   put: async (req: Request, res: Response) => {
     try {
-      const response: TypeResponse = {
-        status: 200,
-        message: "Login successfully",
+      const { query, body } = req;
+      const id = query.id as string;
+      const user = await User.findByPk(id);
+
+      const responseNotFound: TypeResponse = {
+        status: 400,
+        message: "Data not found",
         data: {
           results: {
             data: {},
+          },
+        },
+      };
+
+      if (!user) return res.status(400).json(responseNotFound);
+      await user.update({ ...body });
+
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: {
+            data: user,
           },
         },
       };
