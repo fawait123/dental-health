@@ -37,11 +37,16 @@ export default function SignUpForm() {
         url: '/auth/register',
         method: 'post',
         data: data,
-      }).then((response) => {
-        setReset({ ...initialValues, isAgreed: false });
-        setLoading(false);
-        navigation.push('/signin');
-      });
+      })
+        .then((response) => {
+          setReset({ ...initialValues, isAgreed: false });
+          setLoading(false);
+          navigation.push('/signin');
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     } catch (error) {
       setLoading(false);
       console.log(error);

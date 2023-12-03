@@ -1,12 +1,16 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumnsDentalHealth } from './columns';
+import { ListData, getColumnsDentalHealth } from './columns';
+import httpRequest from '@/config/httpRequest';
+import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { Text } from 'rizzui';
 const FilterElement = dynamic(
   () => import('@/app/shared/ecommerce/product/product-list/filter-element'),
   { ssr: false }
@@ -21,8 +25,49 @@ const filterState = {
   status: '',
 };
 
+type TypeJsonFormat = {
+  CPITN: number;
+  countTeeth: number;
+  countTeethLoose: number;
+  createdAt: string;
+  debrisIndex: number;
+  deletedAt: string;
+  gingivitisConditions: string;
+  id: string;
+  updatedAt: string;
+  userID: string;
+};
+
+type TypeParams = {
+  page?: number;
+  limit?: number;
+  search?: string | null;
+};
+
+const formatDataJson = (data): TypeJsonFormat[] => {
+  return data.map((item: ListData) => {
+    return {
+      id: item.id,
+      CPITN: item?.CPITN,
+      countTeeth: item?.countTeeth,
+      countTeethLoose: item?.countTeethLoose,
+      createdAt: item?.createdAt,
+      updatedAt: item?.updatedAt,
+      deletedAt: item?.deletedAt,
+      debrisIndex: item?.debrisIndex,
+      gingivitisConditions: item?.gingivitisConditions == true ? 'YA' : 'TIDAK',
+      userID: item?.userID,
+    };
+  });
+};
+
 export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
+  const [rows, setRows] = useState([]);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -30,8 +75,63 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
     },
   });
 
+  const getData = (filter: TypeParams) => {
+    try {
+      setLoading(true);
+      httpRequest({
+        url: '/dental-health',
+        method: 'get',
+        params: {
+          userID: session.user['idUser'],
+          ...filter,
+        },
+      })
+        .then((response) => {
+          setRows(formatDataJson(response?.data?.data?.results?.data?.rows));
+          setPageSize(response?.data?.data?.results?.data?.limit);
+          setPage(response?.data?.data?.results?.data?.page);
+          setCount(response?.data?.data?.results?.data?.count);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const deleteData = (id: string) => {
+    try {
+      httpRequest({
+        method: 'delete',
+        url: '/dental-health',
+        params: {
+          id,
+        },
+      })
+        .then((response) => {
+          console.log(response);
+          toast.success(<Text as="b">Data berhasil dihapus</Text>);
+          getData({});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getData({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onDeleteItem = useCallback((id: string) => {
-    handleDelete(id);
+    deleteData(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -59,7 +159,7 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
   const columns = useMemo(
     () =>
       getColumnsDentalHealth({
-        data,
+        data: rows,
         sortConfig,
         checkedItems: selectedRowKeys,
         onHeaderCellClick,
@@ -86,25 +186,33 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
     <>
       <ControlledTable
         variant="modern"
-        isLoading={isLoading}
+        isLoading={loading}
         showLoadingText={true}
-        data={tableData}
+        data={rows}
         // @ts-ignore
         columns={visibleColumns}
         paginatorOptions={{
           pageSize,
-          setPageSize,
-          total: totalItems,
-          current: currentPage,
-          onChange: (page: number) => handlePaginate(page),
+          setPageSize: (pageSize: number) => {
+            getData({ page: 1, limit: pageSize });
+          },
+          total: count,
+          current: page,
+          onChange: (page: number) => {
+            getData({ page: page });
+          },
         }}
         filterOptions={{
           searchTerm,
           onSearchClear: () => {
             handleSearch('');
+            getData({});
           },
           onSearchChange: (event) => {
             handleSearch(event.target.value);
+            setTimeout(() => {
+              getData({ search: event.target.value, page: 1, limit: 10 });
+            }, 1500);
           },
           hasSearched: isFiltered,
           hideIndex: 1,
@@ -113,14 +221,6 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
           setCheckedColumns,
           enableDrawerFilter: true,
         }}
-        filterElement={
-          <FilterElement
-            filters={filters}
-            isFiltered={isFiltered}
-            updateFilter={updateFilter}
-            handleReset={handleReset}
-          />
-        }
         tableFooter={
           <TableFooter
             checkedItems={selectedRowKeys}

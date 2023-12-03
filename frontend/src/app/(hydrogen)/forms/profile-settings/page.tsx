@@ -9,18 +9,15 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Account Settings',
+  title: 'Profile Setting',
   breadcrumb: [
     {
       href: routes.eCommerce.dashboard,
-      name: 'E-Commerce',
+      name: 'Profile Setting',
     },
     {
       href: routes.forms.profileSettings,
-      name: 'Form',
-    },
-    {
-      name: 'Account Settings',
+      name: 'index',
     },
   ],
 };

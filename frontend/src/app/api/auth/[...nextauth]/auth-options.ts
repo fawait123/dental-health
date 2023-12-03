@@ -72,6 +72,7 @@ export const authOptions: NextAuthOptions = {
         // ) {
         //   return user as any;
         // }
+        console.log(credentials);
         if (typeof credentials == 'object') {
           return {
             email: credentials?.email,

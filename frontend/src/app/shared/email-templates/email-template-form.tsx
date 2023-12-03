@@ -35,10 +35,10 @@ export default function EmailTemplateForm({ template }: { template: string }) {
     setIsLoading(true);
     try {
       if (template === 'accountConfirmation') {
-        await sendAccountConfirmationEmail(inputs);
+        // await sendAccountConfirmationEmail(inputs);
       }
       if (template === 'orderConfirmation') {
-        await sendOrderConfirmationEmail(inputs);
+        // await sendOrderConfirmationEmail(inputs);
       }
       reset();
       setIsLoading(false);

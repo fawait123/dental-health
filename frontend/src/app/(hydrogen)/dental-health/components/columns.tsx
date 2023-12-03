@@ -107,6 +107,19 @@ function getRating(rating: number[]) {
   );
 }
 
+export type ListData = {
+  CPITN: number;
+  countTeeth: number;
+  countTeethLoose: number;
+  createdAt: string;
+  debrisIndex: number;
+  deletedAt: string;
+  gingivitisConditions: boolean;
+  id: string;
+  updatedAt: string;
+  userID: string;
+};
+
 type Columns = {
   data: any[];
   sortConfig?: any;
@@ -128,62 +141,49 @@ export const getColumnsDentalHealth = ({
 }: Columns) => [
   {
     title: <HeaderCell title="Debris Index" />,
-    dataIndex: 'product',
-    key: 'product',
-    width: 300,
-    hidden: 'customer',
-    render: (_: string, row: DentalHealthType) => (
-      <AvatarCard
-        src={row.image}
-        name={row.name}
-        description={row.category}
-        avatarProps={{
-          name: row.name,
-          size: 'lg',
-          className: 'rounded-lg',
-        }}
-      />
-    ),
-  },
-  {
-    title: <HeaderCell title="CIBTN" />,
-    dataIndex: 'sku',
-    key: 'sku',
+    dataIndex: 'debrisIndex',
+    key: 'debrisIndex',
     width: 150,
-    render: (sku: string) => <Text className="text-sm">SKU-{sku}</Text>,
+    render: (_: string, row: ListData) => (
+      <Text className="text-sm">{row.debrisIndex}</Text>
+    ),
   },
   {
-    title: (
-      <HeaderCell
-        title="Jumlah Gigi"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
-        }
-      />
+    title: <HeaderCell title="CPITN" />,
+    dataIndex: 'CPITN',
+    key: 'CPITN',
+    width: 150,
+    render: (_: string, row: ListData) => (
+      <Text className="text-sm">{row.CPITN}</Text>
     ),
-    onHeaderCell: () => onHeaderCellClick('stock'),
-    dataIndex: 'Jumlah Gigi Goyang',
-    key: 'stock',
+  },
+  {
+    title: <HeaderCell title="Jumlah Gigi" />,
+    dataIndex: 'countTeeth',
+    key: 'countTeeth',
     width: 200,
-    render: (stock: number) => getStockStatus(stock),
+    render: (_: number, row: ListData) => (
+      <Text className="text-sm">{row.countTeeth}</Text>
+    ),
   },
   {
-    title: (
-      <HeaderCell
-        title="Kondisi Radang Gusi"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'price'
-        }
-      />
+    title: <HeaderCell title="Jumlah Gigi Goyang" />,
+    dataIndex: 'countTeethLoose',
+    key: 'countTeethLoose',
+    width: 200,
+    render: (_: number, row: ListData) => (
+      <Text className="text-sm">{row.countTeethLoose}</Text>
     ),
-    onHeaderCell: () => onHeaderCellClick('price'),
-    dataIndex: 'price',
-    key: 'price',
+  },
+  {
+    title: <HeaderCell title="Kondisi Radang Gusi" />,
+    dataIndex: 'gingivitisConditions',
+    key: 'gingivitisConditions',
     width: 150,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">${value}</Text>
+    render: (_: string, row: ListData) => (
+      <Text className="font-medium text-gray-700">
+        {row?.gingivitisConditions == true ? 'YA' : 'TIDAK'}
+      </Text>
     ),
   },
   {
@@ -192,7 +192,7 @@ export const getColumnsDentalHealth = ({
     dataIndex: 'action',
     key: 'action',
     width: 120,
-    render: (_: string, row: DentalHealthType) => (
+    render: (_: string, row: ListData) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         <Tooltip
           size="sm"
@@ -203,18 +203,6 @@ export const getColumnsDentalHealth = ({
           <Link href={routes.eCommerce.ediProduct(row.id)}>
             <ActionIcon size="sm" variant="outline" aria-label={'Edit Product'}>
               <PencilIcon className="h-4 w-4" />
-            </ActionIcon>
-          </Link>
-        </Tooltip>
-        <Tooltip
-          size="sm"
-          content={() => 'View Product'}
-          placement="top"
-          color="invert"
-        >
-          <Link href={routes.eCommerce.productDetails(row.id)}>
-            <ActionIcon size="sm" variant="outline" aria-label={'View Product'}>
-              <EyeIcon className="h-4 w-4" />
             </ActionIcon>
           </Link>
         </Tooltip>

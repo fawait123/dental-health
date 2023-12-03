@@ -24,14 +24,14 @@ export default function ControlDiabetesSummary({
       <Input
         type="number"
         label="Kadar Gula Darah"
-        placeholder="Product title"
+        placeholder="Kadar Gula Darah"
         {...register('bloodSugarPressure')}
         error={errors.bloodSugarPressure?.message as string}
       />
       <Input
         type="number"
         label="Tekanan Darah"
-        placeholder="Product title"
+        placeholder="Tekanan Darah"
         {...register('bloodPressure')}
         error={errors.bloodPressure?.message as string}
       />

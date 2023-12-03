@@ -114,7 +114,7 @@ export default function CreateRole() {
               control={control}
               name="roleColor"
               render={({ field: { onChange, value } }) => (
-                <RgbaColorPicker color={value} onChange={onChange} />
+                <RgbaColorPicker onChange={onChange} />
               )}
             />
 

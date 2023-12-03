@@ -20,6 +20,12 @@ import {
 import { useLayout } from '@/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/config/enums';
 import DentalHealthSummary from './summary';
+import { DentalHealthInput, dentalHealtSchema } from '../schema';
+import httpRequest from '@/config/httpRequest';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { dentalHealthRecomendation } from '@/data/dental-health-recomendation';
+import { Button, Modal } from 'rizzui';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: DentalHealthSummary,
@@ -28,7 +34,7 @@ const MAP_STEP_TO_COMPONENT = {
 interface IndexProps {
   slug?: string;
   className?: string;
-  product?: CreateProductInput;
+  product?: DentalHealthInput;
 }
 
 export default function FormDentalHealth({
@@ -38,21 +44,51 @@ export default function FormDentalHealth({
 }: IndexProps) {
   const { layout } = useLayout();
   const [isLoading, setLoading] = useState(false);
-  const methods = useForm<CreateProductInput>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: defaultValues(product),
+  const [countTeeth, setCountTeeth] = useState(0);
+  const [countTeethLoose, setCountTeethLoose] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const { data: session } = useSession();
+  const methods = useForm<DentalHealthInput>({
+    resolver: zodResolver(dentalHealtSchema),
+    // defaultValues: defaultValues(product),
   });
+  const navigation = useRouter();
 
-  const onSubmit: SubmitHandler<CreateProductInput> = (data) => {
-    setLoading(true);
-    setTimeout(() => {
+  const onSubmit: SubmitHandler<DentalHealthInput> = (data) => {
+    try {
+      const payload = {
+        ...data,
+        CPITN: parseInt(data.CPITN),
+        countTeeth: parseInt(data?.countTeeth),
+        countTeethLoose: parseInt(data?.countTeethLoose),
+        debrisIndex: parseInt(data?.debrisindex),
+        gingivitisConditions: data?.gingivitisConditions == 'YA' ? true : false,
+        userID: session.user['idUser'],
+      };
+      setLoading(true);
+      httpRequest({
+        url: '/dental-health',
+        method: 'post',
+        data: payload,
+      })
+        .then((response) => {
+          console.log(response);
+          setLoading(false);
+          console.log('product_data', data);
+          toast.success(<Text as="b">Data berhasil ditambahkan</Text>);
+          methods.reset();
+          setCountTeeth(parseInt(data.countTeeth));
+          setCountTeethLoose(parseInt(data.countTeethLoose));
+          setShowModal(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
       setLoading(false);
-      console.log('product_data', data);
-      toast.success(
-        <Text as="b">Product successfully {slug ? 'updated' : 'created'}</Text>
-      );
-      methods.reset();
-    }, 600);
+    }
   };
 
   return (
@@ -84,6 +120,40 @@ export default function FormDentalHealth({
           />
         </form>
       </FormProvider>
+      <Modal isOpen={showModal} onClose={() => null}>
+        <div className="m-auto px-7 pb-8 pt-6">
+          <div className="mb-7 flex items-center justify-between">
+            <Text as="strong" className="text-lg">
+              Rekomendasi
+            </Text>
+          </div>
+          <div className="mb-7">
+            <ul>
+              {dentalHealthRecomendation.length > 0 ? (
+                dentalHealthRecomendation(countTeeth, countTeethLoose).map(
+                  (item, index) => (
+                    <li key={index} className="my-1 text-justify font-medium">
+                      {item.list}
+                    </li>
+                  )
+                )
+              ) : (
+                <Text as="b">Kondisi Gigi Anda Baik</Text>
+              )}
+            </ul>
+          </div>
+          <div className="grid grid-cols-2 gap-x-5 gap-y-6 [&_label>span]:font-medium">
+            <Button
+              type="submit"
+              size="DEFAULT"
+              className="col-span-2 mt-2"
+              onClick={() => navigation.push('/dental-health')}
+            >
+              MENGERTI
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

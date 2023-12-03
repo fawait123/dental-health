@@ -14,7 +14,6 @@ import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import httpRequest from '@/config/httpRequest';
-import { useRouter } from 'next/navigation';
 
 const initialValues: LoginSchema = {
   username: '',
@@ -26,7 +25,6 @@ export default function SignInForm() {
   //TODO: why we need to reset it here
   const [reset, setReset] = useState({});
   const [loading, setLoading] = useState(false);
-  const navigation = useRouter();
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
@@ -38,10 +36,11 @@ export default function SignInForm() {
       });
       if (response.status == 200) {
         const credentials = response.data?.data?.results?.data;
+        localStorage.setItem('photo', credentials?.photo);
         signIn('credentials', {
           ...credentials,
         });
-        setReset({ email: '', password: '', isRememberMe: false });
+        setReset({ email: '', password: '', isRememberMe: true });
       }
       setLoading(false);
     } catch (error) {
