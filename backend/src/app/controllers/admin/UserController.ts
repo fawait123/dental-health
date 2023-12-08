@@ -1,16 +1,49 @@
 import { Request, Response } from "express";
 import { TypeResponse } from "../../../types";
 import User from "../../models/User";
+import Pagination from "../../helpers/Pagination";
+import Security from "../../helpers/hash";
 
 export default {
   get: async (req: Request, res: Response) => {
     try {
+      const query = req.query;
+      let where = {};
+
+      if (query.id) {
+        where = {
+          id: query.id,
+        };
+      }
+
+      if (query.userID) {
+        where = {
+          userID: query.userID,
+        };
+      }
+
+      const statementScope = new Pagination(req, User.getAttributes());
+
+      statementScope.getPagination();
+
+      const user = await User.findAndCountAll({
+        ...statementScope.getPagination(),
+        where: {
+          ...statementScope.getSearch(),
+          ...where,
+        },
+      });
+
       const response: TypeResponse = {
         status: 200,
-        message: "Login successfully",
+        message: "success",
         data: {
           results: {
-            data: {},
+            data: {
+              ...user,
+              page: statementScope.getPagination().page,
+              limit: statementScope.getPagination().limit,
+            },
           },
         },
       };
@@ -32,12 +65,18 @@ export default {
   },
   post: async (req: Request, res: Response) => {
     try {
+      const body = req.body;
+
+      const user = await User.create({
+        ...body,
+        password: Security.encrypt(body.password),
+      });
       const response: TypeResponse = {
         status: 200,
-        message: "Login successfully",
+        message: "success",
         data: {
           results: {
-            data: {},
+            data: user,
           },
         },
       };
@@ -103,12 +142,29 @@ export default {
   },
   delete: async (req: Request, res: Response) => {
     try {
-      const response: TypeResponse = {
-        status: 200,
-        message: "Login successfully",
+      const { query } = req;
+      const id = query.id as string;
+      const user = await User.findByPk(id);
+
+      const responseNotFound: TypeResponse = {
+        status: 400,
+        message: "Data not found",
         data: {
           results: {
             data: {},
+          },
+        },
+      };
+
+      if (!user) return res.status(400).json(responseNotFound);
+
+      await user.destroy();
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: {
+            data: user,
           },
         },
       };

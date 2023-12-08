@@ -22,6 +22,7 @@ class User extends Model {
   declare phone: string;
   declare history_sicknes: string;
   declare photo: string;
+  declare isActive: boolean;
   declare createdAt: string;
   declare updatedAt: string;
   declare deletedAt: string;
@@ -79,6 +80,14 @@ User.init(
     photo: {
       type: DataTypes.TEXT("long"),
       allowNull: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "user",
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     createdAt: {
       type: DataTypes.DATE,

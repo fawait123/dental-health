@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node build/index.js",
+    "start:scheduler": "node build/scheduler/index.js",
     "start:dev": "npx nodemon",
+    "start:dev:scheduler": "npx ts-node ./src/scheduler/index.ts",
     "build": "rimraf ./build && tsc",
     "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "npx ts-node ./src/app/seeder/userseeder.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,11 +27,15 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.5",
-    "sequelize": "^6.35.1"
+    "node-cron": "^3.0.3",
+    "sequelize": "^6.35.1",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.9.4",
+    "@types/node-cron": "^3.0.11",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",

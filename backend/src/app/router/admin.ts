@@ -4,6 +4,7 @@ import ControlDiabetesController from "../controllers/admin/ControlDiabetesContr
 import BrushingChecklistController from "../controllers/admin/BrushingChecklistController";
 import DentalHealthController from "../controllers/admin/DentalHealthController";
 import UserController from "../controllers/admin/UserController";
+import DashboardController from "../controllers/admin/DashboardController";
 
 const adminRoute = express.Router();
 
@@ -32,5 +33,7 @@ adminRoute.get("/user", UserController.get);
 adminRoute.post("/user", UserController.post);
 adminRoute.put("/user", UserController.put);
 adminRoute.delete("/user", UserController.delete);
+
+adminRoute.get("/dashboard/card", DashboardController.get);
 
 export default adminRoute;
