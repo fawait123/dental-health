@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
           idUser: token?.user['id'] || '',
           token: token?.user['dataToken'] || '',
           id: token.idToken as string,
+          role: token?.user['role'] || 'user',
         },
       };
     },
@@ -86,6 +87,7 @@ export const authOptions: NextAuthOptions = {
             address: credentials?.address,
             image: null,
             dataToken: credentials.token,
+            role: credentials?.role,
           } as any;
         }
         return null;

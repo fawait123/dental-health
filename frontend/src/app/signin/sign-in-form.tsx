@@ -14,6 +14,7 @@ import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import httpRequest from '@/config/httpRequest';
+import Cookies from 'js-cookie';
 
 const initialValues: LoginSchema = {
   username: '',
@@ -37,6 +38,7 @@ export default function SignInForm() {
       if (response.status == 200) {
         const credentials = response.data?.data?.results?.data;
         localStorage.setItem('photo', credentials?.photo);
+        Cookies.set('role', credentials?.role);
         signIn('credentials', {
           ...credentials,
         });

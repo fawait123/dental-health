@@ -1,4 +1,26 @@
 export const routes = {
+  admin: {
+    user: {
+      dashboard: '/user',
+      products: '/user',
+      createProduct: '/user/create',
+      productDetails: (slug: string) => `/user/products/${slug}`,
+      editData: (id: string) => `/user/${id}/edit`,
+      categories: '/user/categories',
+      createCategory: '/user/categories/create',
+      editCategory: (id: string) => `/user/categories/${id}/edit`,
+      orders: '/user/orders',
+      createOrder: '/user/orders/create',
+      orderDetails: (id: string) => `/user/orders/${id}`,
+      editOrder: (id: string) => `/user/orders/${id}/edit`,
+      reviews: '/user/reviews',
+      shop: '/user/shop',
+      cart: '/user/cart',
+      checkout: '/user/checkout',
+      trackingId: (id: string) => `/user/tracking/${id}`,
+    },
+  },
+  dashboard: '/',
   // control diabetes
   controldiabetes: {
     dashboard: '/control-diabetes',
@@ -98,6 +120,8 @@ export const routes = {
     checkout: '/dental-health/checkout',
     trackingId: (id: string) => `/dental-health/tracking/${id}`,
   },
+
+  // not use
   eCommerce: {
     dashboard: '/ecommerce',
     products: '/ecommerce/products',
