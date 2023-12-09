@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Pemeriksaan Kesehatan Gigi & Mulut',
+  title: 'Tambah Pemeriksaan Kesehatan Gigi & Mulut',
   breadcrumb: [
     {
       href: routes.eCommerce.products,

@@ -8,6 +8,11 @@ export type ControlDiabetesType = {
   physicalActivity: boolean;
   updatedAt: string;
   userID: number[];
+  user: TypeUser;
+};
+
+type TypeUser = {
+  name: string;
 };
 
 export const controldiabetesData = [

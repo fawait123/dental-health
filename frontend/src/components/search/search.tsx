@@ -112,7 +112,7 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
                   className="relative my-0.5 flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100 focus:outline-none focus-visible:bg-gray-100 dark:hover:bg-gray-50/50 dark:hover:backdrop-blur-lg"
                 >
                   <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-500">
-                    <PiFileTextDuotone className="h-5 w-5" />
+                    {item?.icon}
                   </span>
 
                   <span className="ms-3 grid gap-0.5">
@@ -132,7 +132,7 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
                     index !== 0 && 'mt-6 4xl:mt-7'
                   )}
                 >
-                  {item.name}
+                  {item?.label}
                 </Title>
               )}
             </Fragment>

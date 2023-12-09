@@ -39,7 +39,11 @@ import {
   PiCalendarPlusDuotone,
   PiEnvelopeDuotone,
 } from 'react-icons/pi';
-import { MdDashboard, MdMonitor, MdOutlineCastForEducation } from 'react-icons/md';
+import {
+  MdDashboard,
+  MdMonitor,
+  MdOutlineCastForEducation,
+} from 'react-icons/md';
 import { FiSettings } from 'react-icons/fi';
 import { BiCheckCircle, BiHealth } from 'react-icons/bi';
 import { BsUiChecks } from 'react-icons/bs';
@@ -58,7 +62,7 @@ export const menuItems = [
     icon: <MdDashboard />,
   },
   {
-    name:"Core"
+    name: 'Core',
   },
   {
     name: 'Kontrol Diabetes Melitus',

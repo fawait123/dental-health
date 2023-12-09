@@ -211,6 +211,15 @@ export const getColumnsDentalHealth = ({
     ),
   },
   {
+    title: <HeaderCell title="Role" />,
+    dataIndex: 'role',
+    key: 'role',
+    width: 150,
+    render: (_: string, row: ListData) => (
+      <Text className="font-medium text-gray-700">{row?.role}</Text>
+    ),
+  },
+  {
     title: <HeaderCell title="Gambar" />,
     dataIndex: 'photo',
     key: 'photo',

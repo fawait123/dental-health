@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Element } from 'react-scroll';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,6 +30,33 @@ import { Button, Modal } from 'rizzui';
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: DentalHealthSummary,
 };
+type TypeJsonFormat = {
+  debrisindex: number;
+  CPITN: number;
+  countTeeth: number;
+  countTeethLoose: number;
+  gingivitisConditions: boolean;
+  userID: string;
+};
+function toJson(data): TypeJsonFormat {
+  return data.length > 0
+    ? {
+        debrisindex: data[0]['debrisIndex'],
+        CPITN: data[0]['CPITN'],
+        countTeeth: data[0]['countTeeth'],
+        countTeethLoose: data[0]['countTeethLoose'],
+        gingivitisConditions: data[0]['gingivitisConditions'],
+        userID: data[0]['userID'],
+      }
+    : {
+        debrisindex: '',
+        CPITN: '',
+        countTeeth: '',
+        countTeethLoose: '',
+        gingivitisConditions: '',
+        userID: '',
+      };
+}
 
 interface IndexProps {
   slug?: string;
@@ -56,40 +83,118 @@ export default function FormDentalHealth({
 
   const onSubmit: SubmitHandler<DentalHealthInput> = (data) => {
     try {
-      const payload = {
-        ...data,
-        CPITN: parseInt(data.CPITN),
-        countTeeth: parseInt(data?.countTeeth),
-        countTeethLoose: parseInt(data?.countTeethLoose),
-        debrisIndex: parseInt(data?.debrisindex),
-        gingivitisConditions: data?.gingivitisConditions == 'YA' ? true : false,
-        userID: session.user['idUser'],
-      };
       setLoading(true);
-      httpRequest({
-        url: '/dental-health',
-        method: 'post',
-        data: payload,
-      })
-        .then((response) => {
-          console.log(response);
-          setLoading(false);
-          console.log('product_data', data);
-          toast.success(<Text as="b">Data berhasil ditambahkan</Text>);
-          methods.reset();
-          setCountTeeth(parseInt(data.countTeeth));
-          setCountTeethLoose(parseInt(data.countTeethLoose));
-          setShowModal(true);
+      if (!slug) {
+        const payload = {
+          ...data,
+          CPITN: parseInt(data.CPITN),
+          countTeeth: parseInt(data?.countTeeth),
+          countTeethLoose: parseInt(data?.countTeethLoose),
+          debrisIndex: parseInt(data?.debrisindex),
+          gingivitisConditions:
+            data?.gingivitisConditions == 'YA' ? true : false,
+          userID: data?.userID || session.user['idUser'],
+        };
+
+        httpRequest({
+          url: '/dental-health',
+          method: 'post',
+          data: payload,
         })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+          .then((response) => {
+            console.log(response);
+            setLoading(false);
+            console.log('product_data', data);
+            toast.success(<Text as="b">Data berhasil ditambah</Text>);
+            methods.reset();
+            setCountTeeth(parseInt(data.countTeeth));
+            setCountTeethLoose(parseInt(data.countTeethLoose));
+            setShowModal(true);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      } else {
+        const payload = {
+          ...data,
+          CPITN: parseInt(data.CPITN),
+          countTeeth: parseInt(data?.countTeeth),
+          countTeethLoose: parseInt(data?.countTeethLoose),
+          debrisIndex: parseInt(data?.debrisindex),
+          gingivitisConditions:
+            data?.gingivitisConditions == 'YA' ? true : false,
+          userID: data?.userID || session.user['idUser'],
+        };
+
+        httpRequest({
+          url: '/dental-health',
+          method: 'put',
+          data: payload,
+          params: {
+            id: slug,
+          },
+        })
+          .then((response) => {
+            console.log(response);
+            setLoading(false);
+            console.log('product_data', data);
+            toast.success(<Text as="b">Data berhasil ditambah</Text>);
+            methods.reset();
+            setCountTeeth(parseInt(data.countTeeth));
+            setCountTeethLoose(parseInt(data.countTeethLoose));
+            setShowModal(true);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      }
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
+
+  const getData = () => {
+    try {
+      httpRequest({
+        method: 'get',
+        url: '/dental-health',
+        params: {
+          id: slug,
+        },
+      })
+        .then((response) => {
+          const result = toJson(response?.data?.data?.results?.data?.rows);
+          console.log(result, 'result');
+          methods.setValue('CPITN', result?.CPITN?.toString());
+          methods.setValue('countTeeth', result?.countTeeth?.toString());
+          methods.setValue(
+            'countTeethLoose',
+            result?.countTeethLoose?.toString()
+          );
+          methods.setValue('debrisindex', result?.debrisindex?.toString());
+          methods.setValue(
+            'gingivitisConditions',
+            result?.gingivitisConditions == true ? 'YA' : 'TIDAK'
+          );
+          methods.setValue('userID', result?.userID);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (slug) {
+      getData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="@container">

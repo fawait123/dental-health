@@ -11,6 +11,7 @@ import httpRequest from '@/config/httpRequest';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { Text } from 'rizzui';
+import Cookies from 'js-cookie';
 const FilterElement = dynamic(
   () => import('@/app/shared/ecommerce/product/product-list/filter-element'),
   { ssr: false }
@@ -57,6 +58,7 @@ const formatDataJson = (data): TypeJsonFormat[] => {
       debrisIndex: item?.debrisIndex,
       gingivitisConditions: item?.gingivitisConditions == true ? 'YA' : 'TIDAK',
       userID: item?.userID,
+      user: item?.user,
     };
   });
 };
@@ -77,12 +79,16 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
 
   const getData = (filter: TypeParams) => {
     try {
+      const userID =
+        Cookies.get('role') == 'doctor'
+          ? {}
+          : { userID: session.user['idUser'] };
       setLoading(true);
       httpRequest({
         url: '/dental-health',
         method: 'get',
         params: {
-          userID: session.user['idUser'],
+          ...userID,
           ...filter,
         },
       })
@@ -190,7 +196,11 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
         showLoadingText={true}
         data={rows}
         // @ts-ignore
-        columns={visibleColumns}
+        columns={
+          Cookies.get('role') == 'doctor'
+            ? visibleColumns
+            : visibleColumns.filter((el) => el.key != 'userID')
+        }
         paginatorOptions={{
           pageSize,
           setPageSize: (pageSize: number) => {

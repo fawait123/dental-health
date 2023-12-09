@@ -1,5 +1,10 @@
 import { routes } from '@/config/routes';
 import Cookies from 'js-cookie';
+import { BiCheckCircle, BiHealth } from 'react-icons/bi';
+import { BsUiChecks } from 'react-icons/bs';
+import { FaUser } from 'react-icons/fa';
+import { FiSettings } from 'react-icons/fi';
+import { MdDashboard, MdOutlineCastForEducation } from 'react-icons/md';
 
 // Note: do not add href in the label object, it is rendering as label
 
@@ -10,6 +15,7 @@ let pageLinks = [
   {
     name: 'Dashboard',
     href: routes.dashboard,
+    icon: <MdDashboard />,
   },
 ];
 
@@ -23,6 +29,7 @@ function getMenu(role) {
         {
           name: 'Dashboard',
           href: routes.dashboard,
+          icon: <MdDashboard />,
         },
         {
           label: 'CORE',
@@ -30,22 +37,27 @@ function getMenu(role) {
         {
           name: 'Kontrol Diabetes Melitus',
           href: routes.controldiabetes.dashboard,
+          icon: <FiSettings />,
         },
         {
           name: 'Pemeriksaan Kesehatan Gigi Dan Mulut',
           href: routes.dentalHealt.dashboard,
+          icon: <BiHealth />,
         },
         {
           name: 'Ceklis Menggosok Gigi',
           href: routes.brushingChecklist.dashboard,
+          icon: <BiCheckCircle />,
         },
         {
           name: 'Edukasi Kesehatan Gigi',
           href: routes.dentalHealtEducationPage.dashboard,
+          icon: <MdOutlineCastForEducation />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',
           href: routes.applicationUse.dashboard,
+          icon: <BsUiChecks />,
         },
       ];
     case role == 'doctor':
@@ -56,29 +68,30 @@ function getMenu(role) {
         {
           name: 'Dashboard',
           href: routes.dashboard,
+          icon: <MdDashboard />,
         },
         {
           label: 'CORE',
         },
         {
           name: 'Kontrol Diabetes Melitus',
-          href: '/doctor' + routes.controldiabetes.dashboard,
+          href: routes.controldiabetes.dashboard,
+          icon: <FiSettings />,
         },
         {
           name: 'Pemeriksaan Kesehatan Gigi Dan Mulut',
-          href: '/doctor' + routes.dentalHealt.dashboard,
-        },
-        {
-          name: 'Ceklis Menggosok Gigi',
-          href: '/doctor' + routes.brushingChecklist.dashboard,
+          href: routes.dentalHealt.dashboard,
+          icon: <BiHealth />,
         },
         {
           name: 'Edukasi Kesehatan Gigi',
-          href: '/doctor' + routes.dentalHealtEducationPage.dashboard,
+          href: routes.dentalHealtEducationPage.dashboard,
+          icon: <MdOutlineCastForEducation />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',
-          href: '/doctor' + routes.applicationUse.dashboard,
+          href: routes.applicationUse.dashboard,
+          icon: <BsUiChecks />,
         },
       ];
     case role == 'admin':
@@ -89,33 +102,25 @@ function getMenu(role) {
         {
           name: 'Dashboard',
           href: routes.dashboard,
+          icon: <MdDashboard />,
         },
         {
           label: 'CORE',
         },
         {
           name: 'Kelola Pengguna',
-          href: '/admin' + routes.admin.user.dashboard,
-        },
-        {
-          name: 'Kontrol Diabetes Melitus',
-          href: '/admin' + routes.controldiabetes.dashboard,
-        },
-        {
-          name: 'Pemeriksaan Kesehatan Gigi Dan Mulut',
-          href: '/admin' + routes.dentalHealt.dashboard,
-        },
-        {
-          name: 'Ceklis Menggosok Gigi',
-          href: '/admin' + routes.brushingChecklist.dashboard,
+          href: routes.admin.user.dashboard,
+          icon: <FaUser />,
         },
         {
           name: 'Edukasi Kesehatan Gigi',
-          href: '/admin' + routes.dentalHealtEducationPage.dashboard,
+          href: routes.dentalHealtEducationPage.dashboard,
+          icon: <MdOutlineCastForEducation />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',
-          href: '/admin' + routes.applicationUse.dashboard,
+          href: routes.applicationUse.dashboard,
+          icon: <BsUiChecks />,
         },
       ];
     default:
@@ -126,6 +131,7 @@ function getMenu(role) {
         {
           name: 'Dashboard',
           href: routes.dashboard,
+          icon: <MdDashboard />,
         },
       ];
   }

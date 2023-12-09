@@ -43,12 +43,14 @@ function toJson(data): ControlDiabetesSchema {
           data[0]['controlDrugConsumption']
         ) as [],
         physicalActivity: data[0]['physicalActivity'] == true ? 'YES' : 'NO',
+        userID: data[0]['userID'],
       }
     : {
         bloodPressure: '',
         bloodSugarPressure: '',
         controlDrugConsumption: [],
         physicalActivity: '',
+        userID: '',
       };
 }
 
@@ -82,7 +84,7 @@ export default function FormControlDiabetes({
       if (!slug) {
         const payload = {
           ...data,
-          userID: session.user['idUser'],
+          userID: data?.userID || session.user['idUser'],
           controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
           bloodPressure: parseInt(data.bloodPressure),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
@@ -96,11 +98,7 @@ export default function FormControlDiabetes({
           .then((response) => {
             setLoading(false);
             console.log('product_data', data);
-            toast.success(
-              <Text as="b">
-                Product successfully {slug ? 'updated' : 'created'}
-              </Text>
-            );
+            toast.success(<Text as="b">Data berhasil ditambah</Text>);
             methods.reset();
             console.log('response', response);
             setCount(payload.bloodSugarPressure);
@@ -113,7 +111,7 @@ export default function FormControlDiabetes({
       } else {
         const payload = {
           ...data,
-          userID: session.user['idUser'],
+          userID: data?.userID || session.user['idUser'],
           controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
           bloodPressure: parseInt(data.bloodPressure),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
@@ -130,11 +128,7 @@ export default function FormControlDiabetes({
           .then((response) => {
             setLoading(false);
             console.log('product_data', data);
-            toast.success(
-              <Text as="b">
-                Product successfully {slug ? 'updated' : 'created'}
-              </Text>
-            );
+            toast.success(<Text as="b">Data berhasil diubah</Text>);
             methods.reset();
             console.log('response', response);
             setCount(payload.bloodSugarPressure);
@@ -173,6 +167,7 @@ export default function FormControlDiabetes({
             result.controlDrugConsumption
           );
           methods.setValue('physicalActivity', result.physicalActivity);
+          methods.setValue('userID', result?.userID);
         })
         .catch((err) => {
           console.log(err);

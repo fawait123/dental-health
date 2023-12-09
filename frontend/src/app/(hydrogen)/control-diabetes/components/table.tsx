@@ -9,6 +9,7 @@ import ControlledTable from '@/components/controlled-table';
 import { getColumnsControlDiabetes } from './columns';
 import httpRequest from '@/config/httpRequest';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 import { Text } from 'rizzui';
 import _ from 'lodash';
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -151,7 +152,11 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
         showLoadingText={true}
         data={rows}
         // @ts-ignore
-        columns={visibleColumns}
+        columns={
+          Cookies.get('role') == 'doctor'
+            ? visibleColumns
+            : visibleColumns.filter((el) => el.key != 'userID')
+        }
         paginatorOptions={{
           pageSize,
           setPageSize: (value: number) => {
