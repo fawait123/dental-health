@@ -7,6 +7,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../../config/database";
 import dotenv from "dotenv";
+import User from "./User";
 dotenv.config({ path: ".env" });
 
 class DentalHealthCheck extends Model {
@@ -75,4 +76,9 @@ DentalHealthCheck.init(
     timestamps: true,
   }
 );
+
+DentalHealthCheck.belongsTo(User, {
+  foreignKey: "userID",
+  as: "user",
+});
 export default DentalHealthCheck;

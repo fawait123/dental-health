@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { TypeResponse } from "../../../types";
 import ControlDiabetes from "../../models/ControlDiabetes";
 import Pagination from "../../helpers/Pagination";
+import User from "../../models/User";
 
 export default {
   get: async (req: Request, res: Response) => {
@@ -26,6 +27,14 @@ export default {
           ...statementScope.getSearch(),
           ...where,
         },
+        include: [
+          {
+            model: User,
+            as: "user",
+            required: false,
+            attributes: ["name"],
+          },
+        ],
       });
 
       const response: TypeResponse = {
