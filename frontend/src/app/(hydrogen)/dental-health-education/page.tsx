@@ -12,11 +12,11 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Dental Health Education',
+  title: 'Edukasi Kesehatan Gigi',
   breadcrumb: [
     {
       href: routes.file.dashboard,
-      name: 'Dental Health Education',
+      name: 'Edukasi Kesehatan Gigi',
     },
     {
       href: routes.eventCalendar,
@@ -28,21 +28,10 @@ const pageHeader = {
 export default function ApplicationUsePage() {
   return (
     <>
-      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-        <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ExportButton
-            data={eventData}
-            fileName="event_data"
-            header="ID,Title,Description,Location,Start,end"
-          />
-          <ModalButton
-            label="Create Event"
-            view={<EventForm />}
-            customSize="900px"
-            className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
-          />
-        </div>
-      </PageHeader>
+      <PageHeader
+        title={pageHeader.title}
+        breadcrumb={pageHeader.breadcrumb}
+      ></PageHeader>
 
       <RecentAppList />
     </>
