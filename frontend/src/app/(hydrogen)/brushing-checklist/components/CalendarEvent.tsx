@@ -58,13 +58,23 @@ export default function CalendarEventBrusingChecklist() {
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
       openModal({
-        view: <FormModal startDate={start} endDate={end} />,
+        view: (
+          <FormModal
+            getData={onAfterSafeModal}
+            startDate={start}
+            endDate={end}
+          />
+        ),
         customSize: '650px',
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [openModal]
   );
 
+  const onAfterSafeModal = () => {
+    getData();
+  };
   const handleSelectEvent = useCallback(
     (event: CalendarEventBrushingChecklist) => {
       console.log(event);

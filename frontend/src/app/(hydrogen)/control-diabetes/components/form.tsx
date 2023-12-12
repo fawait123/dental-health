@@ -97,15 +97,13 @@ export default function FormControlDiabetes({
         })
           .then((response) => {
             setLoading(false);
-            console.log('product_data', data);
             toast.success(<Text as="b">Data berhasil ditambah</Text>);
             methods.reset();
-            console.log('response', response);
             setCount(payload.bloodSugarPressure);
             setShowModal(true);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
             setLoading(false);
           });
       } else {
@@ -135,13 +133,13 @@ export default function FormControlDiabetes({
             setShowModal(true);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
             setLoading(false);
           });
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }
   };
 
@@ -205,9 +203,11 @@ export default function FormControlDiabetes({
           </div>
 
           <FormFooter
+            altBtnText="Kembali"
+            handleAltBtn={() => navigation.back()}
             isLoading={isLoading}
             submitBtnText={
-              slug ? 'Update Control Diabetes' : 'Create Control Diabetes'
+              slug ? 'Ubah Kontrol Diabetes' : 'Tambah Kontrol Diabetes'
             }
           />
         </form>

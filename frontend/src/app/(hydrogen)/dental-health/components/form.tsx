@@ -10,13 +10,7 @@ import { Text } from '@/components/ui/text';
 import FormNav, {
   formParts,
 } from '@/app/shared/ecommerce/product/create-edit/form-nav';
-import ProductSummary from '@/app/shared/ecommerce/product/create-edit/product-summary';
-import { defaultValues } from '@/app/shared/ecommerce/product/create-edit/form-utils';
 import FormFooter from '@/components/form-footer';
-import {
-  CreateProductInput,
-  productFormSchema,
-} from '@/utils/validators/create-product.schema';
 import { useLayout } from '@/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/config/enums';
 import DentalHealthSummary from './summary';
@@ -112,7 +106,7 @@ export default function FormDentalHealth({
             setShowModal(true);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
             setLoading(false);
           });
       } else {
@@ -146,12 +140,12 @@ export default function FormDentalHealth({
             setShowModal(true);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
             setLoading(false);
           });
       }
     } catch (error) {
-      console.log(error);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
       setLoading(false);
     }
   };
@@ -220,7 +214,7 @@ export default function FormDentalHealth({
           <FormFooter
             isLoading={isLoading}
             submitBtnText={
-              slug ? 'Update Kesehatan Gigi' : 'Create Kesehatan Gigi'
+              slug ? 'Ubah Kesehatan Gigi' : 'Tambah Kesehatan Gigi'
             }
           />
         </form>

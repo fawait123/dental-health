@@ -5,7 +5,7 @@ import PageHeader from '@/app/shared/page-header';
 import { routes } from '@/config/routes';
 import { eventData } from '@/data/event-data';
 import EventForm from '@/app/shared/event-calendar/event-form';
-import RecentAppList from '../widgets/cards/recent-app-list';
+import RecentAppList from '@/app/(hydrogen)/widgets/cards/recent-app-list';
 
 export const metadata = {
   ...metaObject('Event Calendar'),

@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Create Kontrol Diabetes Melitus',
+  title: 'Tambah Kontrol Diabetes Melitus',
   breadcrumb: [
     {
       href: routes.eCommerce.products,

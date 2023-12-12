@@ -1,14 +1,14 @@
 import { metaObject } from '@/config/site.config';
-import ExportButton from '@/app/shared/export-button';
-import ModalButton from '@/app/shared/modal-button';
 import PageHeader from '@/app/shared/page-header';
 import { routes } from '@/config/routes';
-import { eventData } from '@/data/event-data';
-import EventForm from '@/app/shared/event-calendar/event-form';
-import RecentAppList from '../widgets/cards/recent-app-list';
+import RecentAppList from '@/app/(hydrogen)/widgets/cards/recent-app-list';
+import { DentalHealthListOne } from './component/dentalhealthlist';
+import { FaBookMedical } from 'react-icons/fa';
+import { useState } from 'react';
+import { ContentDentalHealthEducation } from './component/contentdentalhealtheducation';
 
 export const metadata = {
-  ...metaObject('Event Calendar'),
+  ...metaObject('Edukasi Kesehatan Gigi'),
 };
 
 const pageHeader = {
@@ -32,8 +32,7 @@ export default function ApplicationUsePage() {
         title={pageHeader.title}
         breadcrumb={pageHeader.breadcrumb}
       ></PageHeader>
-
-      <RecentAppList />
+      <ContentDentalHealthEducation />
     </>
   );
 }

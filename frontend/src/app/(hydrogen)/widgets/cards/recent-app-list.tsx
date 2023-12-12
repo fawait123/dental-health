@@ -3,29 +3,37 @@ import WidgetCard from '@/components/cards/widget-card';
 import { teams as apps } from '@/data/teams-data';
 import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
+import { Button } from 'rizzui';
+import { FaReplyAll } from 'react-icons/fa';
 
-export default function RecentAppList() {
+type TypePropsRecentAppList = {
+  setStatus?: any;
+};
+
+export default function RecentAppList({ setStatus }: TypePropsRecentAppList) {
   return (
     <div className="flex w-full justify-center">
       <div className="w-5/6">
         <div className="leading-9">
-          <Text as="b" className="text-xl">
-            Penyakit Gigi pada Pasien Diabetes Melitus
-          </Text>
+          <div className="flex">
+            <Text as="b" className="text-xl">
+              Penyakit Gigi pada Pasien Diabetes Melitus
+            </Text>
+            <FaReplyAll
+              className="ml-4 cursor-pointer text-blue-500"
+              onClick={() => {
+                setStatus(false);
+              }}
+            />
+          </div>
           <p className="my-2 font-medium">1.Gigi Berlubang (Karies Gigi)</p>
           <div className="my-4 flex justify-center">
             <div className="flex">
               <Image
-                src={'/picture1.png'}
+                src={'/sc2.png'}
                 alt="picture 1"
-                width={180}
-                height={180}
-              />
-              <Image
-                src={'/picture2.png'}
-                alt="picture 2"
-                width={180}
-                height={180}
+                width={600}
+                height={600}
               />
             </div>
           </div>
@@ -52,24 +60,14 @@ export default function RecentAppList() {
               merupakan penyebab awal terjadinya gigi berlubang
             </li>
             <div className="my-4 flex justify-center">
-              <Image
-                src={'/picture3.png'}
-                alt="picture 3"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p1.png'} alt="picture 3" width={200} height={200} />
             </div>
             <li>
               b.Kandungan gula pada sisa makanan akan diproses oleh bakteri dan
               menjadi asam yang menyebabkan gigi berlubang
             </li>
             <div className="my-4 flex justify-center">
-              <Image
-                src={'/picture4.png'}
-                alt="picture 4"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p2.png'} alt="picture 4" width={200} height={200} />
             </div>
             <li>
               c.Seiring berjalannya waktu, gigi berlubang akan meluas dari
@@ -77,12 +75,7 @@ export default function RecentAppList() {
               hingga saraf gigi dan dapat menyebabkan rasa linu atau sakit
             </li>
             <div className="my-4 flex justify-center">
-              <Image
-                src={'/picture5.png'}
-                alt="picture 5"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p3.png'} alt="picture 5" width={200} height={200} />
             </div>
           </ul>
           <p className="text-justify">
@@ -95,12 +88,7 @@ export default function RecentAppList() {
           <p className="my-2 font-medium">2. Mulut Kering</p>
           <div className="my-4 flex justify-center">
             <div className="flex">
-              <Image
-                src={'/picture6.png'}
-                alt="picture 6"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p4.png'} alt="picture 6" width={230} height={230} />
             </div>
           </div>
           <p className="text-justify">
@@ -119,12 +107,7 @@ export default function RecentAppList() {
           <p className="my-2 font-medium">3. Penyakit Periodontal</p>
           <div className="my-4 flex justify-center">
             <div className="flex">
-              <Image
-                src={'/picture7.png'}
-                alt="picture 7"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p5.png'} alt="picture 7" width={230} height={230} />
             </div>
           </div>
           <p className="text-justify">
@@ -154,12 +137,7 @@ export default function RecentAppList() {
           <p className="my-2 font-medium">4. Gigi Goyang</p>
           <div className="my-4 flex justify-center">
             <div className="flex">
-              <Image
-                src={'/picture8.png'}
-                alt="picture 8"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p6.png'} alt="picture 8" width={230} height={230} />
             </div>
           </div>
           <p className="text-justify">
@@ -177,12 +155,7 @@ export default function RecentAppList() {
           <p className="my-2 font-medium">5. Rasa Mulut Terbakar</p>
           <div className="my-4 flex justify-center">
             <div className="flex">
-              <Image
-                src={'/picture9.png'}
-                alt="picture 9"
-                width={180}
-                height={180}
-              />
+              <Image src={'/p7.png'} alt="picture 9" width={230} height={230} />
             </div>
           </div>
           <p className="text-justify">
@@ -202,10 +175,10 @@ export default function RecentAppList() {
             <li>1. Rajin menggosok gigi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture10.png'}
+                src={'/p8.png'}
                 alt="picture 10"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <p className="py-4">
@@ -216,10 +189,10 @@ export default function RecentAppList() {
             <li>2. Minum air putih</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture11.png'}
+                src={'/p9.png'}
                 alt="picture 11"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <p className="py-4">
@@ -231,10 +204,10 @@ export default function RecentAppList() {
             <li>3.Konsumsi buah dan sayur</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture12.png'}
+                src={'/p10.png'}
                 alt="picture 12"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <p className="py-4">
@@ -248,10 +221,10 @@ export default function RecentAppList() {
             <li>4.Kurangi makanan manis dan melekat</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture13.png'}
+                src={'/p11.png'}
                 alt="picture 13"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <p className="py-4">
@@ -263,10 +236,10 @@ export default function RecentAppList() {
             <li>5.Rutin periksa ke dokter gigi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture14.png'}
+                src={'/p12.png'}
                 alt="picture 14"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <p className="py-4">
@@ -306,10 +279,10 @@ export default function RecentAppList() {
             </li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture16.png'}
+                src={'/p13.png'}
                 alt="picture 16"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <li>
@@ -318,10 +291,10 @@ export default function RecentAppList() {
             </li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture17.png'}
+                src={'/p14.png'}
                 alt="picture 17"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <li>
@@ -330,10 +303,10 @@ export default function RecentAppList() {
             </li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture18.png'}
+                src={'/p15.png'}
                 alt="picture 18"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <li>
@@ -342,10 +315,10 @@ export default function RecentAppList() {
             </li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture19.png'}
+                src={'/p16.png'}
                 alt="picture 19"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
             <li>
@@ -356,10 +329,10 @@ export default function RecentAppList() {
             </li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture20.png'}
+                src={'/p17.png'}
                 alt="picture 20"
-                width={180}
-                height={180}
+                width={230}
+                height={230}
               />
             </div>
           </ul>
@@ -374,7 +347,7 @@ export default function RecentAppList() {
             <li>1.Konsumsi makanan rendah gula</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture21.png'}
+                src={'/p18.png'}
                 alt="picture 21"
                 width={180}
                 height={180}
@@ -388,7 +361,7 @@ export default function RecentAppList() {
             <li>2.Pilih makanan yang berserat</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture22.png'}
+                src={'/p19.png'}
                 alt="picture 22"
                 width={180}
                 height={180}
@@ -403,7 +376,7 @@ export default function RecentAppList() {
             <li>3.Batasi makanan yang bersifat asam</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture23.png'}
+                src={'/p20.png'}
                 alt="picture 22"
                 width={180}
                 height={180}
@@ -416,7 +389,7 @@ export default function RecentAppList() {
             <li>4.Konsumsi protein yang berkualitas</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture24.png'}
+                src={'/p21.png'}
                 alt="picture 22"
                 width={180}
                 height={180}
@@ -431,7 +404,7 @@ export default function RecentAppList() {
             <li>5.Minum air putih</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture25.png'}
+                src={'/p22.png'}
                 alt="picture 22"
                 width={180}
                 height={180}
@@ -450,7 +423,7 @@ export default function RecentAppList() {
             <li>1.Pembersihan karang gigi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture26.png'}
+                src={'/p23.png'}
                 alt="picture 21"
                 width={180}
                 height={180}
@@ -469,7 +442,7 @@ export default function RecentAppList() {
             <li>2.Penambalan Gigi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture27.png'}
+                src={'/p24.png'}
                 alt="picture 21"
                 width={180}
                 height={180}
@@ -486,7 +459,7 @@ export default function RecentAppList() {
             <li>3.Perawatan saluran akar</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture28.png'}
+                src={'/p25.png'}
                 alt="picture 21"
                 width={180}
                 height={180}
@@ -502,7 +475,7 @@ export default function RecentAppList() {
             <li>4.Perawatan gusi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture29.png'}
+                src={'/p26.png'}
                 alt="picture 21"
                 width={180}
                 height={180}
@@ -516,7 +489,7 @@ export default function RecentAppList() {
             <li>5.Pencabutan gigi</li>
             <div className="my-4 flex justify-center">
               <Image
-                src={'/picture30.png'}
+                src={'/p27.png'}
                 alt="picture 21"
                 width={180}
                 height={180}

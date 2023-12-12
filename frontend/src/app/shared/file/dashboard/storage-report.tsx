@@ -147,7 +147,7 @@ export default function StorageReport({ className }: { className?: string }) {
       descriptionClassName="text-gray-500 mt-1.5"
       action={
         <div className="hidden @2xl:block">
-          <Badge renderAsDot className="me-0.5 bg-[#282ECA]" /> Image
+          <Badge renderAsDot className="me-0.5 bg-[#282ECA]" /> Images
           <Badge renderAsDot className="me-0.5 ms-4 bg-[#4052F6]" /> Video
           <Badge renderAsDot className="me-0.5 ms-4 bg-[#96C0FF]" /> Documents
           <Badge

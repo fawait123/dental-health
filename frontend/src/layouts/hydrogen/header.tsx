@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import RingBellSolidIcon from '@/components/icons/ring-bell-solid';
 import NotificationDropdown from '@/layouts/notification-dropdown';
-import MessagesDropdown from '@/layouts/messages-dropdown';
-import ChatSolidIcon from '@/components/icons/chat-solid';
+import { Text } from 'rizzui';
 import HamburgerButton from '@/layouts/hamburger-button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import SearchWidget from '@/components/search/search';
@@ -16,6 +15,9 @@ import Logo from '@/components/logo';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useWindowScroll } from '@/hooks/use-window-scroll';
 import SettingsButton from '@/components/settings/settings-button';
+import { useEffect } from 'react';
+import socketClient from '@/socket/client';
+import { toast } from 'react-toastify';
 
 function HeaderMenuRight() {
   return (
@@ -43,6 +45,20 @@ function HeaderMenuRight() {
 export default function Header() {
   const isMounted = useIsMounted();
   const windowScroll = useWindowScroll();
+  useEffect(() => {
+    socketClient.on('notification-client', (data) => {
+      const parseData = JSON.parse(data);
+      const audio = new Audio('/notification.mp3');
+      audio.play();
+      toast.info(<Text as="b">{parseData['content'] ?? ''}</Text>, {
+        data: parseData['content'] ?? '',
+      });
+      const notification = new Notification('Title', {
+        body: 'Lorem Ipsum dolor ismet',
+      });
+      console.log(notification);
+    });
+  }, []);
   return (
     <header
       className={cn(

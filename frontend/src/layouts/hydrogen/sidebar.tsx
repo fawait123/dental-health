@@ -4,13 +4,10 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import { Title } from '@/components/ui/text';
-import { Collapse } from '@/components/ui/collapse';
 import cn from '@/utils/class-names';
-import { PiCaretDownBold } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
-import { menuItems } from './menu-items';
-import Logo from '@/components/logo';
 import { pageLinks } from '@/components/search/page-links.data';
+import { MdHealthAndSafety } from 'react-icons/md';
 
 export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
@@ -23,7 +20,8 @@ export default function Sidebar({ className }: { className?: string }) {
     >
       <div className="sticky top-0 z-40 bg-gray-0/10 px-6 pb-5 pt-5 dark:bg-gray-100/5 2xl:px-8 2xl:pt-6">
         <Link href={'/'} aria-label="Site Logo">
-          <Logo className="max-w-[155px]" />
+          {/* <Logo className="max-w-[155px]" /> logo */}
+          <MdHealthAndSafety className="text-5xl" />
         </Link>
       </div>
 

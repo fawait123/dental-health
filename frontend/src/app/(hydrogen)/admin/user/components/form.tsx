@@ -103,14 +103,13 @@ export default function FormDentalHealth({
           data,
         })
           .then((response) => {
-            console.log(response);
             setLoading(false);
             toast.success(<Text as="b">Data berhasil ditambah</Text>);
             methods.reset();
             navigation.push('/admin/user');
           })
           .catch((e) => {
-            console.log(e);
+            toast.error(<Text as="b">{e?.response?.data?.message}</Text>);
             setLoading(false);
           });
       } else {
@@ -130,12 +129,12 @@ export default function FormDentalHealth({
             navigation.push('/admin/user');
           })
           .catch((e) => {
-            console.log(e);
+            toast.error(<Text as="b">{e?.response?.data?.message}</Text>);
             setLoading(false);
           });
       }
     } catch (error) {
-      console.log(error);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
       setLoading(false);
     }
   };

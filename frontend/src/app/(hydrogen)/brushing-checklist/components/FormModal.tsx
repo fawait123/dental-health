@@ -1,14 +1,12 @@
 'use client';
 
-import uniqueId from 'lodash/uniqueId';
 import { PiXBold } from 'react-icons/pi';
 import { SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Checkbox, Switch, Text, Title } from 'rizzui';
+import { ActionIcon, Button, Switch, Text, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import toast from 'react-hot-toast';
 import cn from '@/utils/class-names';
-import { CalendarEvent } from '@/types';
 import useEventCalendar from '@/hooks/use-event-calendar';
 import moment from 'moment';
 import {
@@ -23,12 +21,14 @@ interface CreateEventProps {
   startDate?: Date;
   endDate?: Date;
   event?: CalendarEventBrushingChecklist;
+  getData?: () => void;
 }
 
 export default function FormModal({
   startDate,
   endDate,
   event,
+  getData,
 }: CreateEventProps) {
   const { closeModal } = useModal();
   const { createEvent, updateEvent } = useEventCalendar();
@@ -61,8 +61,10 @@ export default function FormModal({
                 Menggosok Gigi
               </Text>
             );
+            getData();
           })
           .catch((err) => {
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
             closeModal();
           });
       } else {
@@ -91,11 +93,12 @@ export default function FormModal({
           })
           .catch((err) => {
             closeModal();
+            toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
           });
       }
     } catch (error) {
       closeModal();
-      console.log(error);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }
   };
 

@@ -1,10 +1,14 @@
 import { routes } from '@/config/routes';
 import Cookies from 'js-cookie';
-import { BiCheckCircle, BiHealth } from 'react-icons/bi';
 import { BsUiChecks } from 'react-icons/bs';
-import { FaUser } from 'react-icons/fa';
-import { FiSettings } from 'react-icons/fi';
-import { MdDashboard, MdOutlineCastForEducation } from 'react-icons/md';
+import { FaBookMedical, FaUser } from 'react-icons/fa';
+import { GiToothbrush } from 'react-icons/gi';
+import {
+  MdDashboard,
+  MdOutlineAppSettingsAlt,
+  MdOutlineBloodtype,
+} from 'react-icons/md';
+import { TbDental } from 'react-icons/tb';
 
 // Note: do not add href in the label object, it is rendering as label
 
@@ -37,27 +41,27 @@ function getMenu(role) {
         {
           name: 'Kontrol Diabetes Melitus',
           href: routes.controldiabetes.dashboard,
-          icon: <FiSettings />,
+          icon: <MdOutlineBloodtype />,
         },
         {
           name: 'Pemeriksaan Kesehatan Gigi Dan Mulut',
           href: routes.dentalHealt.dashboard,
-          icon: <BiHealth />,
+          icon: <TbDental />,
         },
         {
           name: 'Ceklis Menggosok Gigi',
           href: routes.brushingChecklist.dashboard,
-          icon: <BiCheckCircle />,
+          icon: <GiToothbrush />,
         },
         {
           name: 'Edukasi Kesehatan Gigi',
           href: routes.dentalHealtEducationPage.dashboard,
-          icon: <MdOutlineCastForEducation />,
+          icon: <FaBookMedical />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',
           href: routes.applicationUse.dashboard,
-          icon: <BsUiChecks />,
+          icon: <MdOutlineAppSettingsAlt />,
         },
       ];
     case role == 'doctor':
@@ -76,22 +80,22 @@ function getMenu(role) {
         {
           name: 'Kontrol Diabetes Melitus',
           href: routes.controldiabetes.dashboard,
-          icon: <FiSettings />,
+          icon: <MdOutlineBloodtype />,
         },
         {
           name: 'Pemeriksaan Kesehatan Gigi Dan Mulut',
           href: routes.dentalHealt.dashboard,
-          icon: <BiHealth />,
+          icon: <TbDental />,
         },
         {
           name: 'Edukasi Kesehatan Gigi',
           href: routes.dentalHealtEducationPage.dashboard,
-          icon: <MdOutlineCastForEducation />,
+          icon: <FaBookMedical />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',
           href: routes.applicationUse.dashboard,
-          icon: <BsUiChecks />,
+          icon: <MdOutlineAppSettingsAlt />,
         },
       ];
     case role == 'admin':
@@ -115,7 +119,7 @@ function getMenu(role) {
         {
           name: 'Edukasi Kesehatan Gigi',
           href: routes.dentalHealtEducationPage.dashboard,
-          icon: <MdOutlineCastForEducation />,
+          icon: <MdOutlineAppSettingsAlt />,
         },
         {
           name: 'Panduan Penggunaan Aplikasi',

@@ -13,16 +13,15 @@ export default function SignIn() {
     <AuthWrapperOne
       title={
         <>
-          Welcome back! Pleases{' '}
+          Selamat Datang{' '}
           <span className="relative inline-block">
-            Sign in to
+            Masuk untuk
             <UnderlineShape className="absolute -bottom-2 start-0 h-2.5 w-24 text-blue md:w-28 xl:-bottom-1.5 xl:w-36" />
           </span>{' '}
-          continue.
+          melanjutkan.
         </>
       }
-      description="By signing up, you will gain access to exclusive content, special
-      offers, and be the first to hear about exciting news and updates."
+      description="Masuk untuk membuat sesi anda."
       isSocialLoginActive={true}
     >
       <SignInForm />

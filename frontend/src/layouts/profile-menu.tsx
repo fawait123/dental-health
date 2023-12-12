@@ -20,10 +20,10 @@ const menuItems = [
   //   name: 'Account Settings',
   //   href: routes.forms.profileSettings,
   // },
-  {
-    name: 'Activity Log',
-    href: '#',
-  },
+  // {
+  //   name: 'Activity Log',
+  //   href: '#',
+  // },
 ];
 
 function DropdownMenu() {
