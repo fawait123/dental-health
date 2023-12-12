@@ -5,6 +5,8 @@ import cors from "cors";
 import publicRoute from "./app/router/public";
 import { TypeResponse } from "./types";
 import adminRoute from "./app/router/admin";
+import { createServer } from "http";
+import socket from "./app/socket/socket";
 // read .env
 dotenv.config({ path: ".env" });
 const PORT = process.env.PORT || 4000;
@@ -33,8 +35,9 @@ app.get("/", (req: Request, res: Response) => {
 // use router
 app.use(publicRoute);
 app.use(adminRoute);
-
+const server = createServer(app);
+socket(server);
 // listen server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

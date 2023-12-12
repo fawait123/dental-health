@@ -5,6 +5,7 @@ import BrushingChecklistController from "../controllers/admin/BrushingChecklistC
 import DentalHealthController from "../controllers/admin/DentalHealthController";
 import UserController from "../controllers/admin/UserController";
 import DashboardController from "../controllers/admin/DashboardController";
+import NotificationController from "../controllers/admin/NotificationController";
 
 const adminRoute = express.Router();
 
@@ -35,5 +36,8 @@ adminRoute.put("/user", UserController.put);
 adminRoute.delete("/user", UserController.delete);
 
 adminRoute.get("/dashboard/card", DashboardController.get);
+
+adminRoute.get("/notification", NotificationController.get);
+adminRoute.put("/notification", NotificationController.put);
 
 export default adminRoute;

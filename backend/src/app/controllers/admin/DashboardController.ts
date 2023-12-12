@@ -39,6 +39,18 @@ export default {
           latestUpdate: await User.findOne({
             order: [["createdAt", "desc"]],
           }),
+          donute: {
+            active: await User.count({
+              where: {
+                isActive: true,
+              },
+            }),
+            inactive: await User.count({
+              where: {
+                isActive: false,
+              },
+            }),
+          },
         },
         notification: {
           count: await Notification.count({
