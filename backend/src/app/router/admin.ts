@@ -31,11 +31,13 @@ adminRoute.delete("/dental-health", DentalHealthController.delete);
 
 // user endpoint
 adminRoute.get("/user", UserController.get);
+adminRoute.get("/user/all", UserController.all);
 adminRoute.post("/user", UserController.post);
 adminRoute.put("/user", UserController.put);
 adminRoute.delete("/user", UserController.delete);
 
 adminRoute.get("/dashboard/card", DashboardController.get);
+adminRoute.get("/dashboard/grapich", DashboardController.grapich);
 
 adminRoute.get("/notification", NotificationController.get);
 adminRoute.put("/notification", NotificationController.put);

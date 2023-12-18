@@ -5,6 +5,70 @@ import Notification from "../../models/Notification";
 import ControlDiabetes from "../../models/ControlDiabetes";
 import BrushingChecklist from "../../models/BrushingCheklist";
 import DentalHealthCheck from "../../models/DentalHealthCheck";
+import { Op } from "sequelize";
+
+const months = [
+  {
+    month: "Januari",
+    value: "01",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Februari",
+    value: "02",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Maret",
+    value: "03",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "April",
+    value: "04",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Mei",
+    value: "05",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Juni",
+    value: "06",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Juli",
+    value: "07",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Agustus",
+    value: "08",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "September",
+    value: "09",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Oktober",
+    value: "10",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "November",
+    value: "11",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Desember",
+    value: "12",
+    year: new Date().getFullYear(),
+  },
+];
 
 export default {
   get: async (req: Request, res: Response) => {
@@ -93,6 +157,88 @@ export default {
           }),
         },
       };
+
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: {
+            data: data,
+          },
+        },
+      };
+
+      return res.status(200).json(response);
+    } catch (error) {
+      const response: TypeResponse = {
+        status: 500,
+        message: error.message,
+        data: {
+          results: {
+            data: {},
+          },
+        },
+      };
+
+      return res.status(500).json(response);
+    }
+  },
+  grapich: async (req: Request, res: Response) => {
+    try {
+      const query = req.query;
+
+      let where = {};
+      if (query.userID) {
+        where = {
+          userID: query.userID,
+        };
+      }
+
+      const data = await Promise.all(
+        months.map(async (item) => {
+          const controlDiabetes = await ControlDiabetes.count({
+            where: {
+              createdAt: {
+                [Op.between]: [
+                  `${item.year}-${item.value}-01 00:00:00`,
+                  `${item.year}-${item.value}-31 23:59:59`,
+                ],
+              },
+              ...where,
+            },
+          });
+          const dentalHealth = await DentalHealthCheck.count({
+            where: {
+              createdAt: {
+                [Op.between]: [
+                  `${item.year}-${item.value}-01 00:00:00`,
+                  `${item.year}-${item.value}-31 23:59:59`,
+                ],
+              },
+              ...where,
+            },
+          });
+
+          const brushingChecklist = await BrushingChecklist.count({
+            where: {
+              createdAt: {
+                [Op.between]: [
+                  `${item.year}-${item.value}-01 00:00:00`,
+                  `${item.year}-${item.value}-31 23:59:59`,
+                ],
+              },
+              ...where,
+            },
+          });
+
+          return {
+            ...item,
+            controlDiabetes,
+            dentalHealth,
+            brushingChecklist,
+          };
+        })
+      );
 
       const response: TypeResponse = {
         status: 200,

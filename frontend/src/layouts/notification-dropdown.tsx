@@ -107,7 +107,10 @@ function NotificationsList({
         <Title as="h5">Notifikasi</Title>
         {loading ? null : (
           <Checkbox
-            disabled={rows.filter((el) => el.isRead == true).length > 0}
+            disabled={
+              rows.filter((el) => el.isRead == true).length > 0 ||
+              rows.length == 0
+            }
             onChange={readAll}
             label="Baca Semua"
           />
@@ -119,7 +122,7 @@ function NotificationsList({
             <div className="my-5 flex justify-center">
               <Loader />
             </div>
-          ) : (
+          ) : rows.length > 0 ? (
             rows.map((item: TypeFormatJson) => (
               <div
                 key={item.id}
@@ -159,6 +162,8 @@ function NotificationsList({
                 </div>
               </div>
             ))
+          ) : (
+            <Text className="pointer-events-none">Tidak ada notifikasi</Text>
           )}
         </div>
       </SimpleBar>

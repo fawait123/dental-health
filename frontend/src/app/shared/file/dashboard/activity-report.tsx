@@ -79,35 +79,61 @@ const data = [
   },
 ];
 
-export default function ActivityReport({ className }: { className?: string }) {
+export default function ActivityReport({
+  className,
+  rows,
+}: {
+  className?: string;
+  rows?: any[];
+}) {
   const isTablet = useMedia('(max-width: 800px)', false);
 
   return (
     <WidgetCard
-      title={'Activity'}
+      title={'Diagram Garis Data Pasien'}
       titleClassName="text-lg xl:text-xl font-semibold"
       className={className}
     >
       <div className="mt-3 flex items-start 2xl:mt-5">
         <div className="me-9 flex items-start">
-          <div className="me-3 rounded bg-[#00D1FF] p-2 text-white">
+          <div className="me-3 rounded bg-[#282ECA] p-2 text-white">
             <PiDownloadSimple className="h-6 w-6" />
           </div>
           <div>
-            <Text className="text-gray-500">Downloads</Text>
+            <Text className="text-gray-500">Dental Health</Text>
             <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
-              15,556
+              {rows?.reduce(
+                (prev, next) => prev + parseInt(next?.dentalHealth),
+                0
+              )}
+            </Text>
+          </div>
+        </div>
+        <div className="mr-9 flex items-start">
+          <div className="me-3 rounded bg-[#4052F6] p-2 text-white">
+            <PiUploadSimple className="h-6 w-6" />
+          </div>
+          <div>
+            <Text className="text-gray-500">Control Diabetes</Text>
+            <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
+              {rows?.reduce(
+                (prev, next) => prev + parseInt(next?.controlDiabetes),
+                0
+              )}
             </Text>
           </div>
         </div>
         <div className="flex items-start">
-          <div className="me-3 rounded bg-[#6B46FF] p-2 text-white">
+          <div className="me-3 rounded bg-[#96C0FF] p-2 text-white">
             <PiUploadSimple className="h-6 w-6" />
           </div>
           <div>
-            <Text className="text-gray-500">Uploads</Text>
+            <Text className="text-gray-500">Brushing Checklist</Text>
             <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
-              10,065
+              {rows?.reduce(
+                (prev, next) => prev + parseInt(next?.brushingChecklist),
+                0
+              )}
             </Text>
           </div>
         </div>
@@ -120,7 +146,7 @@ export default function ActivityReport({ className }: { className?: string }) {
             {...(isTablet && { minWidth: '700px' })}
           >
             <AreaChart
-              data={data}
+              data={rows}
               margin={{
                 left: -16,
               }}
@@ -147,16 +173,24 @@ export default function ActivityReport({ className }: { className?: string }) {
               <Tooltip content={<CustomTooltip />} />
               <Area
                 type="monotone"
-                dataKey="downloads"
-                stroke="#6B46FF"
+                dataKey="dentalHealth"
+                stroke="#282ECA"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#downloads)"
               />
               <Area
                 type="monotone"
-                dataKey="uploads"
-                stroke="#00D1FF"
+                dataKey="controlDiabetes"
+                stroke="#4052F6"
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#uploads)"
+              />
+              <Area
+                type="monotone"
+                dataKey="brushingChecklist"
+                stroke="#96C0FF"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#uploads)"

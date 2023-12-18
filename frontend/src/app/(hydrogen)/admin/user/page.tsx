@@ -30,7 +30,7 @@ export default function DentalHealthPage() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <Link
-            href={'/admin' + routes.admin.user.createProduct}
+            href={routes.admin.user.createProduct}
             className="w-full @lg:w-auto"
           >
             <Button

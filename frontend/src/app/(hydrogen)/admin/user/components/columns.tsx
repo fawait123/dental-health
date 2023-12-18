@@ -261,7 +261,7 @@ export const getColumnsDentalHealth = ({
               placement="top"
               color="invert"
             >
-              <Link href={'/admin' + routes.admin.user.editData(row?.id)}>
+              <Link href={routes.admin.user.editData(row?.id)}>
                 <ActionIcon
                   size="sm"
                   variant="outline"

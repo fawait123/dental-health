@@ -8,7 +8,7 @@ import ControlDiabetesTable from './components/table';
 import { controldiabetesData } from './data';
 
 export const metadata = {
-  ...metaObject('Products'),
+  ...metaObject('Kontrol Diabetes'),
 };
 
 const pageHeader = {

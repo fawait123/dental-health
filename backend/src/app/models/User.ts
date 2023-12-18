@@ -4,7 +4,7 @@
  *
  * Don't include this comment in the md file.
  */
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Op } from "sequelize";
 import sequelize from "../../config/database";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
@@ -109,4 +109,23 @@ User.init(
     timestamps: true,
   }
 );
+
+User.beforeCreate(async (user) => {
+  const cari = await User.findOne({
+    where: {
+      [Op.or]: [
+        {
+          username: user.username,
+        },
+        {
+          email: user.username,
+        },
+      ],
+    },
+  });
+
+  if (cari) {
+    throw new Error("Akun sudah di daftarkan");
+  }
+});
 export default User;

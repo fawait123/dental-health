@@ -32,15 +32,13 @@ export default function DentalHealthSummary({
     try {
       httpRequest({
         method: 'get',
-        url: '/user',
+        url: '/user/all',
         params: {
-          search,
-          page: 1,
-          limit: 1000,
+          role: 'user',
         },
       })
         .then((response) => {
-          const result = response?.data?.data?.results?.data?.rows as [];
+          const result = response?.data?.data?.results?.data as [];
           const filter = result
             .filter((el) => el['role'] == 'user')
             .map((item) => {

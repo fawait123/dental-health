@@ -109,13 +109,19 @@ function CustomYAxisTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={16} textAnchor="end" className="fill-gray-500">
-        {`${payload.value.toLocaleString()}`}GB
+        {`${payload.value.toLocaleString()}`}
       </text>
     </g>
   );
 }
 
-export default function StorageReport({ className }: { className?: string }) {
+export default function StorageReport({
+  className,
+  rows,
+}: {
+  className?: string;
+  rows?: any[];
+}) {
   const isMobile = useMedia('(max-width: 768px)', false);
   const isDesktop = useMedia('(max-width: 1440px)', false);
   const is2xl = useMedia('(max-width: 1780px)', false);
@@ -123,14 +129,16 @@ export default function StorageReport({ className }: { className?: string }) {
 
   return (
     <WidgetCard
-      title={'Total Storage used'}
+      title={'Diagram Batang Data Pasien'}
       titleClassName="font-normal text-gray-700 sm:text-base font-inter"
       description={
         <div className="flex items-center justify-start">
           <Title as="h2" className="me-2">
-            105,000 GB
+            {rows.find((el) => el.value == new Date().getMonth())?.month +
+              ', ' +
+              rows.find((el) => el.value == new Date().getMonth())?.year}
           </Title>
-          <Text className="flex items-center leading-none text-gray-500">
+          {/* <Text className="flex items-center leading-none text-gray-500">
             <Text
               as="span"
               className={cn(
@@ -141,20 +149,17 @@ export default function StorageReport({ className }: { className?: string }) {
               32.40%
             </Text>
             last year
-          </Text>
+          </Text> */}
         </div>
       }
       descriptionClassName="text-gray-500 mt-1.5"
       action={
         <div className="hidden @2xl:block">
-          <Badge renderAsDot className="me-0.5 bg-[#282ECA]" /> Images
-          <Badge renderAsDot className="me-0.5 ms-4 bg-[#4052F6]" /> Video
-          <Badge renderAsDot className="me-0.5 ms-4 bg-[#96C0FF]" /> Documents
-          <Badge
-            renderAsDot
-            className="me-0.5 ms-4 bg-[#DEEAFC] dark:bg-[#7c88b2]"
-          />{' '}
-          Musics
+          <Badge renderAsDot className="me-0.5 bg-[#282ECA]" /> Dental Health
+          <Badge renderAsDot className="me-0.5 ms-4 bg-[#4052F6]" /> Control
+          Diabetes
+          <Badge renderAsDot className="me-0.5 ms-4 bg-[#96C0FF]" /> Brushing
+          Cheklist
         </div>
       }
       className={className}
@@ -167,7 +172,7 @@ export default function StorageReport({ className }: { className?: string }) {
             {...(isTablet && { minWidth: '700px' })}
           >
             <BarChart
-              data={data}
+              data={rows}
               barSize={isMobile ? 16 : isDesktop ? 28 : is2xl ? 32 : 46}
               margin={{
                 left: 16,
@@ -182,10 +187,10 @@ export default function StorageReport({ className }: { className?: string }) {
                 tick={<CustomYAxisTick />}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="image" fill="#282ECA" stackId="a" />
-              <Bar dataKey="video" stackId="a" fill="#4052F6" />
-              <Bar dataKey="document" stackId="a" fill="#96C0FF" />
-              <Bar dataKey="music" stackId="a" fill="#DEEAFC" />
+              <Bar dataKey="dentalHealth" fill="#282ECA" stackId="a" />
+              <Bar dataKey="controlDiabetes" stackId="a" fill="#4052F6" />
+              <Bar dataKey="brushingChecklist" stackId="a" fill="#96C0FF" />
+              {/* <Bar dataKey="music" stackId="a" fill="#DEEAFC" /> */}
             </BarChart>
           </ResponsiveContainer>
         </div>

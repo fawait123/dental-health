@@ -116,7 +116,7 @@ export default function StorageSummary({
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="  ">
+          <div className="">
             {data.map((item, index) => (
               <div
                 key={item.name}
