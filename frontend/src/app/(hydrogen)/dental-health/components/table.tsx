@@ -70,6 +70,7 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
   const [page, setPage] = useState(1);
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
+  const [role] = useState(Cookies.get('role'));
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -79,16 +80,12 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
 
   const getData = (filter: TypeParams) => {
     try {
-      const userID =
-        Cookies.get('role') == 'doctor'
-          ? {}
-          : { userID: session.user['idUser'] };
       setLoading(true);
       httpRequest({
         url: '/dental-health',
         method: 'get',
         params: {
-          ...userID,
+          userID: role == 'user' ? session['user']['idUser'] : null,
           ...filter,
         },
       })

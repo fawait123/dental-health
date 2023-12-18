@@ -15,6 +15,12 @@ export default {
           id: query.id,
         };
       }
+
+      if (query.userID) {
+        where = {
+          userID: query.userID,
+        };
+      }
       const statementScope = new Pagination(
         req,
         ControlDiabetes.getAttributes()

@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { Text } from 'rizzui';
 import _ from 'lodash';
+import { useSession } from 'next-auth/react';
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
   ssr: false,
 });
@@ -35,6 +36,8 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(null);
+  const [role] = useState(Cookies.get('role'));
+  const { data: session } = useSession();
 
   const getData = (params: ParamsType) => {
     try {
@@ -42,7 +45,9 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
       httpRequest({
         url: '/control-diabetes',
         method: 'get',
-        params,
+        params: {
+          userID: role == 'user' ? session['user']['idUser'] : null,
+        },
       })
         .then((response) => {
           setRows(response?.data?.data?.results?.data?.rows);

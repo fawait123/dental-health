@@ -1,6 +1,6 @@
 'use client';
 
-import { Title, Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import WidgetCard from '@/components/cards/widget-card';
 import {
   XAxis,
@@ -78,6 +78,11 @@ const data = [
     uploads: 3000,
   },
 ];
+
+type TypeFilter = {
+  label?: string;
+  value?: string;
+};
 
 export default function ActivityReport({
   className,

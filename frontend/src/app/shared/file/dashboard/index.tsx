@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { FaFilter } from 'react-icons/fa';
 import { ActionIcon, Button, Modal, NativeSelect, Text } from 'rizzui';
 import { IoClose } from 'react-icons/io5';
+import { useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 
 function toDataSelect(data: any) {
   return data.map((item) => {
@@ -25,6 +27,9 @@ export default function FileDashboard() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [modalState, setModalState] = useState(false);
+  const [filter, setFilter] = useState(null);
+  const [role] = useState(Cookies.get('role'));
+  const { data: session } = useSession();
   const getData = () => {
     try {
       setLoading(true);
@@ -51,6 +56,9 @@ export default function FileDashboard() {
       httpRequest({
         url: '/dashboard/grapich',
         method: 'get',
+        params: {
+          userID: role == 'user' ? session['user']['idUser'] : filter,
+        },
       })
         .then((response) => {
           setGrapich(response?.data?.data?.results?.data);
@@ -73,11 +81,8 @@ export default function FileDashboard() {
         },
       })
         .then((response) => {
-          console.log(
-            'users',
-            toDataSelect(response?.data?.data?.results?.data)
-          );
           setUsers(toDataSelect(response?.data?.data?.results?.data));
+          setFilter(users[0]?.value);
         })
         .catch((er) => {
           console.log(er);
@@ -86,9 +91,10 @@ export default function FileDashboard() {
   };
 
   useEffect(() => {
+    getUser();
     getData();
     getChart();
-    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -112,12 +118,14 @@ export default function FileDashboard() {
         </div>
       </div>
 
-      <div
-        className="sticky bottom-96 right-0 float-right flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-sm bg-gray-600 shadow backdrop-blur-md dark:bg-gray-700 md:h-9 md:w-9"
-        onClick={() => setModalState(true)}
-      >
-        <FaFilter className="h-[18px] w-auto text-gray-50" />
-      </div>
+      {role == 'user' ? null : (
+        <div
+          className="sticky bottom-96 right-0 float-right flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-sm bg-gray-600 shadow backdrop-blur-md dark:bg-gray-700 md:h-9 md:w-9"
+          onClick={() => setModalState(true)}
+        >
+          <FaFilter className="h-[18px] w-auto text-gray-50" />
+        </div>
+      )}
 
       <Modal isOpen={modalState} onClose={() => setModalState(false)}>
         <div className="m-auto px-7 pb-8 pt-6">
@@ -136,12 +144,16 @@ export default function FileDashboard() {
               className="col-span-2"
               label="Pilih Pasien"
               options={users}
+              onChange={(event) => setFilter(event.target.value)}
             />
             <Button
               type="submit"
               size="lg"
               className="col-span-2 mt-2"
-              onClick={() => setModalState(false)}
+              onClick={() => {
+                getChart();
+                setModalState(false);
+              }}
             >
               TERAPKAN
             </Button>
