@@ -15,6 +15,7 @@ import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
 import { NativeSelect, Textarea } from 'rizzui';
 import httpRequest from '@/config/httpRequest';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const initialValues = {
   firstName: '',
@@ -37,14 +38,20 @@ export default function SignUpForm() {
         url: '/auth/register',
         method: 'post',
         data: data,
-      }).then((response) => {
-        setReset({ ...initialValues, isAgreed: false });
-        setLoading(false);
-        navigation.push('/signin');
-      });
+      })
+        .then((response) => {
+          setReset({ ...initialValues, isAgreed: false });
+          setLoading(false);
+          toast.success(<Text as="b">Registrasi berhasil</Text>);
+          navigation.push('/signin');
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
+        });
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }
   };
 
@@ -63,8 +70,8 @@ export default function SignUpForm() {
             <Input
               type="text"
               size="lg"
-              label="Name"
-              placeholder="Enter your first name"
+              label="Nama"
+              placeholder="Masukan nama anda"
               className="col-span-2 [&>label>span]:font-medium"
               color="info"
               inputClassName="text-sm"
@@ -78,7 +85,7 @@ export default function SignUpForm() {
               className="col-span-2 [&>label>span]:font-medium"
               inputClassName="text-sm"
               color="info"
-              placeholder="Enter your email"
+              placeholder="Masukan email anda"
               {...register('email')}
               error={errors.email?.message}
             />
@@ -89,18 +96,18 @@ export default function SignUpForm() {
               className="col-span-2 [&>label>span]:font-medium"
               inputClassName="text-sm"
               color="info"
-              placeholder="Enter your username"
+              placeholder="Masukan username anda"
               {...register('username')}
               error={errors.username?.message}
             />
             <Input
               type="text"
               size="lg"
-              label="Phone Number"
+              label="Nomor HP"
               className="col-span-2 [&>label>span]:font-medium"
               inputClassName="text-sm"
               color="info"
-              placeholder="Enter your phone"
+              placeholder="Masukan Nomor HP anda"
               {...register('phone')}
               error={errors.phone?.message}
             />
@@ -108,7 +115,7 @@ export default function SignUpForm() {
               {...register('gender')}
               error={errors.gender?.message}
               className="col-span-2 [&>label>span]:font-medium"
-              label="Gender"
+              label="Pilih Jenis Kelamin"
               options={[
                 {
                   value: '',
@@ -116,46 +123,46 @@ export default function SignUpForm() {
                 },
                 {
                   value: 'L',
-                  label: 'Male',
+                  label: 'Laki Laki',
                 },
                 {
                   value: 'P',
-                  label: 'Female',
+                  label: 'Perempuan',
                 },
               ]}
             />
             <Input
               type="text"
               size="lg"
-              label="Placebirth"
+              label="Tempat Lahir"
               className="col-span-2 [&>label>span]:font-medium"
               inputClassName="text-sm"
               color="info"
-              placeholder="Enter your placebirth"
+              placeholder="Masukan tempat lahir anda"
               {...register('placebirth')}
               error={errors.placebirth?.message}
             />
             <Input
               type="date"
               size="lg"
-              label="Birthdate"
+              label="Tanggal Lahir"
               className="col-span-2 [&>label>span]:font-medium"
               inputClassName="text-sm"
               color="info"
-              placeholder="Enter your birthdate"
+              placeholder="Masukan tanggal lahir anda"
               {...register('birthdate')}
               error={errors.birthdate?.message}
             />
             <Textarea
               error={errors.address?.message}
-              placeholder="Address"
+              placeholder="Alamat"
               {...register('address')}
-              label="Address"
+              label="Masukan alamat anda"
               className="col-span-2 [&>label>span]:font-medium"
             />
             <Password
               label="Password"
-              placeholder="Enter your password"
+              placeholder="Masukan password anda"
               size="lg"
               className="[&>label>span]:font-medium"
               color="info"
@@ -164,8 +171,8 @@ export default function SignUpForm() {
               error={errors.password?.message}
             />
             <Password
-              label="Confirm Password"
-              placeholder="Enter confirm password"
+              label="Konfirmasi Password"
+              placeholder="Konfirmasi password anda"
               size="lg"
               className="[&>label>span]:font-medium"
               color="info"
@@ -173,31 +180,7 @@ export default function SignUpForm() {
               {...register('confirmPassword')}
               error={errors.confirmPassword?.message}
             />
-            {/* <div className="col-span-2 flex items-start ">
-              <Checkbox
-                {...register('isAgreed')}
-                className="[&>label>span]:font-medium [&>label]:items-start"
-                error={errors.isAgreed?.message}
-                label={
-                  <>
-                    By signing up you have agreed to our{' '}
-                    <Link
-                      href="/"
-                      className="font-medium text-blue transition-colors hover:underline"
-                    >
-                      Terms
-                    </Link>{' '}
-                    &{' '}
-                    <Link
-                      href="/"
-                      className="font-medium text-blue transition-colors hover:underline"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </>
-                }
-              />
-            </div> */}
+
             <Button
               size="lg"
               color="info"
@@ -205,19 +188,19 @@ export default function SignUpForm() {
               className="col-span-2 mt-2"
               isLoading={loading}
             >
-              <span>Get Started</span>{' '}
+              <span>Daftar</span>{' '}
               <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
             </Button>
           </div>
         )}
       </Form>
       <Text className="mt-6 text-center leading-loose text-gray-500 lg:mt-8 lg:text-start">
-        Don’t have an account?{' '}
+        Sudah punya akun?{' '}
         <Link
           href={routes.signIn}
           className="font-semibold text-gray-700 transition-colors hover:text-blue"
         >
-          Sign In
+          Masuk
         </Link>
       </Text>
     </>

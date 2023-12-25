@@ -4,6 +4,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import publicRoute from "./app/router/public";
 import { TypeResponse } from "./types";
+import adminRoute from "./app/router/admin";
+import { createServer } from "http";
+import socket from "./app/socket/socket";
 // read .env
 dotenv.config({ path: ".env" });
 const PORT = process.env.PORT || 4000;
@@ -15,8 +18,8 @@ const PORT = process.env.PORT || 4000;
 // configuration express
 const app = express();
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json({}));
+app.use(bodyParser.urlencoded({ extended: false, limit: "100mb" }));
+app.use(express.json({ limit: "100mb" }));
 
 // router default
 app.get("/", (req: Request, res: Response) => {
@@ -31,8 +34,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 // use router
 app.use(publicRoute);
-
+app.use(adminRoute);
+const server = createServer(app);
+socket(server);
 // listen server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

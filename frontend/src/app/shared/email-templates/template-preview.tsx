@@ -84,10 +84,10 @@ function EmailForm({ template }: { template: string }) {
     setIsLoading(true);
     try {
       if (template === 'accountConfirmation') {
-        await sendAccountConfirmationEmail(data);
+        // await sendAccountConfirmationEmail(data);
       }
       if (template === 'orderConfirmation') {
-        await sendOrderConfirmationEmail(data);
+        // await sendOrderConfirmationEmail(data);
       }
       setReset(initialValues);
       setIsLoading(false);

@@ -1,145 +1,179 @@
 'use client';
 
-import { RefObject, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import * as dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Popover } from '@/components/ui/popover';
 import { Title } from '@/components/ui/text';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import TruckSolidIcon from '@/components/icons/truck-solid';
-import BrushSolidIcon from '@/components/icons/brush-solid';
-import CubeSolidIcon from '@/components/icons/cube-solid';
-import FileStackIcon from '@/components/icons/file-stack';
-import CloudTaskIcon from '@/components/icons/cloud-task';
-import ShoppingBagSolidIcon from '@/components/icons/shopping-bag-solid';
-import BulbSolidIcon from '@/components/icons/bulb-solid';
-import ParcelMapIcon from '@/components/icons/parcel-map';
 import Link from 'next/link';
 import { useMedia } from '@/hooks/use-media';
 import SimpleBar from '@/components/ui/simplebar';
 import { PiCheck } from 'react-icons/pi';
+import httpRequest from '@/config/httpRequest';
+import { useSession } from 'next-auth/react';
+import { FaBell } from 'react-icons/fa';
+import { Loader, Text } from 'rizzui';
+import toast from 'react-hot-toast';
+import socketClient from '@/socket/client';
 
 dayjs.extend(relativeTime);
 
-const data = [
-  {
-    id: 1,
-    name: 'Invitation for crafting engaging designs',
-    icon: <BrushSolidIcon />,
-    unRead: true,
-    sendTime: '2023-06-01T09:35:31.820Z',
-  },
-  {
-    id: 2,
-    name: 'Isomorphic dashboard redesign',
-    icon: <CubeSolidIcon />,
-    unRead: true,
-    sendTime: '2023-05-30T09:35:31.820Z',
-  },
-  {
-    id: 3,
-    name: '3 New Incoming Project Files:',
-    icon: <FileStackIcon />,
-    unRead: false,
-    sendTime: '2023-06-01T09:35:31.820Z',
-  },
-  {
-    id: 4,
-    name: 'Swornak purchased isomorphic',
-    icon: <ShoppingBagSolidIcon />,
-    unRead: false,
-    sendTime: '2023-05-21T09:35:31.820Z',
-  },
-  {
-    id: 5,
-    name: 'Task #45890 merged with #45890 in “Ads Pro Admin Dashboard project:',
-    icon: <CloudTaskIcon />,
-    unRead: true,
-    sendTime: '2023-06-01T09:35:31.820Z',
-  },
-  {
-    id: 6,
-    name: '3 new application design concepts added',
-    icon: <BulbSolidIcon />,
-    unRead: true,
-    sendTime: '2023-05-15T09:35:31.820Z',
-  },
-  {
-    id: 7,
-    name: 'Your order has been placed',
-    icon: <ParcelMapIcon />,
-    unRead: false,
-    sendTime: '2023-05-16T09:35:31.820Z',
-  },
-  {
-    name: 'Order has been shipped to #123221',
-    icon: <TruckSolidIcon />,
-    unRead: false,
-    sendTime: '2023-05-01T09:35:31.820Z',
-  },
-];
+type TypeFormatJson = {
+  content: string;
+  createdAt: string;
+  from: string;
+  id: string;
+  isRead: boolean;
+  title: string;
+  to: string;
+  updatedAt: string;
+};
+const toJson = (data: any) => {
+  return data.map((item: TypeFormatJson) => {
+    return {
+      content: item.content,
+      createdAt: item.createdAt,
+      from: item.from,
+      id: item.id,
+      isRead: item.isRead,
+      title: item.title,
+      to: item.to,
+      updatedAt: item.updatedAt,
+    };
+  });
+};
 
 function NotificationsList({
   setIsOpen,
 }: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { data: session } = useSession();
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const getData = () => {
+    try {
+      setLoading(true);
+      httpRequest({
+        method: 'get',
+        url: '/notification',
+        params: {
+          to: session.user['idUser'],
+        },
+      })
+        .then((response) => {
+          const result = toJson(response?.data?.data?.results?.data?.rows);
+          setRows(result);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log('err', err);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const readAll = (event) => {
+    httpRequest({
+      method: 'put',
+      url: '/notification',
+      params: {
+        id: rows.map((item) => item.id),
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        toast.success(<Text as="b">Notifikasi berhasil dibaca</Text>);
+        getData();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(<Text as="b">terjadi error</Text>);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="w-[320px] text-left rtl:text-right sm:w-[360px] 2xl:w-[420px]">
       <div className="mb-3 flex items-center justify-between ps-6">
-        <Title as="h5">Notifications</Title>
-        <Checkbox label="Mark All As Read" />
+        <Title as="h5">Notifikasi</Title>
+        {loading ? null : (
+          <Checkbox
+            disabled={
+              rows.filter((el) => el.isRead == true).length > 0 ||
+              rows.length == 0
+            }
+            onChange={readAll}
+            label="Baca Semua"
+          />
+        )}
       </div>
       <SimpleBar className="max-h-[420px]">
         <div className="grid cursor-pointer grid-cols-1 gap-1 ps-4">
-          {data.map((item) => (
-            <div
-              key={item.name + item.id}
-              className="group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-md px-2 py-2 pe-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-50"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded bg-gray-100/70 p-1 dark:bg-gray-50/50 [&>svg]:h-auto [&>svg]:w-5">
-                {item.icon}
-              </div>
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center">
-                <div className="w-full">
-                  <Title
-                    as="h6"
-                    className="mb-0.5 w-11/12 truncate text-sm font-semibold"
-                  >
-                    {item.name}
-                  </Title>
-                  <span className="ms-auto whitespace-nowrap pe-8 text-xs text-gray-500">
-                    {/* @ts-ignore */}
-                    {dayjs(item.sendTime).fromNow(true)}
-                  </span>
-                </div>
-                <div className="ms-auto flex-shrink-0">
-                  {item.unRead ? (
-                    <Badge
-                      renderAsDot
-                      size="lg"
-                      color="primary"
-                      className="scale-90"
-                    />
-                  ) : (
-                    <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
-                      <PiCheck className="h-auto w-[9px]" />
-                    </span>
-                  )}
-                </div>
-              </div>
+          {loading ? (
+            <div className="my-5 flex justify-center">
+              <Loader />
             </div>
-          ))}
+          ) : rows.length > 0 ? (
+            rows.map((item: TypeFormatJson) => (
+              <div
+                key={item.id}
+                className="group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-md px-2 py-2 pe-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-50"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded bg-gray-100/70 p-1 dark:bg-gray-50/50 [&>svg]:h-auto [&>svg]:w-5">
+                  <FaBell />
+                </div>
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center">
+                  <div className="w-full">
+                    <Title
+                      as="h6"
+                      className="mb-0.5 w-11/12 truncate text-sm font-semibold"
+                    >
+                      {item.title}
+                    </Title>
+                    <Text as="p">{item?.content}</Text>
+                    <span className="ms-auto whitespace-nowrap pe-8 text-xs text-gray-500">
+                      {/* @ts-ignore */}
+                      {dayjs(item.createdAt).fromNow(true)}
+                    </span>
+                  </div>
+                  <div className="ms-auto flex-shrink-0">
+                    {!item.isRead ? (
+                      <Badge
+                        renderAsDot
+                        size="lg"
+                        color="primary"
+                        className="scale-90"
+                      />
+                    ) : (
+                      <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
+                        <PiCheck className="h-auto w-[9px]" />
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <Text className="pointer-events-none">Tidak ada notifikasi</Text>
+          )}
         </div>
       </SimpleBar>
-      <Link
+      {/* <Link
         href={'#'}
         onClick={() => setIsOpen(false)}
         className="-me-6 block px-6 pb-0.5 pt-3 text-center hover:underline"
       >
         View All Activity
-      </Link>
+      </Link> */}
     </div>
   );
 }

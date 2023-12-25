@@ -4,7 +4,7 @@
  *
  * Don't include this comment in the md file.
  */
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Op } from "sequelize";
 import sequelize from "../../config/database";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
@@ -21,6 +21,11 @@ class User extends Model {
   declare gender: string;
   declare phone: string;
   declare history_sicknes: string;
+  declare photo: string;
+  declare isActive: boolean;
+  declare createdAt: string;
+  declare updatedAt: string;
+  declare deletedAt: string;
 }
 
 User.init(
@@ -72,10 +77,55 @@ User.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    photo: {
+      type: DataTypes.TEXT("long"),
+      allowNull: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "user",
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     tableName: "users",
     sequelize, // passing the `sequelize` instance is required
+    paranoid: true,
+    timestamps: true,
   }
 );
+
+User.beforeCreate(async (user) => {
+  const cari = await User.findOne({
+    where: {
+      [Op.or]: [
+        {
+          username: user.username,
+        },
+        {
+          email: user.username,
+        },
+      ],
+    },
+  });
+
+  if (cari) {
+    throw new Error("Akun sudah di daftarkan");
+  }
+});
 export default User;

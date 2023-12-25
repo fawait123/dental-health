@@ -2,12 +2,11 @@
 
 import uniqueId from 'lodash/uniqueId';
 import { PiXBold } from 'react-icons/pi';
-import { Controller, SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Input, Text, Textarea, Title } from 'rizzui';
+import { SubmitHandler } from 'react-hook-form';
+import { ActionIcon, Button, Switch, Text, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import toast from 'react-hot-toast';
-import { DatePicker } from '@/components/ui/datepicker';
 import cn from '@/utils/class-names';
 import { CalendarEvent } from '@/types';
 import useEventCalendar from '@/hooks/use-event-calendar';
@@ -15,6 +14,7 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
+import moment from 'moment';
 
 interface CreateEventProps {
   startDate?: Date;
@@ -33,6 +33,7 @@ export default function EventForm({
   const isUpdateEvent = event !== undefined;
 
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
+    console.log('data', data);
     const isNewEvent = data.id === '' || data.id === undefined;
 
     console.log('event_data', data);
@@ -53,11 +54,12 @@ export default function EventForm({
         location: data.location,
       });
     } else {
-      updateEvent({
-        ...data,
-        start: data.startDate,
-        end: data.endDate,
-      });
+      // updateEvent({
+      //   ...data,
+      //   start: data.startDate,
+      //   end: data.endDate,
+      // });
+      console.log('update event');
     }
     closeModal();
   };
@@ -66,7 +68,7 @@ export default function EventForm({
     <div className="m-auto p-4 md:px-7 md:py-10">
       <div className="mb-6 flex items-center justify-between">
         <Title as="h3" className="text-lg">
-          {isUpdateEvent ? 'Update Event' : 'Create a new event'}
+          Ceklis Menggosok Gigi
         </Title>
         <ActionIcon
           size="sm"
@@ -95,64 +97,17 @@ export default function EventForm({
         {({ register, control, watch, formState: { errors } }) => {
           const startDate = watch('startDate');
           const endDate = watch('endDate');
+          console.log(startDate, 'date');
+          console.log('format', moment(startDate).format('YYYY-MM-DD'));
           return (
             <>
               <input type="hidden" {...register('id')} value={event?.id} />
-              <Input
-                label="Event Name"
-                placeholder="Enter a name of event"
-                {...register('title')}
-                className="col-span-full"
-                error={errors.title?.message}
-              />
-
-              <Textarea
-                label="Event Description"
-                placeholder="Enter your event description"
-                {...register('description')}
-                error={errors.description?.message}
-                textareaClassName="h-20"
-                className="col-span-full"
-              />
-              <Input
-                label="Event Location"
-                placeholder="Enter your location"
-                {...register('location')}
-                error={errors.location?.message}
-                className="col-span-full"
-              />
-              <Controller
-                name="startDate"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    selected={value}
-                    onChange={onChange}
-                    selectsStart
-                    startDate={value}
-                    endDate={endDate}
-                    minDate={new Date()}
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
-                )}
-              />
-              <Controller
-                name="endDate"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    selected={value}
-                    onChange={onChange}
-                    selectsEnd
-                    minDate={startDate}
-                    startDate={startDate}
-                    endDate={value}
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
-                )}
-              />
+              <label className="font-medium">
+                {moment(startDate).format('DD MMMM YYYY')}
+              </label>
+              <br />
+              <Switch label="Siang" />
+              <Switch label="Malam" />
               <div className={cn('col-span-full grid grid-cols-2 gap-4 pt-5')}>
                 <Button
                   variant="outline"

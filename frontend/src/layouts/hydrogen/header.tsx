@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import RingBellSolidIcon from '@/components/icons/ring-bell-solid';
 import NotificationDropdown from '@/layouts/notification-dropdown';
-import MessagesDropdown from '@/layouts/messages-dropdown';
-import ChatSolidIcon from '@/components/icons/chat-solid';
+import { Text } from 'rizzui';
 import HamburgerButton from '@/layouts/hamburger-button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import SearchWidget from '@/components/search/search';
@@ -16,25 +15,13 @@ import Logo from '@/components/logo';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useWindowScroll } from '@/hooks/use-window-scroll';
 import SettingsButton from '@/components/settings/settings-button';
+import { useEffect } from 'react';
+import socketClient from '@/socket/client';
+import { toast } from 'react-toastify';
 
 function HeaderMenuRight() {
   return (
-    <div className="ms-auto grid shrink-0 grid-cols-4 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
-      <MessagesDropdown>
-        <ActionIcon
-          aria-label="Messages"
-          variant="text"
-          className="relative h-[34px] w-[34px] shadow backdrop-blur-md dark:bg-gray-100 md:h-9 md:w-9"
-        >
-          <ChatSolidIcon className="h-[18px] w-auto" />
-          <Badge
-            renderAsDot
-            color="success"
-            enableOutlineRing
-            className="absolute right-2.5 top-2.5 -translate-y-1/3 translate-x-1/2"
-          />
-        </ActionIcon>
-      </MessagesDropdown>
+    <div className="ms-auto grid shrink-0 grid-cols-2 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <NotificationDropdown>
         <ActionIcon
           aria-label="Notification"
@@ -50,7 +37,6 @@ function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown>
-      <SettingsButton />
       <ProfileMenu />
     </div>
   );
@@ -59,6 +45,20 @@ function HeaderMenuRight() {
 export default function Header() {
   const isMounted = useIsMounted();
   const windowScroll = useWindowScroll();
+  useEffect(() => {
+    socketClient.on('notification-client', (data) => {
+      const parseData = JSON.parse(data);
+      const audio = new Audio('/notification.mp3');
+      audio.play();
+      toast.info(<Text as="b">{parseData['content'] ?? ''}</Text>, {
+        data: parseData['content'] ?? '',
+      });
+      const notification = new Notification('Title', {
+        body: 'Lorem Ipsum dolor ismet',
+      });
+      console.log(notification);
+    });
+  }, []);
   return (
     <header
       className={cn(

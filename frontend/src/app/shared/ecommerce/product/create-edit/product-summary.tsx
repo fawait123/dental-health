@@ -8,14 +8,10 @@ import {
 } from '@/app/shared/ecommerce/product/create-edit/form-utils';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import QuillLoader from '@/components/loader/quill-loader';
+import { Checkbox } from 'rizzui';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
-});
-const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
-  ssr: false,
-  loading: () => <QuillLoader className="col-span-full h-[143px]" />,
 });
 
 export default function ProductSummary({ className }: { className?: string }) {
@@ -28,65 +24,76 @@ export default function ProductSummary({ className }: { className?: string }) {
   return (
     <FormGroup
       title="Summary"
-      description="Edit your product description and necessary information from here"
+      description="Create your control diabetes melitus here"
       className={cn(className)}
     >
       <Input
-        label="Title"
+        label="Kadar Gula Darah"
         placeholder="Product title"
         {...register('title')}
         error={errors.title?.message as string}
       />
       <Input
-        label="SKU"
+        label="MG/DL"
         placeholder="Product sku"
         {...register('sku')}
         error={errors.sku?.message as string}
       />
-
-      <Controller
-        name="type"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={typeOption}
-            value={value}
-            onChange={onChange}
-            label="Product Type"
-            error={errors?.type?.message as string}
-            getOptionValue={(option) => option.name}
-          />
-        )}
+      <Input
+        label="Tekanan Darah"
+        placeholder="Product title"
+        {...register('title')}
+        error={errors.title?.message as string}
       />
-
-      <Controller
-        name="categories"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={categoryOption}
-            value={value}
-            onChange={onChange}
-            label="Categories"
-            error={errors?.categories?.message as string}
-            getOptionValue={(option) => option.name}
-          />
-        )}
+      <Input
+        label="MM/HG"
+        placeholder="Product title"
+        {...register('title')}
+        error={errors.title?.message as string}
       />
-
-      <Controller
-        control={control}
-        name="description"
-        render={({ field: { onChange, value } }) => (
-          <QuillEditor
-            value={value}
-            onChange={onChange}
-            label="Description"
-            className="col-span-full [&_.ql-editor]:min-h-[100px]"
-            labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
+      <div className="block">
+        <label className="mb-2 block font-medium">Kontrol Konsumsi Obat</label>
+        <div className="flex w-full justify-between">
+          <Checkbox
+            className="col-span-1"
+            label="Pagi"
+            color="primary"
+            variant="flat"
           />
-        )}
-      />
+          <Checkbox
+            className="col-span-1"
+            label="Siang"
+            color="primary"
+            variant="flat"
+          />
+          <Checkbox
+            className="col-span-1"
+            label="Malam"
+            color="primary"
+            variant="flat"
+          />
+        </div>
+      </div>
+      <br />
+      <div className="w-full">
+        <label className="mb-2 block font-medium">
+          Aktifitas Fisik Dalam Sehari
+        </label>
+        <div className="flex w-full justify-between">
+          <Checkbox
+            className="col-span-1"
+            label="YA"
+            color="primary"
+            variant="flat"
+          />
+          <Checkbox
+            className="col-span-1"
+            label="TIDAK"
+            color="primary"
+            variant="flat"
+          />
+        </div>
+      </div>
     </FormGroup>
   );
 }

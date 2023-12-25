@@ -53,7 +53,7 @@ export default {
 
       const badReponse: TypeResponse = {
         status: 400,
-        message: "The credentials do not match to our record",
+        message: "Username atau password tidak ditemukan",
         data: {
           results: {},
         },
@@ -63,8 +63,16 @@ export default {
       if (!Security.decrypt(user.password, body.password))
         return res.status(400).json(badReponse);
 
-      const generateToken = await Jwt.sign(user.dataValues);
+      badReponse.message = "Akun tidak aktif";
+      if (user.isActive == false) return res.status(400).json(badReponse);
 
+      const payload = {
+        id: user.dataValues.id,
+        username: user.dataValues.username,
+        email: user.dataValues.email,
+      };
+
+      const generateToken = await Jwt.sign(payload);
       const response: TypeResponse = {
         status: 200,
         message: "Login successfully",

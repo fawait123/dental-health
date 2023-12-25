@@ -128,31 +128,7 @@ export const getColumns = ({
   onChecked,
 }: Columns) => [
   {
-    title: (
-      <div className="ps-3.5">
-        <Checkbox
-          title={'Select All'}
-          onChange={handleSelectAll}
-          checked={checkedItems.length === data.length}
-          className="cursor-pointer"
-        />
-      </div>
-    ),
-    dataIndex: 'checked',
-    key: 'checked',
-    width: 30,
-    render: (_: any, row: any) => (
-      <div className="inline-flex ps-3.5">
-        <Checkbox
-          className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
-        />
-      </div>
-    ),
-  },
-  {
-    title: <HeaderCell title="Product" />,
+    title: <HeaderCell title="Kadar Gula Darah" />,
     dataIndex: 'product',
     key: 'product',
     width: 300,
@@ -171,7 +147,7 @@ export const getColumns = ({
     ),
   },
   {
-    title: <HeaderCell title="SKU" />,
+    title: <HeaderCell title="MG/DL" />,
     dataIndex: 'sku',
     key: 'sku',
     width: 150,
@@ -180,7 +156,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Stock"
+        title="Tekanan Darah"
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
@@ -196,7 +172,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Price"
+        title="MM/HG"
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'price'
@@ -212,14 +188,14 @@ export const getColumns = ({
     ),
   },
   {
-    title: <HeaderCell title="Rating" />,
+    title: <HeaderCell title="Kontrol Konsumsi Obat" />,
     dataIndex: 'rating',
     key: 'rating',
     width: 200,
     render: (rating: number[]) => getRating(rating),
   },
   {
-    title: <HeaderCell title="Status" />,
+    title: <HeaderCell title="Aktifitas Fisik Dalam Sehari" />,
     dataIndex: 'status',
     key: 'status',
     width: 120,

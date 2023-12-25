@@ -117,7 +117,6 @@ export const getColumns = ({
         variant="outline"
         rounded="pill"
         className="w-[90px] font-medium"
-        // @ts-expect-error
         color={statusColors[status]}
       >
         {status}

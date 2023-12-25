@@ -27,8 +27,8 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
     menuItemsFiltered = pageLinks.filter((item: any) => {
       const label = item.name;
       return (
-        label.match(searchText.toLowerCase()) ||
-        (label.toLowerCase().match(searchText.toLowerCase()) && label)
+        label?.match(searchText.toLowerCase()) ||
+        (label?.toLowerCase()?.match(searchText.toLowerCase()) && label)
       );
     });
   }
@@ -52,7 +52,7 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
           value={searchText}
           ref={inputRef}
           onChange={(e) => setSearchText(() => e.target.value)}
-          placeholder="Search here"
+          placeholder="Cari Cepat"
           className="flex-1"
           prefix={
             <PiMagnifyingGlassBold className="h-[18px] w-[18px] text-gray-600" />
@@ -103,15 +103,16 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
         </>
 
         {menuItemsFiltered.map((item, index) => {
+          console.log(item);
           return (
             <Fragment key={item.name + '-' + index}>
               {item?.href ? (
                 <Link
-                  href={item?.href as string}
+                  href={item?.href}
                   className="relative my-0.5 flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100 focus:outline-none focus-visible:bg-gray-100 dark:hover:bg-gray-50/50 dark:hover:backdrop-blur-lg"
                 >
                   <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-500">
-                    <PiFileTextDuotone className="h-5 w-5" />
+                    {item?.icon}
                   </span>
 
                   <span className="ms-3 grid gap-0.5">
@@ -131,7 +132,7 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
                     index !== 0 && 'mt-6 4xl:mt-7'
                   )}
                 >
-                  {item.name}
+                  {item?.label}
                 </Title>
               )}
             </Fragment>
@@ -180,7 +181,7 @@ export default function SearchWidget({
           <PiMagnifyingGlassBold className="magnifying-glass me-2 h-[18px] w-[18px]" />
         )}
         <span className="placeholder-text hidden text-sm text-gray-600 group-hover:text-gray-900 xl:inline-flex">
-          Type what you are looking for...
+          Pencarian Menu ...
         </span>
         <span className="search-command ms-auto hidden items-center text-sm text-gray-600 lg:flex lg:rounded-md lg:bg-gray-200/70 lg:px-1.5 lg:py-1 lg:text-xs lg:font-semibold xl:justify-normal">
           <PiCommand strokeWidth={1.3} className="h-[15px] w-[15px]" />K

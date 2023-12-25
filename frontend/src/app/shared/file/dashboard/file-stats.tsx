@@ -2,62 +2,115 @@
 
 import cn from '@/utils/class-names';
 import { Button } from '@/components/ui/button';
-import { Title, Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { useScrollableSlider } from '@/hooks/use-scrollable-slider';
 import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
 import MetricCard from '@/components/cards/metric-card';
 import CircleProgressBar from '@/components/charts/circle-progressbar';
 import TrendingUpIcon from '@/components/icons/trending-up';
-import TrendingDownIcon from '@/components/icons/trending-down';
+import moment from 'moment';
+import { FaUserCog, FaBell, FaPaintBrush } from 'react-icons/fa';
+import { RiHealthBookFill } from 'react-icons/ri';
+import { GiHealingShield } from 'react-icons/gi';
 
 type FileStatsType = {
   className?: string;
+  data?: TypeData;
+};
+
+type TypeData = {
+  brusingCheckList?: TypeList;
+  controlDiabetes?: TypeList;
+  dentalHealth?: TypeList;
+  notification?: TypeList;
+  user?: TypeList;
+};
+
+type TypeList = {
+  count?: number;
+  latestUpdate?: object;
 };
 
 const filesStatData = [
   {
     id: 1,
-    title: 'Total Images',
+    title: 'Total Pengguna',
     metric: '36,476 GB',
     fill: '#3872FA',
     percentage: 32,
     increased: true,
     decreased: false,
     value: '+32.40',
+    key: 'user',
+    icons: <FaUserCog />,
+    iconClassName: 'bg-orange-700',
+    classDate: 'text-orange-700',
   },
   {
     id: 2,
-    title: 'Total Videos',
+    title: 'Total Notifikasi',
     metric: '53,406 GB',
-    fill: '#3872FA',
+    fill: '#15803d',
     percentage: 48,
     increased: false,
     decreased: true,
     value: '-18.45',
+    key: 'notification',
+    icons: <FaBell />,
+    iconClassName: 'bg-green-700',
+    classDate: 'text-green-700',
   },
   {
     id: 3,
-    title: 'Total Documents',
+    title: 'Total Menggosok Gigi',
     metric: '90,875 GB',
     fill: '#EE0000',
     percentage: 89,
     increased: true,
     decreased: false,
     value: '+20.34',
+    key: 'brusingCheckList',
+    icons: <FaPaintBrush />,
+    iconClassName: 'bg-emerald-700',
+    classDate: 'text-emerald-700',
   },
   {
     id: 4,
-    title: 'Total Musics',
+    title: 'Total Kontrol Diabetes',
     metric: '63,076 GB',
     fill: '#3872FA',
     percentage: 54,
     increased: true,
     decreased: false,
     value: '+14.45',
+    key: 'controlDiabetes',
+    icons: <RiHealthBookFill />,
+    iconClassName: 'bg-cyan-700',
+    classDate: 'text-cyan-700',
+  },
+  {
+    id: 5,
+    title: 'Total Pemeriksaan Kesahatan Gigi',
+    metric: '63,076 GB',
+    fill: '#3872FA',
+    percentage: 54,
+    increased: true,
+    decreased: false,
+    value: '+14.45',
+    key: 'dentalHealth',
+    icons: <GiHealingShield />,
+    iconClassName: 'bg-blue-700',
+    classDate: 'text-blue-700',
   },
 ];
 
-export function FileStatGrid({ className }: { className?: string }) {
+export function FileStatGrid({
+  className,
+  data,
+}: {
+  className?: string;
+  data?: TypeData;
+}) {
   return (
     <>
       {filesStatData.map((stat: any) => {
@@ -65,45 +118,25 @@ export function FileStatGrid({ className }: { className?: string }) {
           <MetricCard
             key={stat.id}
             title={stat.title}
-            metric={stat.metric}
+            metric={data[stat.key]?.count ?? 0}
             metricClassName="3xl:text-[22px]"
             className={cn('w-full max-w-full justify-between', className)}
-            chart={
-              <CircleProgressBar
-                percentage={stat.percentage}
-                size={80}
-                stroke="#D7E3FE"
-                strokeWidth={7}
-                progressColor={stat.fill}
-                useParentResponsive={true}
-                label={
-                  <Text
-                    as="span"
-                    className="font-lexend text-base font-medium text-gray-700"
-                  >
-                    {stat.percentage}%
-                  </Text>
-                }
-                strokeClassName="dark:stroke-gray-300"
-              />
-            }
+            icon={stat?.icons}
+            iconClassName={cn(stat?.iconClassName, 'text-gray-50')}
           >
             <Text className="mt-3 flex items-center leading-none text-gray-500">
               <Text
                 as="span"
                 className={cn(
                   'me-2 inline-flex items-center font-medium',
-                  stat.increased ? 'text-green' : 'text-red'
+                  stat?.classDate
                 )}
               >
-                {stat.increased ? (
-                  <TrendingUpIcon className="me-1 h-4 w-4" />
-                ) : (
-                  <TrendingDownIcon className="me-1 h-4 w-4" />
+                <TrendingUpIcon className="me-1 h-4 w-4" />
+                {moment(data[stat.key]?.latestUpdate?.createdAt).format(
+                  'DD MMMM YYYY'
                 )}
-                {stat.value}%
               </Text>
-              last month
             </Text>
           </MetricCard>
         );
@@ -112,7 +145,7 @@ export function FileStatGrid({ className }: { className?: string }) {
   );
 }
 
-export default function FileStats({ className }: FileStatsType) {
+export default function FileStats({ className, data }: FileStatsType) {
   const {
     sliderEl,
     sliderPrevBtn,
@@ -120,7 +153,6 @@ export default function FileStats({ className }: FileStatsType) {
     scrollToTheRight,
     scrollToTheLeft,
   } = useScrollableSlider();
-
   return (
     <div
       className={cn(
@@ -142,7 +174,7 @@ export default function FileStats({ className }: FileStatsType) {
           ref={sliderEl}
           className="custom-scrollbar-x grid grid-flow-col gap-5 overflow-x-auto scroll-smooth 2xl:gap-6 3xl:gap-8"
         >
-          <FileStatGrid className="min-w-[292px]" />
+          <FileStatGrid data={data} className="min-w-[292px]" />
         </div>
       </div>
       <Button

@@ -14,7 +14,8 @@ import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import httpRequest from '@/config/httpRequest';
-import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 
 const initialValues: LoginSchema = {
   username: '',
@@ -26,7 +27,6 @@ export default function SignInForm() {
   //TODO: why we need to reset it here
   const [reset, setReset] = useState({});
   const [loading, setLoading] = useState(false);
-  const navigation = useRouter();
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
@@ -38,15 +38,18 @@ export default function SignInForm() {
       });
       if (response.status == 200) {
         const credentials = response.data?.data?.results?.data;
+        localStorage.setItem('photo', credentials?.photo);
+        Cookies.set('role', credentials?.role);
         signIn('credentials', {
           ...credentials,
         });
-        setReset({ email: '', password: '', isRememberMe: false });
+        setReset({ email: '', password: '', isRememberMe: true });
+        toast.success(<Text as="b">Login berhasil</Text>);
       }
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }
   };
 
@@ -65,8 +68,8 @@ export default function SignInForm() {
             <Input
               type="text"
               size="lg"
-              label="Username or Email"
-              placeholder="Enter your username or email"
+              label="Username atau Email"
+              placeholder="Masukan username atau email anda"
               color="info"
               className="[&>label>span]:font-medium"
               inputClassName="text-sm"
@@ -75,7 +78,7 @@ export default function SignInForm() {
             />
             <Password
               label="Password"
-              placeholder="Enter your password"
+              placeholder="Masukan password anda"
               size="lg"
               className="[&>label>span]:font-medium"
               inputClassName="text-sm"
@@ -86,17 +89,17 @@ export default function SignInForm() {
             <div className="flex items-center justify-between pb-2">
               <Checkbox
                 {...register('rememberMe')}
-                label="Remember Me"
+                label="Ingat Saya"
                 color="info"
                 variant="flat"
                 className="[&>label>span]:font-medium"
               />
-              <Link
+              {/* <Link
                 href={routes.auth.forgotPassword1}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
                 Forget Password?
-              </Link>
+              </Link> */}
             </div>
             <Button
               className="w-full"
@@ -105,19 +108,19 @@ export default function SignInForm() {
               color="info"
               isLoading={loading}
             >
-              <span>Sign in</span>{' '}
+              <span>Masuk</span>{' '}
               <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
             </Button>
           </div>
         )}
       </Form>
       <Text className="mt-6 text-center leading-loose text-gray-500 lg:mt-8 lg:text-start">
-        Don’t have an account?{' '}
+        Tidak punya akun?{' '}
         <Link
           href={routes.auth.signUp1}
           className="font-semibold text-gray-700 transition-colors hover:text-blue"
         >
-          Sign Up
+          Daftar Sekarang
         </Link>
       </Text>
     </>

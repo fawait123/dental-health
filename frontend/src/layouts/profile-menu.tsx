@@ -20,10 +20,10 @@ const menuItems = [
   //   name: 'Account Settings',
   //   href: routes.forms.profileSettings,
   // },
-  {
-    name: 'Activity Log',
-    href: '#',
-  },
+  // {
+  //   name: 'Activity Log',
+  //   href: '#',
+  // },
 ];
 
 function DropdownMenu() {
@@ -33,7 +33,11 @@ function DropdownMenu() {
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={
+            localStorage.getItem('photo')
+              ? localStorage.getItem('photo')
+              : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+          }
           name="Albert Flores"
           color="invert"
         />
@@ -100,7 +104,11 @@ export default function ProfileMenu({
         )}
       >
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={
+            localStorage.getItem('photo')
+              ? localStorage.getItem('photo')
+              : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+          }
           name="John Doe"
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}

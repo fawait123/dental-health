@@ -40,7 +40,7 @@ export default function ShipmentNewsletterForm({
   return (
     <>
       <Form<FormValues>
-        validationSchema={newsLetterFormSchema}
+        // validationSchema={newsLetterFormSchema}
         resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
