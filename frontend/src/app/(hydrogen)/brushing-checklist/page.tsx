@@ -11,11 +11,9 @@ const pageHeader = {
   title: 'Ceklist Menggosok Gigi',
   breadcrumb: [
     {
-      href: routes.file.dashboard,
       name: 'Ceklist Menggosok Gigi',
     },
     {
-      href: routes.eventCalendar,
       name: 'index',
     },
   ],

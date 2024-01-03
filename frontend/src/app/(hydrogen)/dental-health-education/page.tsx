@@ -15,11 +15,9 @@ const pageHeader = {
   title: 'Edukasi Kesehatan Gigi',
   breadcrumb: [
     {
-      href: routes.file.dashboard,
       name: 'Edukasi Kesehatan Gigi',
     },
     {
-      href: routes.eventCalendar,
       name: 'index',
     },
   ],
