@@ -187,4 +187,51 @@ export default {
       return res.status(500).json(response);
     }
   },
+  forgotPassword: async (req: Request, res: Response) => {
+    try {
+      const { body } = req;
+
+      const user = await User.findOne({
+        where: {
+          email: body.email,
+        },
+      });
+      const responseNotFound: TypeResponse = {
+        status: 200,
+        message: "Akun tidak ditemukan",
+        data: {
+          results: {
+            data: {},
+          },
+        },
+      };
+
+      if (!user) return res.status(400).json(responseNotFound);
+
+      await user.update({
+        password: Security.encrypt(body.password),
+      });
+
+      const response: TypeResponse = {
+        status: 200,
+        message: "Sukses",
+        data: {
+          results: {
+            data: user,
+          },
+        },
+      };
+
+      return res.status(200).json(response);
+    } catch (error) {
+      const response: TypeResponse = {
+        status: 200,
+        message: error?.message,
+        data: {
+          results: {},
+        },
+      };
+      return res.status(500).json(response);
+    }
+  },
 };

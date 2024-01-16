@@ -52,6 +52,7 @@ const formatDataJson = (data): TypeJsonFormat[] => {
       CPITN: item?.CPITN,
       countTeeth: item?.countTeeth,
       countTeethLoose: item?.countTeethLoose,
+      numberofcavities: item?.numberofcavities,
       createdAt: item?.createdAt,
       updatedAt: item?.updatedAt,
       deletedAt: item?.deletedAt,

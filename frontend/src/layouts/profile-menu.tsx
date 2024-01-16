@@ -13,17 +13,9 @@ import { useEffect, useState } from 'react';
 
 const menuItems = [
   {
-    name: 'My Profile',
+    name: 'Profil Saya',
     href: routes.forms.profileSettings,
   },
-  // {
-  //   name: 'Account Settings',
-  //   href: routes.forms.profileSettings,
-  // },
-  // {
-  //   name: 'Activity Log',
-  //   href: '#',
-  // },
 ];
 
 function DropdownMenu() {
@@ -67,7 +59,7 @@ function DropdownMenu() {
           variant="text"
           onClick={() => signOut()}
         >
-          Sign Out
+          Keluar
         </Button>
       </div>
     </div>

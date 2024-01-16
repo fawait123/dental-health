@@ -37,7 +37,8 @@ interface IndexProps {
 function toJson(data): ControlDiabetesSchema {
   return data.length > 0
     ? {
-        bloodPressure: data[0]['bloodPressure'],
+        systole: data[0]['systole'],
+        diastole: data[0]['diastole'],
         bloodSugarPressure: data[0]['bloodSugarPressure'],
         controlDrugConsumption: JSON.parse(
           data[0]['controlDrugConsumption']
@@ -46,21 +47,13 @@ function toJson(data): ControlDiabetesSchema {
         userID: data[0]['userID'],
       }
     : {
-        bloodPressure: '',
+        systole: '',
+        diastole: '',
         bloodSugarPressure: '',
         controlDrugConsumption: [],
         physicalActivity: '',
         userID: '',
       };
-}
-
-function defaultValue(data): ControlDiabetesSchema {
-  return {
-    bloodPressure: data?.bloodSugarPressure,
-    bloodSugarPressure: data?.bloodSugarPressure,
-    controlDrugConsumption: data?.controlDrugConsumption as [],
-    physicalActivity: data?.physicalActivity == true ? 'YES' : 'NO',
-  };
 }
 
 export default function FormControlDiabetes({
@@ -86,7 +79,8 @@ export default function FormControlDiabetes({
           ...data,
           userID: data?.userID || session.user['idUser'],
           controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
-          bloodPressure: parseInt(data.bloodPressure),
+          systole: parseInt(data.systole),
+          diastole: parseInt(data.diastole),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
           physicalActivity: data.physicalActivity == 'YES' ? true : false,
         };
@@ -111,7 +105,8 @@ export default function FormControlDiabetes({
           ...data,
           userID: data?.userID || session.user['idUser'],
           controlDrugConsumption: JSON.stringify(data.controlDrugConsumption),
-          bloodPressure: parseInt(data.bloodPressure),
+          systole: parseInt(data.systole),
+          diastole: parseInt(data.diastole),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
           physicalActivity: data.physicalActivity == 'YES' ? true : false,
         };
@@ -155,11 +150,12 @@ export default function FormControlDiabetes({
         .then((response) => {
           const result = toJson(response?.data?.data?.results?.data?.rows);
           console.log(result);
-          methods.setValue('bloodPressure', result.bloodPressure.toString());
           methods.setValue(
             'bloodSugarPressure',
             result.bloodSugarPressure.toString()
           );
+          methods.setValue('systole', result.systole.toString());
+          methods.setValue('diastole', result.diastole.toString());
           methods.setValue(
             'controlDrugConsumption',
             result.controlDrugConsumption

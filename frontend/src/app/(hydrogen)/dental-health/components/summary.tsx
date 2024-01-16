@@ -86,7 +86,7 @@ export default function DentalHealthSummary({
         />
       ) : null}
       <Input
-        type="number"
+        type="text"
         label="Debris Index"
         placeholder="Debris Index"
         {...register('debrisindex')}
@@ -112,6 +112,13 @@ export default function DentalHealthSummary({
         placeholder="Jumlah Gigi Goyang"
         {...register('countTeethLoose')}
         error={errors.countTeethLoose?.message as string}
+      />
+      <Input
+        type="number"
+        label="Jumlah Gigi Berlubang"
+        placeholder="Jumlah Gigi Berlubang"
+        {...register('numberofcavities')}
+        error={errors.numberofcavities?.message as string}
       />
       <div className="block">
         <label className="mb-2 block font-medium">Kondisi Radang Gusi</label>

@@ -27,7 +27,7 @@ export default function DentalHealthEducationPage() {
   return (
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-        <div className="mt-4 flex items-center gap-3 @lg:mt-0">
+        {/* <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <ExportButton
             data={eventData}
             fileName="event_data"
@@ -39,7 +39,7 @@ export default function DentalHealthEducationPage() {
             customSize="900px"
             className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
           />
-        </div>
+        </div> */}
       </PageHeader>
 
       <CardApplicationUse />

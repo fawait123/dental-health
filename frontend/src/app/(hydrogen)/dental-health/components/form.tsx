@@ -29,6 +29,7 @@ type TypeJsonFormat = {
   CPITN: number;
   countTeeth: number;
   countTeethLoose: number;
+  numberofcavities: number;
   gingivitisConditions: boolean;
   userID: string;
 };
@@ -39,6 +40,7 @@ function toJson(data): TypeJsonFormat {
         CPITN: data[0]['CPITN'],
         countTeeth: data[0]['countTeeth'],
         countTeethLoose: data[0]['countTeethLoose'],
+        numberofcavities: data[0]['numberofcavities'],
         gingivitisConditions: data[0]['gingivitisConditions'],
         userID: data[0]['userID'],
       }
@@ -47,6 +49,7 @@ function toJson(data): TypeJsonFormat {
         CPITN: '',
         countTeeth: '',
         countTeethLoose: '',
+        numberofcavities: '',
         gingivitisConditions: '',
         userID: '',
       };
@@ -84,7 +87,8 @@ export default function FormDentalHealth({
           CPITN: parseInt(data.CPITN),
           countTeeth: parseInt(data?.countTeeth),
           countTeethLoose: parseInt(data?.countTeethLoose),
-          debrisIndex: parseInt(data?.debrisindex),
+          numberofcavities: parseInt(data?.numberofcavities),
+          debrisIndex: parseFloat(data?.debrisindex),
           gingivitisConditions:
             data?.gingivitisConditions == 'YA' ? true : false,
           userID: data?.userID || session.user['idUser'],
@@ -115,7 +119,8 @@ export default function FormDentalHealth({
           CPITN: parseInt(data.CPITN),
           countTeeth: parseInt(data?.countTeeth),
           countTeethLoose: parseInt(data?.countTeethLoose),
-          debrisIndex: parseInt(data?.debrisindex),
+          numberofcavities: parseInt(data?.numberofcavities),
+          debrisIndex: parseFloat(data?.debrisindex),
           gingivitisConditions:
             data?.gingivitisConditions == 'YA' ? true : false,
           userID: data?.userID || session.user['idUser'],
@@ -169,6 +174,10 @@ export default function FormDentalHealth({
             result?.countTeethLoose?.toString()
           );
           methods.setValue('debrisindex', result?.debrisindex?.toString());
+          methods.setValue(
+            'numberofcavities',
+            result?.numberofcavities?.toString()
+          );
           methods.setValue(
             'gingivitisConditions',
             result?.gingivitisConditions == true ? 'YA' : 'TIDAK'

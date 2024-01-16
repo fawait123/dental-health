@@ -68,7 +68,7 @@ export const getColumnsControlDiabetes = ({
     key: 'bloodPressure',
     width: 200,
     render: (_: string, row: ControlDiabetesType) => {
-      return <span>{`${row.bloodPressure} MM/HG`}</span>;
+      return <span>{`${row.systole}MM/${row.diastole}HG`}</span>;
     },
   },
   {

@@ -13,6 +13,9 @@ import {
   resetPasswordSchema,
   ResetPasswordSchema,
 } from '@/utils/validators/reset-password.schema';
+import httpRequest from '@/config/httpRequest';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const initialValues = {
   email: '',
@@ -22,10 +25,29 @@ const initialValues = {
 
 export default function ForgetPasswordForm() {
   const [reset, setReset] = useState({});
+  const [loading, setLoading] = useState(false);
+  const navigation = useRouter();
 
-  const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
-    console.log(data);
-    setReset(initialValues);
+  const onSubmit: SubmitHandler<ResetPasswordSchema> = async (data) => {
+    try {
+      setLoading(true);
+      const response = await httpRequest({
+        url: '/forgot-password',
+        method: 'post',
+        data,
+      });
+      if (response.status == 200) {
+        const credentials = response.data?.data?.results?.data;
+        localStorage.setItem('photo', credentials?.photo);
+        setReset({ email: '', password: '', isRememberMe: true });
+        toast.success(<Text as="b">Berhasil mengubah password</Text>);
+        navigation.push('/signin');
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
+    }
   };
 
   return (
@@ -46,7 +68,7 @@ export default function ForgetPasswordForm() {
               type="email"
               size="lg"
               label="Email"
-              placeholder="Enter your email"
+              placeholder="Masukan email anda"
               className="[&>label>span]:font-medium"
               color="info"
               inputClassName="text-sm"
@@ -55,7 +77,7 @@ export default function ForgetPasswordForm() {
             />
             <Password
               label="Password"
-              placeholder="Enter your password"
+              placeholder="Masukan password anda"
               size="lg"
               className="[&>label>span]:font-medium"
               color="info"
@@ -64,8 +86,8 @@ export default function ForgetPasswordForm() {
               error={errors.password?.message}
             />
             <Password
-              label="Confirm Password"
-              placeholder="Enter confirm password"
+              label="Konfirmasi Password"
+              placeholder="Konfirmasi password anda"
               size="lg"
               className="[&>label>span]:font-medium"
               color="info"
@@ -78,19 +100,20 @@ export default function ForgetPasswordForm() {
               type="submit"
               size="lg"
               color="info"
+              isLoading={loading}
             >
-              Reset Password
+              Ubah Password
             </Button>
           </div>
         )}
       </Form>
       <Text className="mt-6 text-center text-[15px] leading-loose text-gray-500 lg:mt-8 lg:text-start xl:text-base">
-        Don’t want to reset your password?{' '}
+        Tidak ingin mengubah password?{' '}
         <Link
-          href={routes.auth.signIn1}
+          href={routes.signIn}
           className="font-bold text-gray-700 transition-colors hover:text-blue"
         >
-          Sign In
+          Masuk
         </Link>
       </Text>
     </>

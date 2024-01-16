@@ -9,7 +9,7 @@ import { Op } from "sequelize";
 
 const months = [
   {
-    month: "Januari",
+    month: "50",
     value: "01",
     year: new Date().getFullYear(),
   },
@@ -66,6 +66,11 @@ const months = [
   {
     month: "Desember",
     value: "12",
+    year: new Date().getFullYear(),
+  },
+  {
+    month: "Desember2",
+    value: "13",
     year: new Date().getFullYear(),
   },
 ];
