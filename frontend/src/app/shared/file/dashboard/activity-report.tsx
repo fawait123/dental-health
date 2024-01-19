@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Tooltip,
 } from 'recharts';
 import { PiDownloadSimple } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
@@ -36,6 +37,7 @@ export default function ActivityReport({
   desciption,
 }: TypeActivityReport) {
   const isTablet = useMedia('(max-width: 800px)', false);
+  console.log('rows', rows);
 
   return (
     <WidgetCard
@@ -55,7 +57,7 @@ export default function ActivityReport({
               <Text className="text-gray-500">{item?.name}</Text>
               <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
                 {rows.reduce(
-                  (prev, next) => prev + parseInt(next[item?.slug]),
+                  (prev, next) => prev + parseFloat(next[item?.slug]),
                   0
                 )}
               </Text>
@@ -84,6 +86,7 @@ export default function ActivityReport({
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey="name" />
               <YAxis />
+              <Tooltip />
             </LineChart>
           </ResponsiveContainer>
         </div>

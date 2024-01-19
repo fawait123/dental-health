@@ -6,6 +6,7 @@ import ControlDiabetes from "../../models/ControlDiabetes";
 import BrushingChecklist from "../../models/BrushingCheklist";
 import DentalHealthCheck from "../../models/DentalHealthCheck";
 import { Op } from "sequelize";
+import moment from "moment";
 
 const months = [
   {
@@ -74,6 +75,18 @@ const months = [
     year: new Date().getFullYear(),
   },
 ];
+
+function getDatesArray(startDate: string, endDate: string): string[] {
+  const datesArray: string[] = [];
+  const currentDate = moment(new Date(startDate));
+
+  while (currentDate.isSameOrBefore(new Date(endDate))) {
+    datesArray.push(currentDate.format("YYYY-MM-DD"));
+    currentDate.add(1, "days");
+  }
+
+  return datesArray;
+}
 
 export default {
   get: async (req: Request, res: Response) => {
@@ -252,6 +265,64 @@ export default {
           results: {
             data: data,
           },
+        },
+      };
+
+      return res.status(200).json(response);
+    } catch (error) {
+      const response: TypeResponse = {
+        status: 500,
+        message: error.message,
+        data: {
+          results: {
+            data: {},
+          },
+        },
+      };
+
+      return res.status(500).json(response);
+    }
+  },
+  chart: async (req: Request, res: Response) => {
+    try {
+      const query = req.query;
+      const startDate: string = query?.startDate as string;
+      const endDate: string = query?.endDate as string;
+
+      const dateRange = getDatesArray(startDate, endDate).map(async (item) => {
+        const controlDiabetes = await ControlDiabetes.findOne({
+          where: {
+            userID: query?.userID || null,
+          },
+          order: [["createdAt", "desc"]],
+        });
+
+        const dentalHealth = await DentalHealthCheck.findOne({
+          where: {
+            userID: query?.userID || null,
+          },
+          order: [["createdAt", "desc"]],
+        });
+
+        return {
+          name: moment(item).format("DD MMMM YYYY"),
+          controlDiabetes: {
+            kadarguladarah: controlDiabetes?.bloodSugarPressure,
+            systole: controlDiabetes?.systole,
+            diastole: controlDiabetes?.diastole,
+          },
+          dentalHealth: {
+            debrisindex: dentalHealth?.debrisIndex,
+            cpitn: dentalHealth?.CPITN,
+          },
+        };
+      });
+
+      const response: TypeResponse = {
+        status: 200,
+        message: "success",
+        data: {
+          results: await Promise.all(dateRange),
         },
       };
 

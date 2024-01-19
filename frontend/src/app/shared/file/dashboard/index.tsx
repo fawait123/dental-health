@@ -12,6 +12,7 @@ import { IoClose } from 'react-icons/io5';
 import { useSession } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { DatePicker } from '@/components/ui/datepicker';
+import moment from 'moment';
 
 function toDataSelect(data: any) {
   return data.map((item) => {
@@ -63,24 +64,24 @@ const dataKeyDentalHealth: TypeDataKey[] = [
     bgcolor: 'bg-[#52D3D8]',
     color: '#52D3D8',
   },
-  {
-    name: 'Jumlah Gigi',
-    slug: 'jumlahgigi',
-    bgcolor: 'bg-[#FE7A36]',
-    color: '#FE7A36',
-  },
-  {
-    name: 'Jumlah Gigi Goyang',
-    slug: 'jumlahgigigoyang',
-    bgcolor: 'bg-[#3872FA]',
-    color: '#3872FA',
-  },
-  {
-    name: 'Jumlah Gigi Berlubang',
-    slug: 'jumlahgigiberlubang',
-    bgcolor: 'bg-[#000000]',
-    color: '#000000',
-  },
+  // {
+  //   name: 'Jumlah Gigi',
+  //   slug: 'jumlahgigi',
+  //   bgcolor: 'bg-[#FE7A36]',
+  //   color: '#FE7A36',
+  // },
+  // {
+  //   name: 'Jumlah Gigi Goyang',
+  //   slug: 'jumlahgigigoyang',
+  //   bgcolor: 'bg-[#3872FA]',
+  //   color: '#3872FA',
+  // },
+  // {
+  //   name: 'Jumlah Gigi Berlubang',
+  //   slug: 'jumlahgigiberlubang',
+  //   bgcolor: 'bg-[#000000]',
+  //   color: '#000000',
+  // },
 ];
 
 const dataControlDiabetes = [
@@ -122,7 +123,7 @@ export default function FileDashboard() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [modalState, setModalState] = useState(false);
-  const [filter, setFilter] = useState(users[0]?.value || null);
+  const [filter, setFilter] = useState(null);
   const [role] = useState(Cookies.get('role'));
   const { data: session } = useSession();
   const [datepiker, setDatePiker] = useState({
@@ -153,15 +154,19 @@ export default function FileDashboard() {
 
   const getChart = () => {
     try {
+      const payload = {
+        startDate: moment(datepiker.startDate).format('YYYY-MM-DD'),
+        endDate: moment(datepiker.endDate).format('YYYY-MM-DD'),
+        userID: filter == undefined ? null : filter,
+      };
       httpRequest({
-        url: '/dashboard/grapich',
+        url: '/dashboard/chart',
         method: 'get',
-        params: {
-          userID: role == 'user' ? session['user']['idUser'] : filter,
-        },
+        params: payload,
       })
         .then((response) => {
-          setGrapich(response?.data?.data?.results?.data);
+          console.log('chart', response?.data?.data);
+          setGrapich(response?.data?.data?.results);
         })
         .catch((er) => {
           console.log(er);
@@ -171,19 +176,21 @@ export default function FileDashboard() {
     }
   };
 
-  const getUser = () => {
+  const getUser = async () => {
     try {
-      httpRequest({
+      await httpRequest({
         url: '/user/all',
         method: 'get',
         params: {
           role: 'user',
-          userID: role == 'user' ? session['user']['idUser'] : filter,
+          id: role == 'user' ? session['user']['idUser'] : filter,
         },
       })
         .then((response) => {
-          setUsers(toDataSelect(response?.data?.data?.results?.data));
-          setFilter(users[0]?.value);
+          const result = response?.data?.data?.results?.data;
+          setUsers(toDataSelect(result));
+          console.log(users);
+          setFilter(result[0]?.id);
         })
         .catch((er) => {
           console.log(er);
@@ -193,6 +200,7 @@ export default function FileDashboard() {
 
   const onChange = (dates) => {
     const [start, end] = dates;
+    console.log(start, end);
     setDatePiker({
       startDate: start,
       endDate: end,
@@ -202,9 +210,13 @@ export default function FileDashboard() {
   useEffect(() => {
     getUser();
     getData();
-    getChart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    getChart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
 
   return (
     <div className="mt-2 @container">
@@ -214,7 +226,12 @@ export default function FileDashboard() {
           <ActivityReport
             desciption="Data Pasien Hans"
             dataKey={dataKeyDentalHealth}
-            rows={dataDentalHealth}
+            rows={grapich.map((item) => {
+              return {
+                name: item?.name,
+                ...item?.dentalHealth,
+              };
+            })}
             title="Diagram Garis Data Pemeriksaan Kesehatan Gigi dan Mulut"
           />
         </div>
@@ -224,20 +241,23 @@ export default function FileDashboard() {
           <ActivityReport
             desciption="Data Pasien Hans"
             dataKey={dataKeyControlDiabetes}
-            rows={dataControlDiabetes}
+            rows={grapich.map((item) => {
+              return {
+                name: item?.name,
+                ...item?.controlDiabetes,
+              };
+            })}
             title="Diagram Garis Data Kontrol Diabetes"
           />
         </div>
       </div>
 
-      {role == 'user' ? null : (
-        <div
-          className="sticky bottom-96 right-0 float-right flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-sm bg-gray-600 shadow backdrop-blur-md dark:bg-gray-700 md:h-9 md:w-9"
-          onClick={() => setModalState(true)}
-        >
-          <FaFilter className="h-[18px] w-auto text-gray-50" />
-        </div>
-      )}
+      <div
+        className="sticky bottom-96 right-0 float-right flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-sm bg-gray-600 shadow backdrop-blur-md dark:bg-gray-700 md:h-9 md:w-9"
+        onClick={() => setModalState(true)}
+      >
+        <FaFilter className="h-[18px] w-auto text-gray-50" />
+      </div>
 
       <Modal isOpen={modalState} onClose={() => setModalState(false)}>
         <div className="m-auto px-7 pb-8 pt-6">
