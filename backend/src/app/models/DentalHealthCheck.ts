@@ -17,6 +17,7 @@ class DentalHealthCheck extends Model {
   declare CPITN: number;
   declare countTeeth: number;
   declare countTeethLoose: number;
+  declare numberofcavities: number;
   declare gingivitisConditions: boolean;
   declare createdAt: string;
   declare updatedAt: string;
@@ -37,7 +38,7 @@ DentalHealthCheck.init(
       allowNull: false,
     },
     debrisIndex: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     CPITN: {
@@ -49,6 +50,10 @@ DentalHealthCheck.init(
       allowNull: false,
     },
     countTeethLoose: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    numberofcavities: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

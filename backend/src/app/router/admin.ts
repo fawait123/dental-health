@@ -38,6 +38,7 @@ adminRoute.delete("/user", UserController.delete);
 
 adminRoute.get("/dashboard/card", DashboardController.get);
 adminRoute.get("/dashboard/grapich", DashboardController.grapich);
+adminRoute.get("/dashboard/chart", DashboardController.chart);
 
 adminRoute.get("/notification", NotificationController.get);
 adminRoute.put("/notification", NotificationController.put);

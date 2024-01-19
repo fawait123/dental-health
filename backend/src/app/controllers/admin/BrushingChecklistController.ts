@@ -55,6 +55,25 @@ export default {
     try {
       const body = req.body;
 
+      const findData = await BrushingChecklist.findOne({
+        where: {
+          userID: body.userID,
+          date: body.date,
+        },
+      });
+
+      const responseError: TypeResponse = {
+        status: 200,
+        message: "Anda sudah mengisi data pada tanggal " + body.date,
+        data: {
+          results: {
+            data: {},
+          },
+        },
+      };
+
+      if (findData) return res.status(400).json(responseError);
+
       const brushingChecklist = await BrushingChecklist.create({ ...body });
 
       const response: TypeResponse = {

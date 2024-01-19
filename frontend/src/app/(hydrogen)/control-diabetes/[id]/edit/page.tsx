@@ -16,7 +16,6 @@ const pageHeader = {
   title: 'Edit Kontrol Diabetes Melitus',
   breadcrumb: [
     {
-      href: routes.eCommerce.products,
       name: 'Kontrol Diabetes Melitus',
     },
     {

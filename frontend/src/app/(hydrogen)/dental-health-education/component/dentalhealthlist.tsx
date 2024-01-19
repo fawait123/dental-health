@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import { Title, Text } from '@/components/ui/text';
 import WidgetCard from '@/components/cards/widget-card';
+import { styleFieldToClassName } from 'uploadthing/client';
 
 type TypePropsList = {
   icon?: any;
@@ -11,6 +12,8 @@ type TypePropsList = {
   content?: string;
   url?: string;
   setStatus?: any;
+  title?: string;
+  setName?: any;
 };
 export const DentalHealthListOne = ({
   icon,
@@ -18,12 +21,15 @@ export const DentalHealthListOne = ({
   content,
   url,
   setStatus,
+  title,
+  setName,
 }: TypePropsList) => {
   return (
     <WidgetCard
-      title={'Edukasi Kesehatan Gigi'}
+      title={title != undefined ? title : 'Edukasi Kesehatan Gigi'}
       titleClassName="leading-none"
       headerClassName="mb-3 lg:mb-4"
+      className="mb-4"
     >
       <div className="my-4 flex items-start">
         <div className="me-3 shrink-0">{icon}</div>
@@ -38,6 +44,7 @@ export const DentalHealthListOne = ({
             <a
               onClick={() => {
                 setStatus(true);
+                setName(name);
               }}
               href={url}
               target="_blank"

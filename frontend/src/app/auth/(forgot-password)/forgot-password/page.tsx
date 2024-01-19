@@ -8,7 +8,7 @@ export default function SignIn() {
     <AuthWrapperOne
       title={
         <>
-          Reset your{' '}
+          Form Lupa{' '}
           <span className="relative inline-block">
             password!
             <UnderlineShape className="absolute -bottom-2 end-0 h-2.5 w-28 text-blue xl:-bottom-1.5 xl:w-36" />

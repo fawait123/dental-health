@@ -15,7 +15,6 @@ const pageHeader = {
   title: 'Kontrol Diabetes Melitus',
   breadcrumb: [
     {
-      href: routes.controldiabetes.dashboard,
       name: 'Kontrol Diabetes Melitus',
     },
     {

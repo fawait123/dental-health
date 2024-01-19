@@ -7,7 +7,7 @@ import { PiHouseLineBold } from 'react-icons/pi';
 import { Title, Text } from '@/components/ui/text';
 
 // images and icons
-import NotFoundImg from '@public/not-found.png';
+// import NotFoundImg from '@public/notfound.png';
 
 export default function NotFoundPage() {
   const { push } = useRouter();
@@ -15,7 +15,9 @@ export default function NotFoundPage() {
     <div className="flex grow items-center px-6 xl:px-10">
       <div className="mx-auto text-center">
         <Image
-          src={NotFoundImg}
+          src={'/notfound.svg'}
+          height={320}
+          width={320}
           alt="not found"
           className="mx-auto mb-8 aspect-[360/326] max-w-[256px] xs:max-w-[370px] lg:mb-12 2xl:mb-16"
         />

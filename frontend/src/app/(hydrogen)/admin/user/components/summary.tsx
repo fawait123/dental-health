@@ -193,7 +193,7 @@ export default function DentalHealthSummary({
           },
           {
             value: 'doctor',
-            label: 'Dokter',
+            label: 'Tenaga Kesehatan',
           },
           {
             value: 'user',

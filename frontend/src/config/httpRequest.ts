@@ -5,6 +5,7 @@ import axios from 'axios';
 // Create Base URL nya
 const httpRequest = axios.create({
   baseURL: 'http://127.0.0.1:4000',
+  // baseURL: 'https://api.sipdmdent.com',
 });
 
 // Set token yang berada di localStorage sebagai header bearernya dengan menggunakan interceptor

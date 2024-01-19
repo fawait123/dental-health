@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Title } from '@/components/ui/text';
-import ForbiddenImg from '@public/403img.svg';
-import ForbiddenTwoImg from '@public/forbidden-two.png';
+// import ForbiddenImg from '@public/403img.svg';
+// import ForbiddenTwoImg from '@public/forbidden-two.png';
 import { PiHouseLineBold } from 'react-icons/pi';
 
 export default function AccessDeniedPage() {
@@ -15,12 +15,16 @@ export default function AccessDeniedPage() {
       <div className="mx-auto text-center">
         <div className="relative mx-auto max-w-[370px]">
           <Image
-            src={ForbiddenImg}
+            src={'/notfound.svg'}
+            width={320}
+            height={320}
             alt="forbidden"
             className="mx-auto mb-8 aspect-[360/326] max-w-[256px] xs:max-w-[370px] lg:mb-12 2xl:mb-16"
           />
           <Image
-            src={ForbiddenTwoImg}
+            src={'/notfound.svg'}
+            width={320}
+            height={320}
             alt="forbidden"
             className="absolute right-10 top-10 aspect-auto max-w-[100px] dark:right-0 dark:top-5 dark:invert "
           />

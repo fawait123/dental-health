@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import logoImg from '@public/logo.svg';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import logoIconImg from '@public/logo-short.svg';
+// import logoIconImg from '@public/logo-short.svg';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 
 enum MODE {
@@ -13,7 +13,7 @@ export const siteConfig = {
   title: 'SIP DM-DENT',
   description: `SIP DM-DENT`,
   logo: logoImg,
-  icon: logoIconImg,
+  icon: logoImg,
   mode: MODE.LIGHT,
   layout: LAYOUT_OPTIONS.HYDROGEN,
   // TODO: favicon

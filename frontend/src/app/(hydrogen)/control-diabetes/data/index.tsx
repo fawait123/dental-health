@@ -1,6 +1,8 @@
 export type ControlDiabetesType = {
   id: string;
   bloodPressure: string;
+  systole: string;
+  diastole: string;
   bloodSugarPressure: string;
   controlDrugConsumption: string;
   createdAt: string;

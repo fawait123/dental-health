@@ -15,6 +15,8 @@ class ControlDiabetes extends Model {
   declare userID: string;
   declare bloodSugarPressure: number;
   declare bloodPressure: number;
+  declare systole: number;
+  declare diastole: number;
   declare controlDrugConsumption: string;
   declare physicalActivity: boolean;
   declare createdAt: string;
@@ -41,7 +43,13 @@ ControlDiabetes.init(
     },
     bloodPressure: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+    },
+    systole: {
+      type: DataTypes.INTEGER,
+    },
+    diastole: {
+      type: DataTypes.INTEGER,
     },
     controlDrugConsumption: {
       type: DataTypes.STRING(288),

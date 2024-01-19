@@ -82,16 +82,25 @@ export default function ControlDiabetesSummary({
       <Input
         type="number"
         label="Kadar Gula Darah"
+        className="w-full"
         placeholder="Kadar Gula Darah"
         {...register('bloodSugarPressure')}
         error={errors.bloodSugarPressure?.message as string}
       />
+      <br />
       <Input
         type="number"
-        label="Tekanan Darah"
-        placeholder="Tekanan Darah"
-        {...register('bloodPressure')}
-        error={errors.bloodPressure?.message as string}
+        label="Systole"
+        placeholder="Systole"
+        {...register('systole')}
+        error={errors.systole?.message as string}
+      />
+      <Input
+        type="number"
+        label="Diastole"
+        placeholder="Diastole"
+        {...register('diastole')}
+        error={errors.diastole?.message as string}
       />
       <div className="block">
         <label className="mb-2 block font-medium">Kontrol Konsumsi Obat</label>

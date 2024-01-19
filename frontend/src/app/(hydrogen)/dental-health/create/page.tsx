@@ -14,7 +14,6 @@ const pageHeader = {
   title: 'Tambah Pemeriksaan Kesehatan Gigi & Mulut',
   breadcrumb: [
     {
-      href: routes.eCommerce.products,
       name: 'Pemeriksaan Kesehatan Gigi & Mulut',
     },
     {

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { PiHouseLineBold } from 'react-icons/pi';
 import SocialItems from '@/components/ui/social-shares';
 import { siteConfig } from '@/config/site.config';
-import NotFoundImg from '@public/not-found.png';
+// import NotFoundImg from '@public/not-found.png';
 
 export default function NotFound() {
   return (
@@ -24,8 +24,10 @@ export default function NotFound() {
       <div className="flex grow items-center px-6 xl:px-10">
         <div className="mx-auto text-center">
           <Image
-            src={NotFoundImg}
+            src={'/notfound.svg'}
             alt="not found"
+            width={320}
+            height={320}
             className="mx-auto mb-8 aspect-[360/326] max-w-[256px] xs:max-w-[370px] lg:mb-12 2xl:mb-16"
           />
           <Title

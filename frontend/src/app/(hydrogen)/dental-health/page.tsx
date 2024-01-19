@@ -15,7 +15,6 @@ const pageHeader = {
   title: 'Pemeriksaan Kesehatan Gigi & Mulut',
   breadcrumb: [
     {
-      href: routes.dentalHealt.dashboard,
       name: 'Pemeriksaan Kesehatan Gigi & Mulut',
     },
     {

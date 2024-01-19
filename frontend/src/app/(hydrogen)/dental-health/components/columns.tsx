@@ -16,6 +16,7 @@ export type ListData = {
   CPITN: number;
   countTeeth: number;
   countTeethLoose: number;
+  numberofcavities: number;
   createdAt: string;
   debrisIndex: number;
   deletedAt: string;
@@ -92,6 +93,15 @@ export const getColumnsDentalHealth = ({
     width: 200,
     render: (_: number, row: ListData) => (
       <Text className="text-sm">{row.countTeethLoose}</Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Jumlah Gigi Berlubang" />,
+    dataIndex: 'numberofcavities',
+    key: 'numberofcavities',
+    width: 200,
+    render: (_: number, row: ListData) => (
+      <Text className="text-sm">{row.numberofcavities}</Text>
     ),
   },
   {
