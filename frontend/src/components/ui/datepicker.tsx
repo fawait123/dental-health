@@ -41,6 +41,7 @@ export interface DatePickerProps<selectsRange extends boolean | undefined>
   selectsRange?: selectsRange;
   /** Pass input props to style input */
   inputProps?: InputProps;
+  containerClassName?: string;
 }
 
 export const DatePicker = ({
@@ -52,13 +53,16 @@ export const DatePicker = ({
   onCalendarClose,
   inputProps,
   calendarClassName,
+  containerClassName,
   ...props
 }: DatePickerProps<boolean>) => {
   const [isCalenderOpen, setIsCalenderOpen] = useState(false);
   const handleCalenderOpen = () => setIsCalenderOpen(true);
   const handleCalenderClose = () => setIsCalenderOpen(false);
   return (
-    <div className={cn('[&_.react-datepicker-wrapper]:w-full')}>
+    <div
+      className={cn('[&_.react-datepicker-wrapper]:w-full', containerClassName)}
+    >
       <ReactDatePicker
         customInput={
           customInput || (

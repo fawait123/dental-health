@@ -6,142 +6,62 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
 } from 'recharts';
-import { CustomTooltip } from '@/components/charts/custom-tooltip';
-import { PiDownloadSimple, PiUploadSimple } from 'react-icons/pi';
+import { PiDownloadSimple } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
 import { useMedia } from '@/hooks/use-media';
+import cn from '@/utils/class-names';
 
-const data = [
-  {
-    month: 'Jan',
-    downloads: 2000,
-    uploads: 1000,
-  },
-  {
-    month: 'Feb',
-    downloads: 4200,
-    uploads: 3700,
-  },
-  {
-    month: 'Mar',
-    downloads: 3000,
-    uploads: 5800,
-  },
-  {
-    month: 'Apr',
-    downloads: 5780,
-    uploads: 3908,
-  },
-  {
-    month: 'May',
-    downloads: 4080,
-    uploads: 2500,
-  },
-  {
-    month: 'Jun',
-    downloads: 2300,
-    uploads: 5200,
-  },
-  {
-    month: 'Jul',
-    downloads: 4890,
-    uploads: 6500,
-  },
-  {
-    month: 'Aug',
-    downloads: 3780,
-    uploads: 4908,
-  },
-  {
-    month: 'Sep',
-    downloads: 5800,
-    uploads: 2800,
-  },
-  {
-    month: 'Oct',
-    downloads: 6000,
-    uploads: 1908,
-  },
-  {
-    month: 'Nov',
-    downloads: 2780,
-    uploads: 3908,
-  },
-  {
-    month: 'Dec',
-    downloads: 7500,
-    uploads: 3000,
-  },
-];
-
-type TypeFilter = {
-  label?: string;
-  value?: string;
+type TypeDataKey = {
+  name?: string;
+  slug?: string;
+  color?: string;
+  bgcolor?: string;
 };
-
+type TypeActivityReport = {
+  className?: string;
+  rows?: any[];
+  title?: string;
+  dataKey?: TypeDataKey[];
+  desciption?: string;
+};
 export default function ActivityReport({
   className,
   rows,
-}: {
-  className?: string;
-  rows?: any[];
-}) {
+  title,
+  dataKey,
+  desciption,
+}: TypeActivityReport) {
   const isTablet = useMedia('(max-width: 800px)', false);
 
   return (
     <WidgetCard
-      title={'Diagram Garis Data Pasien'}
+      title={title || ''}
+      description={desciption || ''}
       titleClassName="text-lg xl:text-xl font-semibold"
+      descriptionClassName="text-sm font-light my-3"
       className={className}
     >
       <div className="mt-3 flex items-start 2xl:mt-5">
-        <div className="me-9 flex items-start">
-          <div className="me-3 rounded bg-[#282ECA] p-2 text-white">
-            <PiDownloadSimple className="h-6 w-6" />
+        {dataKey.map((item, index) => (
+          <div key={index} className="me-9 flex items-start">
+            <div className={cn('me-3 rounded p-2 text-white', item?.bgcolor)}>
+              <PiDownloadSimple className="h-6 w-6" />
+            </div>
+            <div>
+              <Text className="text-gray-500">{item?.name}</Text>
+              <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
+                {rows.reduce(
+                  (prev, next) => prev + parseInt(next[item?.slug]),
+                  0
+                )}
+              </Text>
+            </div>
           </div>
-          <div>
-            <Text className="text-gray-500">Dental Health</Text>
-            <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
-              {rows?.reduce(
-                (prev, next) => prev + parseInt(next?.dentalHealth),
-                0
-              )}
-            </Text>
-          </div>
-        </div>
-        <div className="mr-9 flex items-start">
-          <div className="me-3 rounded bg-[#4052F6] p-2 text-white">
-            <PiUploadSimple className="h-6 w-6" />
-          </div>
-          <div>
-            <Text className="text-gray-500">Control Diabetes</Text>
-            <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
-              {rows?.reduce(
-                (prev, next) => prev + parseInt(next?.controlDiabetes),
-                0
-              )}
-            </Text>
-          </div>
-        </div>
-        <div className="flex items-start">
-          <div className="me-3 rounded bg-[#96C0FF] p-2 text-white">
-            <PiUploadSimple className="h-6 w-6" />
-          </div>
-          <div>
-            <Text className="text-gray-500">Brushing Checklist</Text>
-            <Text className="font-lexend text-sm font-semibold text-gray-900 dark:text-gray-700 2xl:text-base">
-              {rows?.reduce(
-                (prev, next) => prev + parseInt(next?.brushingChecklist),
-                0
-              )}
-            </Text>
-          </div>
-        </div>
+        ))}
       </div>
       <SimpleBar>
         <div className="h-96 w-full pt-9">
@@ -150,57 +70,21 @@ export default function ActivityReport({
             height="100%"
             {...(isTablet && { minWidth: '700px' })}
           >
-            <AreaChart
-              data={rows}
-              margin={{
-                left: -16,
-              }}
-              className="[&_.recharts-cartesian-axis-tick-value]:fill-gray-500 rtl:[&_.recharts-cartesian-axis.yAxis]:-translate-x-12 [&_.recharts-cartesian-grid-vertical]:opacity-0"
-            >
-              <defs>
-                <linearGradient id="downloads" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6B46FF" stopOpacity={0.1} />
-                  <stop offset="95%" stopColor="#6B46FF" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="uploads" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00D1FF" stopOpacity={0.1} />
-                  <stop offset="95%" stopColor="#00D1FF" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="8 10" strokeOpacity={0.435} />
-              <XAxis
-                dataKey="month"
-                axisLine={false}
-                tickLine={false}
-                className=" "
-              />
-              <YAxis tickLine={false} className=" " />
-              <Tooltip content={<CustomTooltip />} />
-              <Area
-                type="monotone"
-                dataKey="dentalHealth"
-                stroke="#282ECA"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#downloads)"
-              />
-              <Area
-                type="monotone"
-                dataKey="controlDiabetes"
-                stroke="#4052F6"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#uploads)"
-              />
-              <Area
-                type="monotone"
-                dataKey="brushingChecklist"
-                stroke="#96C0FF"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#uploads)"
-              />
-            </AreaChart>
+            <LineChart width={600} height={300} data={rows}>
+              {dataKey.map((item, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={item?.slug}
+                  strokeWidth={2}
+                  stroke={item?.color}
+                />
+              ))}
+
+              <CartesianGrid stroke="#ccc" />
+              <XAxis dataKey="name" />
+              <YAxis />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </SimpleBar>

@@ -11,6 +11,7 @@ import { ActionIcon, Button, Modal, NativeSelect, Text } from 'rizzui';
 import { IoClose } from 'react-icons/io5';
 import { useSession } from 'next-auth/react';
 import Cookies from 'js-cookie';
+import { DatePicker } from '@/components/ui/datepicker';
 
 function toDataSelect(data: any) {
   return data.map((item) => {
@@ -21,15 +22,114 @@ function toDataSelect(data: any) {
   });
 }
 
+type TypeDataKey = {
+  name?: string;
+  slug?: string;
+  bgcolor?: string;
+  color?: string;
+};
+
+const dataKeyControlDiabetes: TypeDataKey[] = [
+  {
+    name: 'Kadar Gula Darah',
+    slug: 'kadarguladarah',
+    bgcolor: 'bg-[#8884d8]',
+    color: '#8884d8',
+  },
+  {
+    name: 'Systole',
+    slug: 'systole',
+    bgcolor: 'bg-[#52D3D8]',
+    color: '#52D3D8',
+  },
+  {
+    name: 'Diastole',
+    slug: 'diastole',
+    bgcolor: 'bg-[#FE7A36]',
+    color: '#FE7A36',
+  },
+];
+
+const dataKeyDentalHealth: TypeDataKey[] = [
+  {
+    name: 'Debris Index',
+    slug: 'debrisindex',
+    bgcolor: 'bg-[#8884d8]',
+    color: '#8884d8',
+  },
+  {
+    name: 'CPITN',
+    slug: 'cpitn',
+    bgcolor: 'bg-[#52D3D8]',
+    color: '#52D3D8',
+  },
+  {
+    name: 'Jumlah Gigi',
+    slug: 'jumlahgigi',
+    bgcolor: 'bg-[#FE7A36]',
+    color: '#FE7A36',
+  },
+  {
+    name: 'Jumlah Gigi Goyang',
+    slug: 'jumlahgigigoyang',
+    bgcolor: 'bg-[#3872FA]',
+    color: '#3872FA',
+  },
+  {
+    name: 'Jumlah Gigi Berlubang',
+    slug: 'jumlahgigiberlubang',
+    bgcolor: 'bg-[#000000]',
+    color: '#000000',
+  },
+];
+
+const dataControlDiabetes = [
+  { name: 'Page A', kadarguladarah: 400, systole: 2400, diastole: 2400 },
+  { name: 'Page B', kadarguladarah: 300, systole: 2700, diastole: 2600 },
+  { name: 'Page C', kadarguladarah: 200, systole: 2800, diastole: 2900 },
+];
+
+const dataDentalHealth = [
+  {
+    name: 'Page A',
+    debrisindex: 400,
+    cpitn: 2400,
+    jumlahgigi: 2400,
+    jumlahgigigoyang: 300,
+    jumlahgigiberlubang: 820,
+  },
+  {
+    name: 'Page B',
+    debrisindex: 300,
+    cpitn: 2700,
+    jumlahgigi: 2600,
+    jumlahgigigoyang: 100,
+    jumlahgigiberlubang: 840,
+  },
+  {
+    name: 'Page C',
+    debrisindex: 200,
+    cpitn: 2800,
+    jumlahgigi: 2900,
+    jumlahgigigoyang: 150,
+    jumlahgigiberlubang: 790,
+  },
+];
+
 export default function FileDashboard() {
   const [data, setData] = useState({});
   const [grapich, setGrapich] = useState([]);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [modalState, setModalState] = useState(false);
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState(users[0]?.value || null);
   const [role] = useState(Cookies.get('role'));
   const { data: session } = useSession();
+  const [datepiker, setDatePiker] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
   const getData = () => {
     try {
       setLoading(true);
@@ -78,6 +178,7 @@ export default function FileDashboard() {
         method: 'get',
         params: {
           role: 'user',
+          userID: role == 'user' ? session['user']['idUser'] : filter,
         },
       })
         .then((response) => {
@@ -90,6 +191,14 @@ export default function FileDashboard() {
     } catch (error) {}
   };
 
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setDatePiker({
+      startDate: start,
+      endDate: end,
+    });
+  };
+
   useEffect(() => {
     getUser();
     getData();
@@ -100,21 +209,24 @@ export default function FileDashboard() {
   return (
     <div className="mt-2 @container">
       <FileStats data={data} className="mb-5 2xl:mb-8" />
-      <div className="mb-6 grid grid-cols-1 gap-6 @4xl:grid-cols-12 2xl:mb-8 2xl:gap-8">
-        <StorageReport
-          rows={grapich}
-          className="@container @4xl:col-span-8 @[96.937rem]:col-span-9"
-        />
-        <StorageSummary
-          row={data}
-          loading={loading}
-          className="@4xl:col-span-4 @[96.937rem]:col-span-3"
-        />
+      <div className="mb-4 grid grid-cols-1 gap-6 @container lg:grid-cols-12 2xl:gap-8">
+        <div className="col-span-full flex flex-col gap-6 @5xl:col-span-12 2xl:gap-12 3xl:col-span-12">
+          <ActivityReport
+            desciption="Data Pasien Hans"
+            dataKey={dataKeyDentalHealth}
+            rows={dataDentalHealth}
+            title="Diagram Garis Data Pemeriksaan Kesehatan Gigi dan Mulut"
+          />
+        </div>
       </div>
-
       <div className="grid grid-cols-1 gap-6 @container lg:grid-cols-12 2xl:gap-8 ">
         <div className="col-span-full flex flex-col gap-6 @5xl:col-span-12 2xl:gap-12 3xl:col-span-12">
-          <ActivityReport rows={grapich} />
+          <ActivityReport
+            desciption="Data Pasien Hans"
+            dataKey={dataKeyControlDiabetes}
+            rows={dataControlDiabetes}
+            title="Diagram Garis Data Kontrol Diabetes"
+          />
         </div>
       </div>
 
@@ -146,6 +258,27 @@ export default function FileDashboard() {
               options={users}
               onChange={(event) => setFilter(event.target.value)}
             />
+            <DatePicker
+              containerClassName="col-span-2"
+              startDate={datepiker?.startDate}
+              endDate={datepiker.endDate}
+              onChange={onChange}
+              selectsRange={true}
+            />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <Button
               type="submit"
               size="lg"
