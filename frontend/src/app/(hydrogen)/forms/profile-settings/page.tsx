@@ -5,7 +5,7 @@ import ProfileSettingsNav from '@/app/shared/account-settings/navigation';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {
-  ...metaObject('Profile Settings'),
+  ...metaObject('Pengaturan Akun'),
 };
 
 const pageHeader = {

@@ -13,7 +13,7 @@ import { useBerylliumSidebars } from '@/layouts/beryllium/beryllium-utils';
 
 const menuItems = [
   {
-    label: 'My Details',
+    label: 'Detail Akun',
     value: '/forms/profile-settings',
   },
   // {
