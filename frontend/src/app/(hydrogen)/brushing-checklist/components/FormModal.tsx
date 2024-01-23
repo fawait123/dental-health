@@ -92,6 +92,7 @@ export default function FormModal({
                 Menggosok Gigi
               </Text>
             );
+            getData();
           })
           .catch((err) => {
             closeModal();
