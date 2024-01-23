@@ -14,8 +14,10 @@ import toast from 'react-hot-toast';
 
 function DetailsEventsBrushingChecklist({
   event,
+  getData,
 }: {
   event: CalendarEventBrushingChecklist;
+  getData?: () => void;
 }) {
   const { deleteEvent } = useEventCalendar();
   const { openModal, closeModal } = useModal();
@@ -23,7 +25,7 @@ function DetailsEventsBrushingChecklist({
   function handleEditModal() {
     closeModal(),
       openModal({
-        view: <FormModal event={event} />,
+        view: <FormModal event={event} getData={getData} />,
         customSize: '650px',
       });
   }
@@ -96,13 +98,13 @@ function DetailsEventsBrushingChecklist({
             onClick={() => handleDelete(event.id as string)}
             className="dark:hover:border-gray-400"
           >
-            Delete
+            Hapus
           </Button>
           <Button
             className="hover:bg-gray-700 dark:bg-gray-200 dark:text-white dark:hover:bg-gray-300 dark:active:bg-gray-100"
             onClick={handleEditModal}
           >
-            Edit
+            Ubah
           </Button>
         </div>
       </div>

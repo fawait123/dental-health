@@ -55,7 +55,6 @@ export default function FormModal({
           data: payload,
         })
           .then((response) => {
-            console.log(response);
             closeModal();
             toast.success(
               <Text as="b">
@@ -95,11 +94,13 @@ export default function FormModal({
             getData();
           })
           .catch((err) => {
+            console.log(err, 'err');
             closeModal();
             toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
           });
       }
     } catch (error) {
+      console.log('error', error);
       closeModal();
       toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }

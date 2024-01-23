@@ -79,10 +79,13 @@ export default function CalendarEventBrusingChecklist() {
     (event: CalendarEventBrushingChecklist) => {
       console.log(event);
       openModal({
-        view: <DetailsEventsBrushingChecklist event={event} />,
+        view: (
+          <DetailsEventsBrushingChecklist getData={getData} event={event} />
+        ),
         customSize: '500px',
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [openModal]
   );
 
