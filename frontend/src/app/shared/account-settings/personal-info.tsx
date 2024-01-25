@@ -107,8 +107,8 @@ export default function PersonalInfoView() {
         return (
           <>
             <FormGroup
-              title="Personal Info"
-              description="Update your photo and personal details here"
+              title="Informasi Akun"
+              description="Formulir untuk mengubah data akun anda"
               className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
             />
 

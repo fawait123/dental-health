@@ -15,6 +15,17 @@ function toArray(data: string) {
   return JSON.parse(data) as [];
 }
 
+const convertControlConsumtionDrug = (value) => {
+  switch (value) {
+    case 'morning':
+      return 'Pagi';
+    case 'afternoon':
+      return 'Siang';
+    default:
+      return 'Malam';
+  }
+};
+
 type Columns = {
   data: any[];
   sortConfig?: any;
@@ -80,7 +91,7 @@ export const getColumnsControlDiabetes = ({
       return toArray(row.controlDrugConsumption).map((item, index) => {
         return (
           <Tag color="primary" key={index} className="mb-1">
-            {item}
+            {convertControlConsumtionDrug(item)}
           </Tag>
         );
       });
@@ -94,7 +105,7 @@ export const getColumnsControlDiabetes = ({
     render: (_: string, row: ControlDiabetesType) => {
       return (
         <Tag color={row.physicalActivity == true ? 'primary' : 'danger'}>
-          {row.physicalActivity == true ? 'YES' : 'NO'}
+          {row.physicalActivity == true ? 'IYA' : 'TIDAK'}
         </Tag>
       );
     },

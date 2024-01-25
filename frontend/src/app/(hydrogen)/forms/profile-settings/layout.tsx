@@ -11,7 +11,7 @@ const pageHeader = {
     },
     {
       href: routes.forms.profileSettings,
-      name: 'Profile Setting',
+      name: 'Pengaturan Akun',
     },
   ],
 };

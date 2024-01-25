@@ -1,8 +1,6 @@
 'use client';
 
-import StorageReport from '@/app/shared/file/dashboard/storage-report';
 import FileStats from '@/app/shared/file/dashboard/file-stats';
-import StorageSummary from '@/app/shared/file/dashboard/storage-summary';
 import ActivityReport from '@/app/shared/file/dashboard/activity-report';
 import httpRequest from '@/config/httpRequest';
 import { useEffect, useState } from 'react';
@@ -84,43 +82,11 @@ const dataKeyDentalHealth: TypeDataKey[] = [
   // },
 ];
 
-const dataControlDiabetes = [
-  { name: 'Page A', kadarguladarah: 400, systole: 2400, diastole: 2400 },
-  { name: 'Page B', kadarguladarah: 300, systole: 2700, diastole: 2600 },
-  { name: 'Page C', kadarguladarah: 200, systole: 2800, diastole: 2900 },
-];
-
-const dataDentalHealth = [
-  {
-    name: 'Page A',
-    debrisindex: 400,
-    cpitn: 2400,
-    jumlahgigi: 2400,
-    jumlahgigigoyang: 300,
-    jumlahgigiberlubang: 820,
-  },
-  {
-    name: 'Page B',
-    debrisindex: 300,
-    cpitn: 2700,
-    jumlahgigi: 2600,
-    jumlahgigigoyang: 100,
-    jumlahgigiberlubang: 840,
-  },
-  {
-    name: 'Page C',
-    debrisindex: 200,
-    cpitn: 2800,
-    jumlahgigi: 2900,
-    jumlahgigigoyang: 150,
-    jumlahgigiberlubang: 790,
-  },
-];
-
 export default function FileDashboard() {
   const [data, setData] = useState({});
   const [grapich, setGrapich] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState(null);
   const [users, setUsers] = useState([]);
   const [modalState, setModalState] = useState(false);
   const [filter, setFilter] = useState(null);
@@ -175,7 +141,7 @@ export default function FileDashboard() {
       console.log(error);
     }
   };
-
+  console.log('role', role);
   const getUser = async () => {
     try {
       await httpRequest({
@@ -183,7 +149,7 @@ export default function FileDashboard() {
         method: 'get',
         params: {
           role: 'user',
-          id: role == 'user' ? session['user']['idUser'] : filter,
+          id: role == 'user' ? session['user']['idUser'] : null,
         },
       })
         .then((response) => {
@@ -191,6 +157,7 @@ export default function FileDashboard() {
           setUsers(toDataSelect(result));
           console.log(users);
           setFilter(result[0]?.id);
+          setName(result[0]?.name);
         })
         .catch((er) => {
           console.log(er);
@@ -224,7 +191,7 @@ export default function FileDashboard() {
       <div className="mb-4 grid grid-cols-1 gap-6 @container lg:grid-cols-12 2xl:gap-8">
         <div className="col-span-full flex flex-col gap-6 @5xl:col-span-12 2xl:gap-12 3xl:col-span-12">
           <ActivityReport
-            desciption="Data Pasien Hans"
+            desciption={`Data Pasien ${name}`}
             dataKey={dataKeyDentalHealth}
             rows={grapich.map((item) => {
               return {
@@ -239,7 +206,7 @@ export default function FileDashboard() {
       <div className="grid grid-cols-1 gap-6 @container lg:grid-cols-12 2xl:gap-8 ">
         <div className="col-span-full flex flex-col gap-6 @5xl:col-span-12 2xl:gap-12 3xl:col-span-12">
           <ActivityReport
-            desciption="Data Pasien Hans"
+            desciption={`Data Pasien ${name}`}
             dataKey={dataKeyControlDiabetes}
             rows={grapich.map((item) => {
               return {
@@ -276,7 +243,12 @@ export default function FileDashboard() {
               className="col-span-2"
               label="Pilih Pasien"
               options={users}
-              onChange={(event) => setFilter(event.target.value)}
+              onChange={(event) => {
+                setFilter(event.target.value);
+                setName(
+                  users.find((el) => el.value == event.target.value)?.label
+                );
+              }}
             />
             <DatePicker
               containerClassName="col-span-2"

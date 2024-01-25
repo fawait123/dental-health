@@ -1,8 +1,8 @@
 'use client';
 
 import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler } from 'react-hook-form';
-import { ActionIcon, Button, Switch, Text, Title } from 'rizzui';
+import { SubmitHandler, Controller } from 'react-hook-form';
+import { ActionIcon, Button, Checkbox, Switch, Text, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import toast from 'react-hot-toast';
@@ -16,6 +16,8 @@ import {
 } from '../schema';
 import httpRequest from '@/config/httpRequest';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface CreateEventProps {
   startDate?: Date;
@@ -53,7 +55,6 @@ export default function FormModal({
           data: payload,
         })
           .then((response) => {
-            console.log(response);
             closeModal();
             toast.success(
               <Text as="b">
@@ -90,13 +91,16 @@ export default function FormModal({
                 Menggosok Gigi
               </Text>
             );
+            getData();
           })
           .catch((err) => {
+            console.log(err, 'err');
             closeModal();
             toast.error(<Text as="b">{err?.response?.data?.message}</Text>);
           });
       }
     } catch (error) {
+      console.log('error', error);
       closeModal();
       toast.error(<Text as="b">{error?.response?.data?.message}</Text>);
     }
@@ -126,13 +130,12 @@ export default function FormModal({
             checkList: event?.checkList || [],
             date: startDate?.toString() || event?.start?.toString(),
           },
+          resolver: zodResolver(formBrushingChecklist),
         }}
         className="grid grid-cols-1 gap-5 @container md:grid-cols-2 [&_label]:font-medium"
       >
-        {({ register, control, watch, formState: { errors } }) => {
+        {({ register, control, setValue, watch, formState: { errors } }) => {
           const startDate = watch('date');
-          console.log(startDate, 'date');
-          console.log('format', moment(startDate).format('YYYY-MM-DD'));
           return (
             <>
               <input type="hidden" {...register('id')} value={event?.id} />
@@ -140,17 +143,33 @@ export default function FormModal({
                 {moment(startDate).format('DD MMMM YYYY')}
               </label>
               <br />
-              <Switch
-                label="Pagi"
-                {...register('checkList')}
-                error={errors?.checkList?.message as string}
-                value="pagi"
-              />
-              <Switch
-                label="Malam"
-                {...register('checkList')}
-                error={errors?.checkList?.message as string}
-                value="malam"
+              <Controller
+                name="checkList"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    {['pagi', 'malam'].map((item) => (
+                      <Switch
+                        key={item}
+                        label={item}
+                        {...register('checkList')}
+                        error={errors?.checkList?.message as string}
+                        value={item}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          setValue(
+                            'checkList',
+                            checked
+                              ? [...field.value, e.target.value]
+                              : field.value.filter(
+                                  (val) => val !== e.target.value
+                                )
+                          );
+                        }}
+                      />
+                    ))}
+                  </>
+                )}
               />
               <div className={cn('col-span-full grid grid-cols-2 gap-4 pt-5')}>
                 <Button
