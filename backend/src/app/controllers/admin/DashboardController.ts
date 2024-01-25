@@ -5,7 +5,7 @@ import Notification from "../../models/Notification";
 import ControlDiabetes from "../../models/ControlDiabetes";
 import BrushingChecklist from "../../models/BrushingCheklist";
 import DentalHealthCheck from "../../models/DentalHealthCheck";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import moment from "moment";
 
 const months = [
@@ -293,6 +293,11 @@ export default {
         const controlDiabetes = await ControlDiabetes.findOne({
           where: {
             userID: query?.userID || null,
+            createdAt: {
+              [Op.in]: Sequelize.literal(
+                `(select d.createdAt from diabetescontrols d where d.createdAt like '%${item}%' order by d.createdAt desc)`
+              ),
+            },
           },
           order: [["createdAt", "desc"]],
         });
@@ -300,6 +305,11 @@ export default {
         const dentalHealth = await DentalHealthCheck.findOne({
           where: {
             userID: query?.userID || null,
+            createdAt: {
+              [Op.in]: Sequelize.literal(
+                `(select d.createdAt from dentalhealthchecks d where d.createdAt like '%${item}%' order by d.createdAt desc)`
+              ),
+            },
           },
           order: [["createdAt", "desc"]],
         });
@@ -307,13 +317,13 @@ export default {
         return {
           name: moment(item).format("DD MMMM YYYY"),
           controlDiabetes: {
-            kadarguladarah: controlDiabetes?.bloodSugarPressure,
-            systole: controlDiabetes?.systole,
-            diastole: controlDiabetes?.diastole,
+            kadarguladarah: controlDiabetes?.bloodSugarPressure || 0,
+            systole: controlDiabetes?.systole || 0,
+            diastole: controlDiabetes?.diastole || 0,
           },
           dentalHealth: {
-            debrisindex: dentalHealth?.debrisIndex,
-            cpitn: dentalHealth?.CPITN,
+            debrisindex: dentalHealth?.debrisIndex || 0,
+            cpitn: dentalHealth?.CPITN || 0,
           },
         };
       });

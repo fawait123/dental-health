@@ -76,7 +76,10 @@ export default {
     try {
       const { body } = req;
 
-      const controlDiabetes = await ControlDiabetes.create({ ...body });
+      const controlDiabetes = await ControlDiabetes.create({
+        ...body,
+        createdAt: new Date(),
+      });
       const response: TypeResponse = {
         status: 200,
         message: "Data created",
