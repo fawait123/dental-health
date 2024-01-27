@@ -30,7 +30,7 @@ function DropdownMenu() {
               ? localStorage.getItem('photo')
               : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
           }
-          name="Albert Flores"
+          name={session['user']['name'] || 'Default'}
           color="invert"
         />
         <div className="ms-3">
@@ -75,6 +75,7 @@ export default function ProfileMenu({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     setIsOpen(false);
@@ -101,7 +102,7 @@ export default function ProfileMenu({
               ? localStorage.getItem('photo')
               : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
           }
-          name="John Doe"
+          name={session['user']['name'] || 'Default'}
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
         />
