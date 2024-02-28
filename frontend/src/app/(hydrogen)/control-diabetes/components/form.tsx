@@ -91,7 +91,8 @@ export default function FormControlDiabetes({
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
           physicalActivity: data.physicalActivity,
           createdAt: data?.date
-        };
+        }; 
+        delete payload.date
         httpRequest({
           method: 'post',
           url: '/control-diabetes',
@@ -117,7 +118,9 @@ export default function FormControlDiabetes({
           diastole: parseInt(data.diastole),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
           physicalActivity: data.physicalActivity,
+          createdAt: data?.date
         };
+        delete payload.date
         httpRequest({
           method: 'put',
           url: '/control-diabetes',
@@ -157,18 +160,18 @@ export default function FormControlDiabetes({
       })
         .then((response) => {
           const result = toJson(response?.data?.data?.results?.data?.rows);
-          console.log(result);
+          console.log(result,'res');
           methods.setValue(
             'bloodSugarPressure',
             result.bloodSugarPressure.toString()
           );
-          methods.setValue('systole', result.systole.toString());
-          methods.setValue('diastole', result.diastole.toString());
+          methods.setValue('systole', result?.systole?.toString());
+          methods.setValue('diastole', result?.diastole?.toString());
           methods.setValue(
             'controlDrugConsumption',
             result.controlDrugConsumption
           );
-          methods.setValue('physicalActivity', result.physicalActivity);
+          methods.setValue('physicalActivity', result?.physicalActivity);
           methods.setValue('userID', result?.userID);
           methods.setValue('date', moment(result?.date).format("YYYY-MM-DD"));
           methods.setValue('checkhba1c', result?.checkhba1c);
@@ -187,7 +190,7 @@ export default function FormControlDiabetes({
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [slug]);
   return (
     <div className="@container">
       <FormNav
@@ -204,7 +207,7 @@ export default function FormControlDiabetes({
                 key={key}
                 name={formParts[key as keyof typeof formParts]}
               >
-                {<Component className="pt-7 @2xl:pt-9 @3xl:pt-11" />}
+                {<Component slug={slug} className="pt-7 @2xl:pt-9 @3xl:pt-11" />}
               </Element>
             ))}
           </div>

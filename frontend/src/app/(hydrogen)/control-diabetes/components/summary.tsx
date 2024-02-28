@@ -9,8 +9,10 @@ import httpRequest from '@/config/httpRequest';
 
 export default function ControlDiabetesSummary({
   className,
+  slug
 }: {
   className?: string;
+  slug?:string
 }) {
   const {
     register,
@@ -19,6 +21,8 @@ export default function ControlDiabetesSummary({
     getValues,
     formState: { errors },
   } = useFormContext();
+  const {userID} = getValues()
+  console.log(getValues(), 'userID')
   const [users, setUsers] = useState([]);
 
   const role = Cookies.get('role') ?? '';
@@ -70,6 +74,7 @@ export default function ControlDiabetesSummary({
           className="col-span-2 [&>label>span]:font-medium"
           label="Pilih Pasien"
           {...register('userID')}
+          value={userID?userID:null}
           error={errors.userID?.message as string}
           options={[
             {

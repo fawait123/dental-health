@@ -21,9 +21,10 @@ export default function DentalHealthSummary({
   const {
     register,
     control,
+    getValues,
     formState: { errors },
   } = useFormContext();
-
+  const {userID} = getValues()
   const [users, setUsers] = useState([]);
 
   const role = Cookies.get('role') ?? '';
@@ -58,11 +59,11 @@ export default function DentalHealthSummary({
   };
 
   useEffect(() => {
-    if (role == 'doctor') {
+    if(role == "doctor"){
       getData('hans');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [role]);
 
   return (
     <FormGroup
@@ -74,6 +75,7 @@ export default function DentalHealthSummary({
         <NativeSelect
           className="col-span-2 [&>label>span]:font-medium"
           label="Pilih Pasien"
+          value={userID ? userID : null}
           {...register('userID')}
           error={errors.userID?.message as string}
           options={[

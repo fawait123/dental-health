@@ -47,6 +47,7 @@ export default function ControlDiabetesTable({ data = [] }: { data: any[] }) {
         method: 'get',
         params: {
           userID: role == 'user' ? session['user']['idUser'] : null,
+          ...params
         },
       })
         .then((response) => {

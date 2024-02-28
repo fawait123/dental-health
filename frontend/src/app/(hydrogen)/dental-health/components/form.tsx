@@ -45,7 +45,7 @@ function toJson(data): TypeJsonFormat {
         numberofcavities: data[0]['numberofcavities'],
         gingivitisConditions: data[0]['gingivitisConditions'],
         userID: data[0]['userID'],
-        date:data[0]['date']
+        date:data[0]['createdAt']
       }
     : {
         debrisindex: '',
@@ -229,6 +229,7 @@ export default function FormDentalHealth({
 
           <FormFooter
             isLoading={isLoading}
+            handleAltBtn={() => navigation.back()}
             submitBtnText={
               slug ? 'Ubah Kesehatan Gigi' : 'Tambah Kesehatan Gigi'
             }
