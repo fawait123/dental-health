@@ -8,8 +8,25 @@ import { routes } from '@/config/routes';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
 import { ControlDiabetesType } from '../data';
-import { Tag } from 'rizzui';
+import { Badge, Tag } from 'rizzui';
 import moment from 'moment';
+
+moment.updateLocale('en', {
+  months: [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+  ]
+});
 
 function toArray(data: string) {
   return JSON.parse(data) as [];
@@ -18,11 +35,13 @@ function toArray(data: string) {
 const convertControlConsumtionDrug = (value) => {
   switch (value) {
     case 'morning':
-      return 'Pagi';
+      return 'Pagi'.toLocaleUpperCase('id');
     case 'afternoon':
-      return 'Siang';
+      return 'Siang'.toLocaleUpperCase('id');
+    case 'night':
+      return 'Malam'.toLocaleUpperCase('id');
     default:
-      return 'Malam';
+      return value.toLocaleUpperCase('id');
   }
 };
 
@@ -86,13 +105,13 @@ export const getColumnsControlDiabetes = ({
     title: <HeaderCell title="Kontrol Konsumsi Obat" />,
     dataIndex: 'controlDrugConsumption',
     key: 'controlDrugConsumption',
-    width: 120,
+    width: 300,
     render: (_: string, row: ControlDiabetesType) => {
       return toArray(row.controlDrugConsumption).map((item, index) => {
         return (
-          <Tag color="primary" key={index} className="mb-1">
+          <Badge color="primary" key={index} className="mb-1 mr-1" variant='outline'>
             {convertControlConsumtionDrug(item)}
-          </Tag>
+          </Badge>
         );
       });
     },
@@ -104,9 +123,29 @@ export const getColumnsControlDiabetes = ({
     width: 120,
     render: (_: string, row: ControlDiabetesType) => {
       return (
-        <Tag color={row.physicalActivity == true ? 'primary' : 'danger'}>
-          {row.physicalActivity == true ? 'IYA' : 'TIDAK'}
-        </Tag>
+        <span>{row.physicalActivity}</span>
+      );
+    },
+  },
+  {
+    title: <HeaderCell title="Jenis Pemeriksaan Gula Darah" />,
+    dataIndex: 'types_of_checks',
+    key: 'types_of_checks',
+    width: 120,
+    render: (_: string, row: ControlDiabetesType) => {
+      return (
+        <span>{row.types_of_checks}</span>
+      );
+    },
+  },
+  {
+    title: <HeaderCell title="Pemeriksaan HBA1C" />,
+    dataIndex: 'checkhba1c',
+    key: 'checkhba1c',
+    width: 120,
+    render: (_: string, row: ControlDiabetesType) => {
+      return (
+        <span>{row.checkhba1c}</span>
       );
     },
   },

@@ -86,6 +86,13 @@ export default function DentalHealthSummary({
         />
       ) : null}
       <Input
+        type="date"
+        label="Tanggal"
+        placeholder="Tanggal"
+        {...register('date')}
+        error={errors.date?.message as string}
+      />
+      <Input
         type="text"
         label="Debris Index"
         placeholder="Debris Index"

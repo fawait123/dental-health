@@ -11,6 +11,24 @@ import { routes } from '@/config/routes';
 import PencilIcon from '@/components/icons/pencil';
 import { PiStarFill } from 'react-icons/pi';
 import DeletePopover from '@/app/shared/delete-popover';
+import moment from 'moment';
+
+moment.updateLocale('en', {
+  months: [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+  ]
+});
 
 export type ListData = {
   CPITN: number;
@@ -112,6 +130,17 @@ export const getColumnsDentalHealth = ({
     render: (_: string, row: ListData) => (
       <Text className="font-medium text-gray-700">
         {row?.gingivitisConditions == true ? 'YA' : 'TIDAK'}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Tanggal" />,
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    width: 150,
+    render: (_: string, row: ListData) => (
+      <Text className="font-medium text-gray-700">
+        {moment(row?.createdAt).format("DD MMMM YYYY")}
       </Text>
     ),
   },

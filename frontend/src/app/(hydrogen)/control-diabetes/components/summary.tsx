@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import FormGroup from '@/app/shared/form-group';
 import cn from '@/utils/class-names';
-import { Checkbox, NativeSelect, Radio } from 'rizzui';
+import { Checkbox, CheckboxGroup, NativeSelect, Radio, Select } from 'rizzui';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import httpRequest from '@/config/httpRequest';
@@ -15,9 +15,10 @@ export default function ControlDiabetesSummary({
   const {
     register,
     control,
+    setValue,
+    getValues,
     formState: { errors },
   } = useFormContext();
-
   const [users, setUsers] = useState([]);
 
   const role = Cookies.get('role') ?? '';
@@ -80,6 +81,34 @@ export default function ControlDiabetesSummary({
         />
       ) : null}
       <Input
+        type="date"
+        label="Tanggal"
+        className="w-full"
+        placeholder="Tanggal"
+        {...register('date')}
+        error={errors.date?.message as string}
+      />
+      <NativeSelect
+        className="col-span-1 [&>label>span]:font-medium"
+        label="Jenis Pemeriksaan"
+        {...register('types_of_checks')}
+        error={errors.types_of_checks?.message as string}
+        options={[
+          {
+            label: 'Pilih',
+            value: '',
+          },
+          {
+            label: 'Pemeriksaan Gula Darah Sewaktu',
+            value: 'pemeriksaan gula darah sewaktu',
+          },
+          {
+            label: 'Pemeriksaan Gula Darah Puasa',
+            value: 'pemeriksaan gula darah puasa',
+          },
+        ]}
+      />
+      <Input
         type="number"
         label="Kadar Gula Darah"
         className="w-full"
@@ -87,7 +116,6 @@ export default function ControlDiabetesSummary({
         {...register('bloodSugarPressure')}
         error={errors.bloodSugarPressure?.message as string}
       />
-      <br />
       <Input
         type="number"
         label="Systole"
@@ -102,65 +130,69 @@ export default function ControlDiabetesSummary({
         {...register('diastole')}
         error={errors.diastole?.message as string}
       />
-      <div className="block">
-        <label className="mb-2 block font-medium">Kontrol Konsumsi Obat</label>
-        <div className="flex w-full justify-between">
-          <Checkbox
-            className="col-span-1"
-            label="Pagi"
-            color="primary"
-            value={'morning'}
-            variant="flat"
-            {...register('controlDrugConsumption')}
-            error={errors.controlDrugConsumption?.message as string}
-          />
-          <Checkbox
-            className="col-span-1"
-            label="Siang"
-            color="primary"
-            value={'afternoon'}
-            variant="flat"
-            {...register('controlDrugConsumption')}
-            error={errors.controlDrugConsumption?.message as string}
-          />
-          <Checkbox
-            className="col-span-1"
-            label="Malam"
-            value={'night'}
-            color="primary"
-            variant="flat"
-            {...register('controlDrugConsumption')}
-            error={errors.controlDrugConsumption?.message as string}
-          />
+      <Input
+        type="text"
+        label="Pemeriksaan HbA1C"
+        className="w-full"
+        placeholder="Pemeriksaan HbA1C"
+        {...register('checkhba1c')}
+        error={errors.checkhba1c?.message as string}
+      />
+      <div className="col-span-1">
+        <label className="font-medium">Minum Obat Diabetes Melitus</label>
+        <div className="mt-3 flex justify-between">
+          {[
+            { label: 'Pagi', value: 'pagi' },
+            { label: 'Siang', value: 'siang' },
+            { label: 'Malam', value: 'malam' },
+            { label: 'Tidak Minum Obat', value: 'tidak minum obat' },
+          ].map((item, index) => (
+            <Checkbox
+              {...register('controlDrugConsumption')}
+              error={errors.controlDrugConsumption?.message as string}
+              key={index}
+              label={item.label}
+              value={item.value}
+            />
+          ))}
         </div>
       </div>
-      <br />
-      <div className="w-full">
-        <label className="mb-2 block font-medium">
-          Aktifitas Fisik Dalam Sehari
-        </label>
-        <div className="flex w-full justify-between">
-          <Radio
-            className="col-span-1"
-            label="YA"
-            value={'YES'}
-            color="primary"
-            variant="flat"
-            {...register('physicalActivity')}
-            error={errors.physicalActivity?.message as string}
-          />
-
-          <Radio
-            className="col-span-1"
-            label="TIDAK"
-            value={'NO'}
-            color="primary"
-            variant="flat"
-            {...register('physicalActivity')}
-            error={errors.physicalActivity?.message as string}
-          />
-        </div>
-      </div>
+      <NativeSelect
+        className="col-span-1 [&>label>span]:font-medium"
+        label="Aktifitas Fisik Dalam Sehari"
+        {...register('physicalActivity')}
+        error={errors.physicalActivity?.message as string}
+        options={[
+          {
+            label: 'Pilih',
+            value: '',
+          },
+          {
+            label: 'Jalan Santai',
+            value: 'jalan santai',
+          },
+          {
+            label: 'Jalan Cepat',
+            value: 'jalan cepat',
+          },
+          {
+            label: 'Senam',
+            value: 'senam',
+          },
+          {
+            label: 'Bersepeda',
+            value: 'bersepeda',
+          },
+          {
+            label: 'Olahraga',
+            value: 'olahraga',
+          },
+          {
+            label: 'Lainnya',
+            value: 'lainnya',
+          },
+        ]}
+      />
     </FormGroup>
   );
 }

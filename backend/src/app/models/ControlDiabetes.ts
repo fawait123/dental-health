@@ -18,7 +18,9 @@ class ControlDiabetes extends Model {
   declare systole: number;
   declare diastole: number;
   declare controlDrugConsumption: string;
-  declare physicalActivity: boolean;
+  declare physicalActivity: string;
+  declare checkhba1c: string;
+  declare types_of_checks: string;
   declare createdAt: string;
   declare updatedAt: string;
   declare deletedAt: string;
@@ -56,7 +58,15 @@ ControlDiabetes.init(
       allowNull: false,
     },
     physicalActivity: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    checkhba1c: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    types_of_checks: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {

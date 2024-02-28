@@ -23,6 +23,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button, Modal } from 'rizzui';
 import { controlDiabetesRecomendation } from '@/data/control-diabetes-recomendation';
+import moment from 'moment';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: ControlDiabetesSummary,
@@ -43,8 +44,11 @@ function toJson(data): ControlDiabetesSchema {
         controlDrugConsumption: JSON.parse(
           data[0]['controlDrugConsumption']
         ) as [],
-        physicalActivity: data[0]['physicalActivity'] == true ? 'YES' : 'NO',
+        physicalActivity: data[0]['physicalActivity'],
         userID: data[0]['userID'],
+        date: data[0]['createdAt'],
+        types_of_checks: data[0]['types_of_checks'],
+        checkhba1c:data[0]['checkhba1c']
       }
     : {
         systole: '',
@@ -53,6 +57,9 @@ function toJson(data): ControlDiabetesSchema {
         controlDrugConsumption: [],
         physicalActivity: '',
         userID: '',
+        date:'',
+        types_of_checks:'',
+        checkhba1c:''
       };
 }
 
@@ -82,7 +89,8 @@ export default function FormControlDiabetes({
           systole: parseInt(data.systole),
           diastole: parseInt(data.diastole),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
-          physicalActivity: data.physicalActivity == 'YES' ? true : false,
+          physicalActivity: data.physicalActivity,
+          createdAt: data?.date
         };
         httpRequest({
           method: 'post',
@@ -108,7 +116,7 @@ export default function FormControlDiabetes({
           systole: parseInt(data.systole),
           diastole: parseInt(data.diastole),
           bloodSugarPressure: parseInt(data.bloodSugarPressure),
-          physicalActivity: data.physicalActivity == 'YES' ? true : false,
+          physicalActivity: data.physicalActivity,
         };
         httpRequest({
           method: 'put',
@@ -162,6 +170,9 @@ export default function FormControlDiabetes({
           );
           methods.setValue('physicalActivity', result.physicalActivity);
           methods.setValue('userID', result?.userID);
+          methods.setValue('date', moment(result?.date).format("YYYY-MM-DD"));
+          methods.setValue('checkhba1c', result?.checkhba1c);
+          methods.setValue('types_of_checks', result?.types_of_checks);
         })
         .catch((err) => {
           console.log(err);

@@ -13,6 +13,7 @@ export const dentalHealtSchema = z.object({
   gingivitisConditions: z.string().min(1),
   userID:
     Cookies.get('role') == 'doctor' ? z.string().min(1) : z.string().optional(),
+    date:z.string().min(1)
 });
 
 export type DentalHealthInput = z.infer<typeof dentalHealtSchema>;

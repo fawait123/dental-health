@@ -34,6 +34,7 @@ export const env = createEnv({
     SMTP_USER: z.string().optional(),
     SMTP_PASSWORD: z.string().optional(),
     SMTP_FROM_EMAIL: z.string().email().optional(),
+    BACKEND_URL: z.string(),
   },
   /*
    * Environment variables available on the client (and server).

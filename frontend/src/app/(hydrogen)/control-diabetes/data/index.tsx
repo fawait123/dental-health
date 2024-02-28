@@ -9,6 +9,8 @@ export type ControlDiabetesType = {
   deletedAt: number;
   physicalActivity: boolean;
   updatedAt: string;
+  types_of_checks: string;
+  checkhba1c: string;
   userID: number[];
   user: TypeUser;
 };

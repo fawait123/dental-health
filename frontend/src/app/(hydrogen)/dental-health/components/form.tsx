@@ -20,6 +20,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { dentalHealthRecomendation } from '@/data/dental-health-recomendation';
 import { Button, Modal } from 'rizzui';
+import moment from 'moment';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: DentalHealthSummary,
@@ -32,6 +33,7 @@ type TypeJsonFormat = {
   numberofcavities: number;
   gingivitisConditions: boolean;
   userID: string;
+  date:string
 };
 function toJson(data): TypeJsonFormat {
   return data.length > 0
@@ -43,6 +45,7 @@ function toJson(data): TypeJsonFormat {
         numberofcavities: data[0]['numberofcavities'],
         gingivitisConditions: data[0]['gingivitisConditions'],
         userID: data[0]['userID'],
+        date:data[0]['date']
       }
     : {
         debrisindex: '',
@@ -52,6 +55,7 @@ function toJson(data): TypeJsonFormat {
         numberofcavities: '',
         gingivitisConditions: '',
         userID: '',
+        date: '',
       };
 }
 
@@ -92,8 +96,9 @@ export default function FormDentalHealth({
           gingivitisConditions:
             data?.gingivitisConditions == 'YA' ? true : false,
           userID: data?.userID || session.user['idUser'],
+          createdAt:data?.date
         };
-
+        delete payload.date
         httpRequest({
           url: '/dental-health',
           method: 'post',
@@ -124,8 +129,9 @@ export default function FormDentalHealth({
           gingivitisConditions:
             data?.gingivitisConditions == 'YA' ? true : false,
           userID: data?.userID || session.user['idUser'],
+          createdAt:data?.date
         };
-
+        delete payload.date
         httpRequest({
           url: '/dental-health',
           method: 'put',
@@ -183,6 +189,7 @@ export default function FormDentalHealth({
             result?.gingivitisConditions == true ? 'YA' : 'TIDAK'
           );
           methods.setValue('userID', result?.userID);
+          methods.setValue('date', moment(result?.date).format("YYYY-MM-DD"));
         })
         .catch((err) => {
           console.log(err);
