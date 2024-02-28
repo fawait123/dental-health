@@ -78,7 +78,7 @@ DentalHealthCheck.init(
     tableName: "dentalhealthchecks",
     sequelize, // passing the `sequelize` instance is required
     paranoid: true,
-    timestamps: true,
+    timestamps: false,
   }
 );
 

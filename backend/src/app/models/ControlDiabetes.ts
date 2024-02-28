@@ -86,7 +86,7 @@ ControlDiabetes.init(
     tableName: "diabetescontrols",
     sequelize, // passing the `sequelize` instance is required
     paranoid: true,
-    timestamps: true,
+    timestamps: false,
   }
 );
 

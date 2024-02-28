@@ -78,7 +78,7 @@ export default {
     try {
       const { body } = req;
 
-      const dentalHealth = await DentalHealthCheck.create({ ...body });
+      const dentalHealth = await DentalHealthCheck.create({ ...body,updatedAt: new Date()});
       const response: TypeResponse = {
         status: 200,
         message: "success",

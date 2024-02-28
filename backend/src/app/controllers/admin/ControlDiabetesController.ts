@@ -78,7 +78,7 @@ export default {
 
       const controlDiabetes = await ControlDiabetes.create({
         ...body,
-        createdAt: new Date(),
+        updatedAt: new Date(),
       });
       const response: TypeResponse = {
         status: 200,
