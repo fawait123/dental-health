@@ -5,6 +5,7 @@ import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
 import { Button } from 'rizzui';
 import { FaReplyAll } from 'react-icons/fa';
+import parse from 'html-react-parser';
 
 type TypePropsRecentAppList = {
   setStatus?: any;
@@ -41,6 +42,9 @@ export default function ContentTwo({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://semenpadanghospital.co.id/" target="blank" className="text-blue-500">semenpadanghospital.co.id</a></p>'
+            )}
             <p className="py-4">
               Menggosok gigi 2x sehari dengan pasta gigi yang mengandung
               fluoride. Gunakan sikat gigi yang berbulu lembut dan sikatlah
@@ -55,6 +59,9 @@ export default function ContentTwo({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Minum air putih dapat membantu membersihkan dan meluruhkan sisa
               makanan yang menempel di permukaan gigi. Hal ini dapat mencegah
@@ -70,6 +77,9 @@ export default function ContentTwo({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Kandungan nutrisi pada buah dan sayur yang berserat serta berair
               dapat membantu pembersihan sendiri oleh air liur serta menjaga
@@ -87,6 +97,9 @@ export default function ContentTwo({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Mengkonsumsi makanan yang manis dan melekat seperti donat, coklat,
               sirup, dan permen secara berlebihan dapat meningkatkan kadar gula
@@ -102,6 +115,9 @@ export default function ContentTwo({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Penting untuk mengunjungi dokter gigi setidaknya 6 bulan sekali
               untuk melakukan pemeriksaan rutin dan pembersihan karang gigi.

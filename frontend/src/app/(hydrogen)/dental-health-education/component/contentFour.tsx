@@ -5,6 +5,7 @@ import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
 import { Button } from 'rizzui';
 import { FaReplyAll } from 'react-icons/fa';
+import parse from 'html-react-parser';
 
 type TypePropsRecentAppList = {
   setStatus?: any;
@@ -41,6 +42,9 @@ export default function ContentFour({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Hindari makanan dan minuman yang tinggi gula seperti permen, kue
               dan minuman manis karena dapat meningkatkan risiko kerussakan gigi
@@ -55,6 +59,9 @@ export default function ContentFour({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Konsumsi makanan yang beserat seperti sayuran, buah-buahan dan
               biji-bijian yang mampu meningkatkan kerja kelenjar air liur yang
@@ -70,6 +77,9 @@ export default function ContentFour({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Makanan dan minuman yang tinggi asam seperti jeruk dan minuman
               berkarbonasi (soda) dapat mempercepat terjadinya gigi berlubang.
@@ -83,6 +93,9 @@ export default function ContentFour({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Pilih sumber protein yang berkualitas seperti daging tanpa lemak,
               ikan, telur dan kacang-kacangan. Makanan dengan kandungan protein
@@ -98,6 +111,9 @@ export default function ContentFour({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Pastikan minum air putih yang cukup, karena air dapat membantu
               memebrsihkan sisa makanan di mulut dan mengurangi risiko mulut

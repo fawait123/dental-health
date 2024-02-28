@@ -5,6 +5,7 @@ import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
 import { Button } from 'rizzui';
 import { FaReplyAll } from 'react-icons/fa';
+import parse from 'html-react-parser';
 
 type TypePropsRecentAppList = {
   setStatus?: any;
@@ -42,6 +43,9 @@ export default function ContentOne({
               />
             </div>
           </div>
+          {parse(
+              '<p className="text-center">Sumber : <a href="https://www.alodokter.com" target="blank" className="text-blue-500">alodokter.com</a></p>'
+            )}
           <p className="text-justify">
             Gigi berlubang terjadi karena adanya proses pengikisan dari lapisan
             gigi oleh bakteri di permukaan rongga mulut. Sisa makanan yang
@@ -67,6 +71,9 @@ export default function ContentOne({
             <div className="my-4 flex justify-center">
               <Image src={'/p1.png'} alt="picture 3" width={200} height={200} />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <li>
               b.Kandungan gula pada sisa makanan akan diproses oleh bakteri dan
               menjadi asam yang menyebabkan gigi berlubang
@@ -74,6 +81,9 @@ export default function ContentOne({
             <div className="my-4 flex justify-center">
               <Image src={'/p2.png'} alt="picture 4" width={200} height={200} />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <li>
               c.Seiring berjalannya waktu, gigi berlubang akan meluas dari
               lapisan terluar gigi (email gigi) ke lapisan dalam gigi (dentin)
@@ -82,6 +92,9 @@ export default function ContentOne({
             <div className="my-4 flex justify-center">
               <Image src={'/p3.png'} alt="picture 5" width={200} height={200} />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
           </ul>
           <p className="text-justify">
             Pencegahan terjadinya gigi berlubang pada pasien diabetes melitus,
@@ -96,6 +109,9 @@ export default function ContentOne({
               <Image src={'/p4.png'} alt="picture 6" width={230} height={230} />
             </div>
           </div>
+          {parse(
+              '<p className="text-center">Sumber : <a href="https://www.idntimes.com/" target="blank" className="text-blue-500">idntimes.com</a></p>'
+            )}
           <p className="text-justify">
             Mulut kering merupakan gejala umum yang banyak dialami oleh
             penderita DM. Pada penderita DM, mulut kering disebabkan akibar
@@ -115,6 +131,9 @@ export default function ContentOne({
               <Image src={'/p5.png'} alt="picture 7" width={230} height={230} />
             </div>
           </div>
+           {parse(
+              '<p className="text-center">Sumber : <a href="https://www.alodokter.com/" target="blank" className="text-blue-500">alodokter.com</a></p>'
+            )}
           <p className="text-justify">
             Penyakit periodontal merupakan kondisi peradangan kerusakan pada
             jaringan gigi dan tulang gigi. Gejala penyakit periodontal ditandai
@@ -145,6 +164,9 @@ export default function ContentOne({
               <Image src={'/p6.png'} alt="picture 8" width={230} height={230} />
             </div>
           </div>
+           {parse(
+              '<p className="text-center">Sumber : <a href="https://hellosehat.com/" target="blank" className="text-blue-500">hellosehat.com</a></p>'
+            )}
           <p className="text-justify">
             Gigi goyang merupakan ciri-ciri penderita diabetes yang tidak
             menjaga diri dengan mengontrol kadar gula darah. Diabetes dapat
@@ -163,6 +185,9 @@ export default function ContentOne({
               <Image src={'/p7.png'} alt="picture 9" width={230} height={230} />
             </div>
           </div>
+          {parse(
+              '<p className="text-center">Sumber : <a href="https://new.yesdok.com/" target="blank" className="text-blue-500">new.yesdok.com</a></p>'
+            )}
           <p className="text-justify">
             Penderita diabetes melitus terkadang mengeluhkan rasa terbakar di
             mulut. Hal ini mungkin disebabkan oleh kontrol gula darah yang

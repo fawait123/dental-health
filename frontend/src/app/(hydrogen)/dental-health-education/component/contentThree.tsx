@@ -5,6 +5,7 @@ import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
 import { Button } from 'rizzui';
 import { FaReplyAll } from 'react-icons/fa';
+import parse from 'html-react-parser';
 
 type TypePropsRecentAppList = {
   setStatus?: any;
@@ -66,6 +67,9 @@ export default function ContentThree({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://dinkes.wonogirikab.go.id/" target="blank" className="text-blue-500">dinkes.wonogirikab.go.id</a></p>'
+            )}
             <li>
               2.Gerakkan sikat dengan gerakan kecil perlahan dan memutar pada
               gigi bagian samping baik gigi rahang atas maupun rahang bawah.
@@ -78,6 +82,9 @@ export default function ContentThree({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://dinkes.wonogirikab.go.id/" target="blank" className="text-blue-500">dinkes.wonogirikab.go.id</a></p>'
+            )}
             <li>
               3.Arahkan sikat di permukaan gigi bagian dalam, sikar secara
               perlahan dengan gerakan maju, mundur dan berputar
@@ -90,6 +97,9 @@ export default function ContentThree({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://dinkes.wonogirikab.go.id/" target="blank" className="text-blue-500">dinkes.wonogirikab.go.id</a></p>'
+            )}
             <li>
               4.Bersihkan bagian dalam permukaan gigi depan atas dan gigi bawah
               dengan gerakan mencungkil secara perlahan.
@@ -102,6 +112,9 @@ export default function ContentThree({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://dinkes.wonogirikab.go.id/" target="blank" className="text-blue-500">dinkes.wonogirikab.go.id</a></p>'
+            )}
             <li>
               5.Gosok gigi pada permukaan gigi yang digunakan untuk mengunyah.
               Gerakkan sikat gigi ke depan untuk membersihkan permukaan gigi
@@ -116,11 +129,17 @@ export default function ContentThree({
                 height={230}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://dinkes.wonogirikab.go.id/" target="blank" className="text-blue-500">dinkes.wonogirikab.go.id</a></p>'
+            )}
           </ul>
           <p className="text-justify">Tips sikat gigi yang baik :</p>
           <div className="my-4 flex justify-center">
             <Image src={'/sc1.png'} alt="picture 20" width={600} height={600} />
           </div>
+          {parse(
+            '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+          )}
         </div>
       </div>
     </div>

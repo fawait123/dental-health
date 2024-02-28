@@ -5,6 +5,7 @@ import { PiArrowLineUpRightBold } from 'react-icons/pi';
 import Image from 'next/image';
 import { Button } from 'rizzui';
 import { FaReplyAll } from 'react-icons/fa';
+import parse from 'html-react-parser';
 
 type TypePropsRecentAppList = {
   setStatus?: any;
@@ -41,6 +42,9 @@ export default function ContentFive({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Pembersihan karang gigi (scaling) merupakan tindakan yang
               dilakukan oleh dokter gigi maupun perawat gigi untuk membersihkan
@@ -60,6 +64,9 @@ export default function ContentFive({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://axeldental.id/" target="blank" className="text-blue-500">axeldental.id</a></p>'
+            )}
             <p className="py-4">
               Penambalan gigi merupakan perawatan yang dilakukan oleh dokter
               gigi untuk memperbaiki gigi yang berlubang. Gigi yang berlubang
@@ -77,6 +84,9 @@ export default function ContentFive({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://unair.ac.id/" target="blank" className="text-blue-500">unair.ac.id</a></p>'
+            )}
             <p className="py-4">
               Perawatan saluran akar dilakukan apabila infeksi pada gigi telah
               mencapai saraf dan akar gigi. Perawatan ini dilakukan untuk
@@ -93,6 +103,9 @@ export default function ContentFive({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Perawatan pada gusi dilakukan apabila gusi mengalami peradangan.
               Perawatan yang dilakukan meliputi scaling dan root planning untuk
@@ -107,6 +120,9 @@ export default function ContentFive({
                 height={180}
               />
             </div>
+            {parse(
+              '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
+            )}
             <p className="py-4">
               Pencabutan gigi merupakan pilihan terkahir apabila gigi sudah
               dalam kondisi yang parah dan tidak dapat diselamatkan. Pencabutan
