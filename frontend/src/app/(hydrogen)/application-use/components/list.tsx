@@ -10,6 +10,7 @@ type ListType = {
 export default function ListComponent({
   title,
   description,
+  subDescription,
   image = null,
   subList = [],
 }: {
@@ -17,6 +18,7 @@ export default function ListComponent({
   description: string;
   image?: string;
   subList?: ListType[];
+  subDescription?:string
 }) {
   return (
     <div>
@@ -31,6 +33,7 @@ export default function ListComponent({
           className="m-auto mt-3"
         />
       ) : null}
+      {subDescription? <div className="mx-2 my-2 text-justify">{parse(subDescription)}</div> : null}
       {subList.length > 0 ? (
         <div className="ml-4">
           {subList.map((item, index) => (

@@ -9,10 +9,10 @@ import httpRequest from '@/config/httpRequest';
 
 export default function ControlDiabetesSummary({
   className,
-  slug
+  slug,
 }: {
   className?: string;
-  slug?:string
+  slug?: string;
 }) {
   const {
     register,
@@ -21,8 +21,8 @@ export default function ControlDiabetesSummary({
     getValues,
     formState: { errors },
   } = useFormContext();
-  const {userID} = getValues()
-  console.log(getValues(), 'userID')
+  const { userID } = getValues();
+  console.log(getValues(), 'userID');
   const [users, setUsers] = useState([]);
 
   const role = Cookies.get('role') ?? '';
@@ -74,7 +74,7 @@ export default function ControlDiabetesSummary({
           className="col-span-2 [&>label>span]:font-medium"
           label="Pilih Pasien"
           {...register('userID')}
-          value={userID?userID:null}
+          value={userID ? userID : null}
           error={errors.userID?.message as string}
           options={[
             {
@@ -122,6 +122,14 @@ export default function ControlDiabetesSummary({
         error={errors.bloodSugarPressure?.message as string}
       />
       <Input
+        type="text"
+        label="Pemeriksaan hba1c"
+        className="w-full"
+        placeholder="Pemeriksaan hba1c"
+        {...register('checkhba1c')}
+        error={errors.checkhba1c?.message as string}
+      />
+      <Input
         type="number"
         label="Systole"
         placeholder="Systole"
@@ -135,14 +143,7 @@ export default function ControlDiabetesSummary({
         {...register('diastole')}
         error={errors.diastole?.message as string}
       />
-      <Input
-        type="text"
-        label="Pemeriksaan HbA1C"
-        className="w-full"
-        placeholder="Pemeriksaan HbA1C"
-        {...register('checkhba1c')}
-        error={errors.checkhba1c?.message as string}
-      />
+
       <div className="col-span-1">
         <label className="font-medium">Minum Obat Diabetes Melitus</label>
         <div className="mt-3 flex justify-between">
