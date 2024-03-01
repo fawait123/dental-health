@@ -140,6 +140,9 @@ export default function ContentThree({
           {parse(
             '<p className="text-center">Sumber : <a href="https://www.freepik.com/" target="blank" className="text-blue-500">freepik.com</a></p>'
           )}
+          {parse(
+            '<p className="text-center">Video menggosok gigi yang benar dapat dilihat pada link berikut : <a href="https://bit.ly/VideoMenggosokGigi" className="text-blue-500" target="blank">https://bit.ly/VideoMenggosokGigi</a></p>'
+          )}
         </div>
       </div>
     </div>
