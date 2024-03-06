@@ -139,7 +139,7 @@ export const getColumnsControlDiabetes = ({
     },
   },
   {
-    title: <HeaderCell title="Pemeriksaan HBA1C" />,
+    title: <HeaderCell title="Pemeriksaan HbA1c" />,
     dataIndex: 'checkhba1c',
     key: 'checkhba1c',
     width: 120,

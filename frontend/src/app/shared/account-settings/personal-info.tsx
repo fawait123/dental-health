@@ -175,7 +175,7 @@ export default function PersonalInfoView() {
                 />
               </FormGroup>
               <FormGroup
-                title="Username"
+                title="Tanggal Lahir"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
                 <Input

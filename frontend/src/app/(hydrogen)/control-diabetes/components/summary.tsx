@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import FormGroup from '@/app/shared/form-group';
 import cn from '@/utils/class-names';
-import { Checkbox, CheckboxGroup, NativeSelect, Radio, Select } from 'rizzui';
+import { Checkbox, CheckboxGroup, NativeSelect, Radio } from 'rizzui';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import httpRequest from '@/config/httpRequest';
@@ -123,9 +123,9 @@ export default function ControlDiabetesSummary({
       />
       <Input
         type="text"
-        label="Pemeriksaan hba1c"
+        label="Pemeriksaan HbA1c"
         className="w-full"
-        placeholder="Pemeriksaan hba1c"
+        placeholder="Pemeriksaan HbA1c"
         {...register('checkhba1c')}
         error={errors.checkhba1c?.message as string}
       />
