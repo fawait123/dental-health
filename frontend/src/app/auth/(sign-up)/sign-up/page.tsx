@@ -13,11 +13,13 @@ export default function SignUp() {
     <AuthWrapperOne
       title={
         <>
-          Bergabung -{' '}
+          {/* Bergabung -{' '}
           <span className="relative inline-block">
             Daftar Sekarang!
             <UnderlineShape className="absolute -bottom-2 start-0 h-2.5 w-28 text-blue xl:-bottom-1.5 xl:w-36" />
-          </span>
+          </span> */}
+          <h2 className='text-2xl text-center'>SELAMAT DATANG</h2>
+          <p className='text-center font-bold mt-2 text-sm'>PADA SISTEM INFORMASI PEMANTAUAN DIABETES MELITUS</p>
         </>
       }
       description="Daftar sekarang untuk bisa masuk ke halaman dashboard"
